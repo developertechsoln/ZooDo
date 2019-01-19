@@ -9,6 +9,12 @@ var state = $( "#state" ).val();
 var country = $( "#country" ).val();
 var zipCode = $( "#zipCode" ).val();
 var phoneNumber = $( "#phoneNumber" ).val();
+var customCheckRegister = $( "#customCheckRegister" ).val();
+
+$("#createAccount").onClick({
+
+});
+
 
 
 
