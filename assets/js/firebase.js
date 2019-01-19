@@ -1,4 +1,4 @@
-// Initialize Firebase Connection
+// Initialize Firebase
 var config = {
     apiKey: "AIzaSyDV6lpQd6XkRNwSkHPXFJZAhXIz6f2xpcM",
     authDomain: "zoodo-5c2b4.firebaseapp.com",
