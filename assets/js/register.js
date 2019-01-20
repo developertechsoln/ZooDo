@@ -11,7 +11,7 @@ var zipCode = $( "#zipCode" ).val();
 var phoneNumber = $( "#phoneNumber" ).val();
 var customCheckRegister = $( "#customCheckRegister" ).val();
 
-$("#createAccount").onClick({
+$("#createAccount").Click({
 
 });
 
