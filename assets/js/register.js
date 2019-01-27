@@ -40,7 +40,6 @@ var customCheckRegister = $( "#customCheckRegister" ).val();
     
     });
 
-    //hey 
     createNewUserPromise.catch(function(error){
             console.log(error.message);
     });
