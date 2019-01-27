@@ -13,6 +13,7 @@ var zipCode = $( "#zipCode" ).val();
 var customCheckRegister = $( "#customCheckRegister" ).val();
 
     var createNewUserPromise = firebase.auth().createUserWithEmailAndPassword(email, password);
+    
     createNewUserPromise.then(function(){
         firebase.auth().onAuthStateChanged(function(user){
             if (user){
