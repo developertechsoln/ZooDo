@@ -34,6 +34,7 @@ $("#createAccount").click(function(){
                 });
                 saveUserPromise.then(function(){
                     console.log("done");
+                    self.location = "userType.html";
                 });
                 saveUserPromise.catch(function(error){
                     //creating promise to delete user if we auth user but was not able to store user info in database
