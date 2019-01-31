@@ -16,7 +16,6 @@
   <link href="assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
   <!-- Argon CSS -->
   <link type="text/css" href="assets/css/argon.css?v=1.0.0" rel="stylesheet">
-  <script src="assets/js/register.js"></script>
   
 </head>
 
@@ -162,24 +161,24 @@
                     <input class="form-control" placeholder="Email" type="email" name="text1" id="email">
                   </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group has-danger">
                   <div class="input-group input-group-alternative">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Password" type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="text1" onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');
+                    <input class="form-control is-invalid" placeholder="Password" type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="text1" onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');
                     if(this.checkValidity()) form.pwd2.pattern = RegExp.escape(this.value);"  id="password">
                   </div>
-                  <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700">strong</span></small></div>
+                  <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700">Weak</span></small></div>
                 </div>
                 <div class="form-group">
                   <div class="input-group input-group-alternative">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Confirm Password" type="Password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"  name="text1" onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');" id="confirmPassword" onChange="checkPasswordMatch();">
+                    <input class="form-control" placeholder="Confirm Password" type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"  name="text1" onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');" id="confirmPassword" onChange="checkPasswordMatch();">
                   </div>
-                  <div class="text-muted font-italic"><small><span class="text-success font-weight-700">Password Matched</span></small></div>
+                  <div class="text-muted font-italic"><small><span class="font-weight-700" id="message"></span></small></div>
                 </div>
                 <div class="row my-4">
                   <div class="col-12">
@@ -192,7 +191,7 @@
                   </div>
                 </div>
                 <div class="text-center">
-                  <button type="button" class="btn btn-primary mt-4" id="createAccount"><a href="userType.html" style="color: white">Create account</a></button>
+                  <button type="button" class="btn btn-primary mt-4" id="createAccount">Create account</button>
                 </div>
               </form>
             </div>

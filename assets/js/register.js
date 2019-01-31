@@ -14,6 +14,14 @@ $("#createAccount").click(function(){
     var contactNumber = $( "#contactNumber" ).val();
     var customCheckRegister = $( "#customCheckRegister" ).val();
 
+    //For Checking All Input values are there
+    if(firstName == ""){
+        alert('Please Enter Your First Name');
+    
+    }
+
+    else{
+
     //create promise for authenticating user
     var createNewUserPromise = firebase.auth().createUserWithEmailAndPassword(email, password);
     createNewUserPromise.then(function(){
@@ -32,24 +40,12 @@ $("#createAccount").click(function(){
                         zipCode: zipCode,
                         contactNumber: contactNumber
                 });
-                //For Checking All Input values are there
-    function checkforblank()
-    {
-    if(document.getElementById('firstname').value == ""){
-        alert('Please Enter Your First Name');
-    return false;
-    }
-    }
+                
                 saveUserPromise.then(function(){
                     console.log("done");
                     self.location = "userType.html";
                 });
-                /*$('#password, #confirmPassword').on('keyup', function () {
-                    if ($('#password').val() == $('#confirmPassword').val()) {
-                      $('#message').html('Matching').css('color', 'green');
-                    } else 
-                      $('#message').html('Not Matching').css('color', 'red');
-                  });*/
+                
                  //For checking Passowrd = Confirm Password. 
                   function checkPasswordMatch() {
                     var password = $("#password").val();
@@ -82,5 +78,20 @@ $("#createAccount").click(function(){
     createNewUserPromise.catch(function(error){
             console.log(error.message);
     });
-    
+}
 });
+
+    $('#confirmPassword').on('keyup', function () {
+                        if ($('#password').val() == $('#confirmPassword').val()) {
+                        $('#message').html('Matching');
+            document.getElementById("message").removeAttribute("style");
+        document.getElementById("message").setAttribute("style", "color: #2dce89");
+                        
+                        //console.log('a');  //WORD
+                        } else 
+                        $('#message').html('Password Do not Match');
+                        document.getElementById("message").removeAttribute("style");
+	document.getElementById("message").setAttribute("style", "color: #f5365c");
+                        
+                        //console.log('b');
+                    });
