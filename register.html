@@ -16,6 +16,8 @@
   <link href="assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
   <!-- Argon CSS -->
   <link type="text/css" href="assets/css/argon.css?v=1.0.0" rel="stylesheet">
+  <script src="assets/js/register.js"></script>
+  
 </head>
 
 <body class="bg-default">
@@ -76,6 +78,7 @@
         </svg>
       </div>
     </div>
+
     <!-- Page content -->
     <div class="container mt--8 pb-5">
       <!-- Table -->
@@ -86,13 +89,13 @@
               <div class="text-center text-muted mb-4">
                 <small>Sign up with credentials</small>
               </div>
-              <form role="form">
+              <form name="form1" action="#" onsubmit="checkforblack();">
                 <div class="form-group">
                   <div class="input-group input-group-alternative mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-single-02"></i></span>
                     </div>
-                    <input class="form-control" placeholder="First Name" type="text" id="firstName">
+                    <input class="form-control" placeholder="First Name" type="text" name="text1" id="firstName">
                   </div>
                 </div>
                 <div class="form-group">
@@ -100,7 +103,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-single-02"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Last Name" type="text" id="lastName">
+                    <input class="form-control" placeholder="Last Name" type="text" name="text1" id="lastName">
                   </div>
                 </div>
                 <div class="form-group">
@@ -108,7 +111,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-shop"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Address" type="text" id="address">
+                    <input class="form-control" placeholder="Address" type="text" name="text1" id="address">
                   </div>
                 </div>
                 <div class="form-group">
@@ -116,7 +119,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-square-pin"></i></span>
                     </div>
-                    <input class="form-control" placeholder="City" type="text" id="city">
+                    <input class="form-control" placeholder="City" type="text" name="text1" id="city">
                   </div>
                 </div>
                 <div class="form-group">
@@ -124,7 +127,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-map-big"></i></span>
                     </div>
-                    <input class="form-control" placeholder="State/Province" type="text" id="state">
+                    <input class="form-control" placeholder="State/Province" type="text" name="text1" id="state">
                   </div>
                 </div>
                 <div class="form-group">
@@ -132,7 +135,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-world"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Country" type="text" id="country">
+                    <input class="form-control" placeholder="Country" type="text" name="text1" id="country">
                   </div>
                 </div>
                 <div class="form-group">
@@ -140,7 +143,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-pin-3"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Zip Code" type="text" id="zipCode">
+                    <input class="form-control" placeholder="Zip Code" type="text" name="text1" id="zipCode">
                   </div>
                 </div>
                 <div class="form-group">
@@ -148,7 +151,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-mobile-button"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Contact Number" type="number" id="contactNumber">
+                    <input class="form-control" placeholder="Contact Number" type="number" name="text1" id="contactNumber">
                   </div>
                 </div>
                 <div class="form-group">
@@ -156,7 +159,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Email" type="email" id="email">
+                    <input class="form-control" placeholder="Email" type="email" name="text1" id="email">
                   </div>
                 </div>
                 <div class="form-group">
@@ -164,7 +167,8 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Password" type="password" id="password">
+                    <input class="form-control" placeholder="Password" type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="text1" onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');
+                    if(this.checkValidity()) form.pwd2.pattern = RegExp.escape(this.value);"  id="password">
                   </div>
                   <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700">strong</span></small></div>
                 </div>
@@ -173,7 +177,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Confirm Password" type="confirmPassword" id="confirmPassword">
+                    <input class="form-control" placeholder="Confirm Password" type="Password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"  name="text1" onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');" id="confirmPassword" onChange="checkPasswordMatch();">
                   </div>
                   <div class="text-muted font-italic"><small><span class="text-success font-weight-700">Password Matched</span></small></div>
                 </div>
@@ -188,7 +192,7 @@
                   </div>
                 </div>
                 <div class="text-center">
-                  <button type="button" class="btn btn-primary mt-4" id="createAccount">Create account</button>
+                  <button type="button" class="btn btn-primary mt-4" id="createAccount"><a href="userType.html" style="color: white">Create account</a></button>
                 </div>
               </form>
             </div>

@@ -32,10 +32,38 @@ $("#createAccount").click(function(){
                         zipCode: zipCode,
                         contactNumber: contactNumber
                 });
+                //For Checking All Input values are there
+    function checkforblank()
+    {
+    if(document.getElementById('firstname').value == ""){
+        alert('Please Enter Your First Name');
+    return false;
+    }
+    }
                 saveUserPromise.then(function(){
                     console.log("done");
                     self.location = "userType.html";
                 });
+                /*$('#password, #confirmPassword').on('keyup', function () {
+                    if ($('#password').val() == $('#confirmPassword').val()) {
+                      $('#message').html('Matching').css('color', 'green');
+                    } else 
+                      $('#message').html('Not Matching').css('color', 'red');
+                  });*/
+                 //For checking Passowrd = Confirm Password. 
+                  function checkPasswordMatch() {
+                    var password = $("#password").val();
+                    var confirmPassword = $("#confirmPassword").val();
+                
+                    if (password != confirmPassword)
+                        $("#divCheckPasswordMatch").html("Passwords do not match!");
+                    else
+                        $("#divCheckPasswordMatch").html("Passwords match.");
+                }
+                $(document).ready(function () {
+                   $("#confirmPassword").keyup(checkPasswordMatch);
+                });
+                
                 saveUserPromise.catch(function(error){
                     //creating promise to delete user if we auth user but was not able to store user info in database
                     var userDeletePromise = firebase.auth().currentUser.delete();
@@ -54,4 +82,5 @@ $("#createAccount").click(function(){
     createNewUserPromise.catch(function(error){
             console.log(error.message);
     });
+    
 });
