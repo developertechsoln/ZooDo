@@ -15,12 +15,12 @@ $("#createAccount").click(function(){
     var customCheckRegister = $( "#customCheckRegister" ).val();
 
     //For Checking All Input values are there
-    if(firstName == ""){
+    /*if(firstName == ""){
         alert('Please Enter Your First Name');
     
     }
 
-    else{
+    else{*/
 
     //create promise for authenticating user
     var createNewUserPromise = firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -78,7 +78,7 @@ $("#createAccount").click(function(){
     createNewUserPromise.catch(function(error){
             console.log(error.message);
     });
-}
+
 });
 
     $('#confirmPassword').on('keyup', function () {
@@ -95,3 +95,45 @@ $("#createAccount").click(function(){
                         
                         //console.log('b');
                     });
+
+
+                    
+    function ValidatePassword() {
+        
+        var rules = [{
+            Pattern: "[A-Z]",
+            Target: "UpperCase"
+        },
+        {
+            Pattern: "[a-z]",
+            Target: "LowerCase"
+        },
+        {
+            Pattern: "[0-9]",
+            Target: "Numbers"
+        },
+        {
+            Pattern: "[!@@#$%^&*]",
+            Target: "Symbols"
+        }
+        ];
+    
+        
+            var password = $(this).val();
+        
+            
+            $("#Length").removeClass(password.length > 6 ? "glyphicon-remove" : "glyphicon-ok");
+            $("#Length").addClass(password.length > 6 ? "glyphicon-ok" : "glyphicon-remove");
+            
+            
+            for (var i = 0; i < rules.length; i++) {
+        
+            $("#" + rules[i].Target).removeClass(new RegExp(rules[i].Pattern).test(password) ? "glyphicon-remove" : "glyphicon-ok"); 
+            $("#" + rules[i].Target).addClass(new RegExp(rules[i].Pattern).test(password) ? "glyphicon-ok" : "glyphicon-remove");
+                }
+            }
+
+            $(document).ready(function() {
+                $("#password").on('keyup', ValidatePassword)
+            });
+        
