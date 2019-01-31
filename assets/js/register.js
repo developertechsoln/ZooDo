@@ -14,13 +14,6 @@ $("#createAccount").click(function(){
     var contactNumber = $( "#contactNumber" ).val();
     var customCheckRegister = $( "#customCheckRegister" ).val();
 
-    //For Checking All Input values are there
-    /*if(firstName == ""){
-        alert('Please Enter Your First Name');
-    
-    }
-
-    else{*/
 
     //create promise for authenticating user
     var createNewUserPromise = firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -78,8 +71,9 @@ $("#createAccount").click(function(){
     createNewUserPromise.catch(function(error){
             console.log(error.message);
     });
-
+  
 });
+
 
     $('#confirmPassword').on('keyup', function () {
                         if ($('#password').val() == $('#confirmPassword').val()) {
@@ -137,3 +131,7 @@ $("#createAccount").click(function(){
                 $("#password").on('keyup', ValidatePassword)
             });
         
+
+            $("input").filter(function () {
+                return $.trim($(this).val()).length == 0
+            }).length == 0;
