@@ -1,137 +1,229 @@
 //Onclick event listner for REGISTER button
 $("#createAccount").click(function(){
-    //Getting value from page
-    var firstName = $( "#firstName" ).val();
-    var lastName = $( "#lastName" ).val();
-    var email = $( "#email" ).val();
-    var password = $( "#password" ).val();
-    var confirmPassword = $( "#confirmPassword" ).val();
-    var address = $( "#address" ).val();
-    var city = $( "#city" ).val();
-    var state = $( "#state" ).val();
-    var country = $( "#country" ).val();
-    var zipCode = $( "#zipCode" ).val();
-    var contactNumber = $( "#contactNumber" ).val();
-    var customCheckRegister = $( "#customCheckRegister" ).val();
 
+    if(validateForm()) {
 
-    //create promise for authenticating user
-    var createNewUserPromise = firebase.auth().createUserWithEmailAndPassword(email, password);
-    createNewUserPromise.then(function(){
-        firebase.auth().onAuthStateChanged(function(user){ //check the auth state of user to get uid of user
-            if (user){
-                var userid = user.uid;
-                //create promise for sending user data to database
-                var saveUserPromise = firebase.database().ref().child("data").child("tempUserInfo").child(userid).set({
-                        firstName: firstName,
-                        lastName :lastName,
-                        email: email,
-                        address: address,
-                        city: city,
-                        state: state , 
-                        country: country,
-                        zipCode: zipCode,
-                        contactNumber: contactNumber
-                });
-                
-                saveUserPromise.then(function(){
-                    console.log("done");
-                    self.location = "userType.html";
-                });
-                
-                 //For checking Passowrd = Confirm Password. 
-                  function checkPasswordMatch() {
-                    var password = $("#password").val();
-                    var confirmPassword = $("#confirmPassword").val();
-                
-                    if (password != confirmPassword)
-                        $("#divCheckPasswordMatch").html("Passwords do not match!");
-                    else
-                        $("#divCheckPasswordMatch").html("Passwords match.");
-                }
-                $(document).ready(function () {
-                   $("#confirmPassword").keyup(checkPasswordMatch);
-                });
-                
-                saveUserPromise.catch(function(error){
-                    //creating promise to delete user if we auth user but was not able to store user info in database
-                    var userDeletePromise = firebase.auth().currentUser.delete();
-                    userDeletePromise.then(function() {
-                        console.log("Please try again, sorry but we are currently not able to sign you up.");
+        if(passwordSatisfied()){
+
+            if(validateConfirmPassword()){
+
+                //Getting value from page
+                var firstName = $( "#firstName" ).val();
+                var lastName = $( "#lastName" ).val();
+                var email = $( "#email" ).val();
+                var password = $( "#password" ).val();
+                var confirmPassword = $( "#confirmPassword" ).val();
+                var address = $( "#address" ).val();
+                var city = $( "#city" ).val();
+                var state = $( "#state" ).val();
+                var country = $( "#country" ).val();
+                var zipCode = $( "#zipCode" ).val();
+                var contactNumber = $( "#contactNumber" ).val();
+                var customCheckRegister = $( "#customCheckRegister" ).val();
+
+                //create promise for authenticating user
+                var createNewUserPromise = firebase.auth().createUserWithEmailAndPassword(email, password);
+                createNewUserPromise.then(function(){
+                    firebase.auth().onAuthStateChanged(function(user){ //check the auth state of user to get uid of user
+                        if (user){
+                            var userid = user.uid;
+                            //create promise for sending user data to database
+                            var saveUserPromise = firebase.database().ref().child("data").child("tempUserInfo").child(userid).set({
+                                    firstName: firstName,
+                                    lastName :lastName,
+                                    email: email,
+                                    address: address,
+                                    city: city,
+                                    state: state , 
+                                    country: country,
+                                    zipCode: zipCode,
+                                    contactNumber: contactNumber
+                            });
+                            
+                            saveUserPromise.then(function(){
+                                console.log("done");
+                                self.location = "userType.html";
+                            });
+                            
+                            //For checking Passowrd = Confirm Password. 
+                            function checkPasswordMatch() {
+                                var password = $("#password").val();
+                                var confirmPassword = $("#confirmPassword").val();
+                            
+                                if (password != confirmPassword)
+                                    $("#divCheckPasswordMatch").html("Passwords do not match!");
+                                else
+                                    $("#divCheckPasswordMatch").html("Passwords match.");
+                            }
+                            $(document).ready(function () {
+                            $("#confirmPassword").keyup(checkPasswordMatch);
+                            });
+                            
+                            saveUserPromise.catch(function(error){
+                                //creating promise to delete user if we auth user but was not able to store user info in database
+                                var userDeletePromise = firebase.auth().currentUser.delete();
+                                userDeletePromise.then(function() {
+                                    console.log("Please try again, sorry but we are currently not able to sign you up.");
+                                });
+                                userDeletePromise.catch(function(error) {
+                                    console.log("Oops!! Something went wrong please contact office.")
+                                });
+                            });
+                        } 
+
                     });
-                    userDeletePromise.catch(function(error) {
-                        console.log("Oops!! Something went wrong please contact office.")
-                    });
+                
                 });
-            } 
+                createNewUserPromise.catch(function(error){
+                        console.log(error.message);
+                });
 
-        });
-    
-    });
-    createNewUserPromise.catch(function(error){
-            console.log(error.message);
-    });
+            } else {
+
+                console.log("Confirm password doesn't match with password entered.")
+
+            }
+
+        } else{
+
+            console.log("Password criteria doesn't match.")
+
+        }
+
+    }
   
 });
 
-
-    $('#confirmPassword').on('keyup', function () {
-                        if ($('#password').val() == $('#confirmPassword').val()) {
-                        $('#message').html('Matching');
-            document.getElementById("message").removeAttribute("style");
-        document.getElementById("message").setAttribute("style", "color: #2dce89");
-                        
-                        //console.log('a');  //WORD
-                        } else 
-                        $('#message').html('Password Do not Match');
-                        document.getElementById("message").removeAttribute("style");
-	document.getElementById("message").setAttribute("style", "color: #f5365c");
-                        
-                        //console.log('b');
-                    });
+function validateConfirmPassword() {
+    if($('#password').val == $('#confirmPassword').val)
+        return true;
+    else
+        return false;
+}
 
 
-                    
-    function ValidatePassword() {
-        
-        var rules = [{
-            Pattern: "[A-Z]",
-            Target: "UpperCase"
-        },
-        {
-            Pattern: "[a-z]",
-            Target: "LowerCase"
-        },
-        {
-            Pattern: "[0-9]",
-            Target: "Numbers"
-        },
-        {
-            Pattern: "[!@@#$%^&*]",
-            Target: "Symbols"
-        }
-        ];
+$('#confirmPassword').on('keyup', function () {
     
-        
-            var password = $(this).val();
-        
-            
-            $("#Length").removeClass(password.length > 6 ? "glyphicon-remove" : "glyphicon-ok");
-            $("#Length").addClass(password.length > 6 ? "glyphicon-ok" : "glyphicon-remove");
-            
-            
-            for (var i = 0; i < rules.length; i++) {
-        
-            $("#" + rules[i].Target).removeClass(new RegExp(rules[i].Pattern).test(password) ? "glyphicon-remove" : "glyphicon-ok"); 
-            $("#" + rules[i].Target).addClass(new RegExp(rules[i].Pattern).test(password) ? "glyphicon-ok" : "glyphicon-remove");
-                }
-            }
+    if($('#confirmPassword').val().length == 0){
+        document.getElementById("message").removeAttribute("style");
+        document.getElementById("message").setAttribute("style", "display: none;");
+    } else {
 
-            $(document).ready(function() {
-                $("#password").on('keyup', ValidatePassword)
-            });
-        
+        document.getElementById("message").removeAttribute("style");
+        document.getElementById("message").setAttribute("style", "display: block;");
+    
+        if ($('#password').val() == $('#confirmPassword').val()) {
+            $('#message').html('Matching');
+            document.getElementById("message").removeAttribute("style");
+            document.getElementById("message").setAttribute("style", "color: #2dce89");
+        } else {
+            $('#message').html('Password Do not Match');
+            document.getElementById("message").removeAttribute("style");
+            document.getElementById("message").setAttribute("style", "color: #f5365c");
+        }
+    }
+});
 
-            $("input").filter(function () {
-                return $.trim($(this).val()).length == 0
-            }).length == 0;
+function validateForm() {
+
+    var idNames = ["#firstName", "#lastName", "#email", "#password", "#confirmPassword", "#address", 
+                    "#city", "#state", "#country", "#zipCode", "#contactNumber"];
+
+    var decideTrueOrFalse = true;
+    
+    for(var i = 0; i<idNames.length; i++){
+        var length = $(idNames[i]).val().length;
+        if(length === 0) {
+
+            //do something
+            console.log("Error in " + idNames[i]);
+            decideTrueOrFalse = false;
+        
+        }
+
+    }
+
+    // if($('input[type=checkbox]').attr('checked'))
+    // console.log($("#customCheckRegister").val())
+    
+
+    return decideTrueOrFalse;
+}
+
+$("#password").on('keyup', displayPasswordStrengthLogs)
+
+function displayPasswordStrengthLogs() {
+
+    document.getElementById("confirmPassword").value = ""
+    document.getElementById("message").removeAttribute("style");
+    document.getElementById("message").setAttribute("style", "display: none;");
+
+    if($("#password").val().length > 0){
+        document.getElementById("PasswordStrengthLogs").removeAttribute("style");
+        document.getElementById("PasswordStrengthLogs").setAttribute("style", "display: block;");
+    } else {
+        document.getElementById("PasswordStrengthLogs").removeAttribute("style");
+        document.getElementById("PasswordStrengthLogs").setAttribute("style", "display: none;");
+    }
+
+    
+
+    ValidatePassword();
+    
+    if(passwordSatisfied()){
+        document.getElementById("PasswordStrengthLogs").removeAttribute("style");
+        document.getElementById("PasswordStrengthLogs").setAttribute("style", "display: none;");
+    }
+}
+                    
+function ValidatePassword() {
+    
+    var rules = [{
+        Pattern: "[A-Z]",
+        Target: "UpperCase"
+    },
+    {
+        Pattern: "[a-z]",
+        Target: "LowerCase"
+    },
+    {
+        Pattern: "[0-9]",
+        Target: "Numbers"
+    },
+    {
+        Pattern: "[!@@#$%^&*_]",
+        Target: "Symbols"
+    }];
+
+    
+    var password = $("#password").val();
+             
+    $("#passwordLength").removeClass(password.length > 6 ? "passwordValidationFalseColor" : "passwordValidationTrueColor");
+    $("#passwordLength").addClass(password.length > 6 ? "passwordValidationTrueColor" : "passwordValidationFalseColor");
+    
+
+
+    for (var i = 0; i < rules.length; i++) {
+        $("#" + rules[i].Target).removeClass(new RegExp(rules[i].Pattern).test(password) ? "passwordValidationFalseColor" : "passwordValidationTrueColor"); 
+        $("#" + rules[i].Target).addClass(new RegExp(rules[i].Pattern).test(password) ? "passwordValidationTrueColor" : "passwordValidationFalseColor");
+    }
+}
+
+function passwordSatisfied() {
+
+    var ids = ["#passwordLength", "#UpperCase", "#LowerCase", "#Numbers", "#Symbols"];
+    var count = 0;
+
+    for(var i=0; i<ids.length; i++){
+        if($(ids[i]).hasClass("passwordValidationTrueColor")){
+            count++;
+        }
+    }
+
+    if(count == ids.length && count>0)
+        return true;
+    else
+        return false;
+
+
+}

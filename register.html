@@ -171,14 +171,14 @@
                     <input required class="form-control is-invalid" placeholder="Password" type="password" id="password">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                   </div>
-                  <div id="Length" class="glyphicon glyphicon-remove">Must be at least 7 charcters</div>
-                <div id="UpperCase" class="glyphicon glyphicon-remove">Must have atleast 1 upper case character</div>
-                <div id="LowerCase" class="glyphicon glyphicon-remove">Must have atleast 1 lower case character</div>
-                <div id="Numbers" class="glyphicon glyphicon-remove">Must have atleast 1 numeric character</div>
-                <div id="Symbols" class="glyphicon glyphicon-remove">Must have atleast 1 special character</div>
-                  <!--<div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700">Weak</span></small></div>-->
+                  <div id="PasswordStrengthLogs" style="display: none;">
+                    <div id="passwordLength" class="glyphicon glyphicon-remove">Must be at least 7 charcters</div>
+                    <div id="UpperCase" class="glyphicon glyphicon-remove">Must have atleast 1 upper case character</div>
+                    <div id="LowerCase" class="glyphicon glyphicon-remove">Must have atleast 1 lower case character</div>
+                    <div id="Numbers" class="glyphicon glyphicon-remove">Must have atleast 1 numeric character</div>
+                    <div id="Symbols" class="glyphicon glyphicon-remove">Must have atleast 1 special character</div>
+                  </div>
                 </div>
-                
                 <div class="form-group">
                   <div class="input-group input-group-alternative">
                     <div class="input-group-prepend">
@@ -190,8 +190,9 @@
                 </div>
                 <div class="row my-4">
                   <div class="col-12">
+                      <input id="customCheckRegister" type="checkbox" id="customCheckRegister">
                     <div class="custom-control custom-control-alternative custom-checkbox">
-                      <input class="custom-control-input" id="customCheckRegister" type="checkbox" id="customCheckRegister">
+                      
                       <label class="custom-control-label" for="customCheckRegister">
                         <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>
                       </label>
@@ -199,7 +200,7 @@
                   </div>
                 </div>
                 <div class="text-center">
-                  <button type="button" class="btn btn-primary mt-4" id="confirm">Create account</button>
+                  <button type="button" class="btn btn-primary mt-4" id="createAccount">Create account</button>
                 </div>
               </form>
             </div>
