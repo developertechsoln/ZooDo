@@ -21,6 +21,8 @@ $("#signIn").click(()=>{
         })
         // If there is an error finding the user in the database. 
         loginExistingUser.catch((error)=>{
+            //empty password input-box
+            document.getElementById("password").value = "";
             if(error.message == "The email address is badly formatted."){
                 console.log("Email is not valid!")
             } 
