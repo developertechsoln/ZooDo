@@ -16,6 +16,8 @@
   <link href="assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
   <!-- Argon CSS -->
   <link type="text/css" href="assets/css/argon.css?v=1.0.0" rel="stylesheet">
+  <!-- page css -->
+  <link type="text/css" href="assets/css/create_profile.css" rel="stylesheet">
 </head>
 
 <body class="bg-default">
@@ -72,7 +74,7 @@
         <!-- Page content -->
         <div class="container-fluid mt--7">
           <div class="row">
-            <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+            <div class="col-xl-4 order-xl-2 mb-4 mb-xl-0">
               <div class="card card-profile shadow">
                 <div class="row justify-content-center">
                   <div class="col-lg-3 order-lg-2">
@@ -84,46 +86,138 @@
                   </div>
                 </div>
                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                  <div class="d-flex justify-content-between">
-                    <a href="#" class="btn btn-sm btn-info mr-4">Connect</a>
-                    <a href="#" class="btn btn-sm btn-default float-right">Message</a>
-                  </div>
+                  
                 </div>
                 <div class="card-body pt-0 pt-md-4">
                   <div class="row">
                     <div class="col">
                       <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-                        <div>
-                          <span class="heading">22</span>
-                          <span class="description">Friends</span>
-                        </div>
-                        <div>
-                          <span class="heading">10</span>
-                          <span class="description">Photos</span>
-                        </div>
-                        <div>
-                          <span class="heading">89</span>
-                          <span class="description">Comments</span>
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
-                  <div class="text-center">
-                    <h3>
-                      Jessica Jones<span class="font-weight-light">, 27</span>
-                    </h3>
-                    <div class="h5 font-weight-300">
-                      <i class="ni location_pin mr-2"></i>Bucharest, Romania
-                    </div>
-                    <div class="h5 mt-4">
-                      <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-                    </div>
-                    <div>
-                      <i class="ni education_hat mr-2"></i>University of Computer Science
-                    </div>
+                  <div>
                     <hr class="my-4" />
-                    <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
-                    <a href="#">Show more</a>
+                    <!-- add picture sections -->
+                    <div class="text-center">
+                        <h6 class="heading-small text-muted mb-4">Attach some pictures to impress your employers</h6>
+                      <button class="btn btn-primary">Add Picture</button>
+                    </div>
+                    <br>
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <diV class="row">
+                              <div class="col-lg-6">
+                                <div class="card" style="width: 12rem auto;">
+                                  <img class="card-img-top" src="assets/img/theme/team-2-800x800.jpg" alt="Card image cap">
+                                  <div class="card-body">
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <div class="card" style="width: 12rem auto;">
+                                  <img class="card-img-top" src="assets/img/theme/team-1-800x800.jpg" alt="Card image cap">
+                                  <div class="card-body">
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </diV>
+                        </div>
+                        <div class="carousel-item">
+                            <diV class="row">
+                              <div class="col-lg-6">
+                                <div class="card" style="width: 12rem auto;">
+                                  <img class="card-img-top" src="assets/img/theme/team-3-800x800.jpg" alt="Card image cap">
+                                  <div class="card-body">
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <div class="card" style="width: 12rem auto;">
+                                  <img class="card-img-top" src="assets/img/theme/team-4-800x800.jpg" alt="Card image cap">
+                                  <div class="card-body">
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </diV>
+                        </div>
+                        <div class="carousel-item">
+                            <diV class="row">
+                              <div class="col-lg-6">
+                                <div class="card" style="width: 12rem auto;">
+                                  <img class="card-img-top" src="assets/img/theme/sketch.jpg" alt="Card image cap">
+                                  <div class="card-body">
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <div class="card" style="width: 12rem auto;">
+                                  <img class="card-img-top" src="assets/img/theme/react.jpg" alt="Card image cap">
+                                  <div class="card-body">
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </diV>
+                        </div>
+                      </div>
+                      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                      <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </div>
+
+                    <hr class="my-4" />
+                    <!-- add video section -->
+                    <div class="text-center">
+                        <h6 class="heading-small text-muted mb-4">Attach some videos to impress your employers</h6>
+                      <button class="btn btn-primary">Add Videos</button>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div style="width: auto;">
+                          <a href="http://example.com">
+                            <div class="card card-stats mb-4 mb-lg-0">
+                              <div class="card-body">
+                                <div class="row">
+                                  <div class="col text-center">
+                                    <label class="form-control-label">Video 1.MP4</label>
+                                    <video style="max-width: 100%;" src="assets/img/theme/SampleVideo_1280x720_5mb.mp4"></video>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div style="width: auto;">
+                          <a href="http://example.com">
+                            <div class="card card-stats mb-4 mb-lg-0">
+                              <div class="card-body">
+                                <div class="row">
+                                  <div class="col text-center">
+                                    <label class="form-control-label">Video 2.MP4</label>
+                                    <video style="max-width: 100%;" src="assets/img/theme/P6090053.mp4"></video>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>                    
                   </div>
                 </div>
               </div>
@@ -258,6 +352,99 @@
                           <span class="btn-inner--icon"><i class="ni ni-fat-delete"></i></span>
                       </button>
                     </div>
+
+                    <hr class="my-4" />
+                    <!-- Work Experience -->
+                    <h6 class="heading-small text-muted mb-4">Skills</h6>
+                    <div class="row text-center">
+                      <div class="col-lg-3"></div>
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <div class="col-lg-3"></div>
+                          <div class="col-lg-6">
+                              <div class="form-group">
+                                <label class="form-control-label">Skill</label>
+                                <input type="text" id="" class="form-control form-control-alternative" placeholder="Skill">
+                              </div>
+                          </div>
+                          <div class="col-lg-3"></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-1"></div>
+                          <div class="col-lg-10">
+                              <div class="form-group">
+                                <label class="form-control-label">Discription</label>
+                                <textarea rows="4" class="form-control form-control-alternative" placeholder="Discribe your skill in few words ..."></textarea>
+                              </div>
+                          </div>
+                          <div class="col-lg-1"></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-4"></div>
+                          <div class="col-lg-4">
+                              <button class="btn btn-primary btn-block" type="button" id="">
+                                  Add
+                              </button>
+                          </div>
+                          <div class="col-lg-4"></div>
+                        </div>
+                      </div>
+                      <div class="col-lg-3"></div>
+                    </div>
+                    <br>
+
+                    <div class="pl-lg-4">
+                      <div class="row text-center">
+                        <div class="col-lg-4">
+                          <div class="card bg-gradient-default">
+                            <div class="card-body">
+                              <div class="row align-items-center">
+                                <div class="col ml--2">
+                                  <h3 class="card-title text-white">Skill 1</h3>
+                                  <small class="text-white">I am shrey, I like to play scosser</small>
+                                </div>
+                                <div class="col-auto">
+                                  <button type="button" class="btn btn-sm btn-danger">Remove</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="col-lg-4">
+                          <div class="card bg-gradient-default">
+                            <div class="card-body">
+                              <div class="row align-items-center">
+                                <div class="col ml--2">
+                                  <h3 class="card-title text-white">Skill 2</h3>
+                                  <small class="text-white">I am shrey, I like to play scosser</small>
+                                </div>
+                                <div class="col-auto">
+                                  <button type="button" class="btn btn-sm btn-danger">Remove</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="col-lg-4">
+                          <div class="card bg-gradient-default">
+                            <div class="card-body">
+                              <div class="row align-items-center">
+                                <div class="col ml--2">
+                                  <h3 class="card-title text-white">Skill 2</h3>
+                                  <small class="text-white">I am shrey, I like to play scosser</small>
+                                </div>
+                                <div class="col-auto">
+                                  <button type="button" class="btn btn-sm btn-danger">Remove</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </form>
                 </div>
               </div>
