@@ -151,6 +151,3 @@ $("#remove-extra-work-experience").click(function() {
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
 });
-
-rwfqwref else
-webkitCancelAnimationFramefwef
