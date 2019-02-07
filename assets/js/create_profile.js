@@ -151,3 +151,48 @@ $("#remove-extra-work-experience").click(function() {
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
 });
+
+$("#add-skill").click(()=> {
+
+    var number_of_skills = Math.floor(($("#all-skills").children().length + 3)/3);
+    var skill_name = $("#skill-name").val();
+    var skill_description = $("#skill-description").val();
+
+    if(skill_name == "" && skill_description == ""){
+        alert("Please fill in the required fields!")
+    }
+    else if(skill_name == ""){
+        alert("Please fill in skill name to continue!")
+    }
+    else {
+        $("#all-skills").append(
+            "<br>"+
+            "<div class=\"col-lg-4\" id = \"skill-number-" + number_of_skills + "\">"+
+                "<div class=\"card bg-gradient-default\">"+
+                    "<div class=\"card-body\">"+
+                        "<div class=\"row align-items-center\">"+
+                            "<div class=\"col ml--2\">"+
+                                "<h3 class=\"card-title text-white\">" + skill_name + "</h3>"+
+                                "<small class=\"text-white\">" + skill_description + "</small>"+
+                            "</div>"+
+                            "<div class=\"col-auto\">"+
+                                "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\">Remove</button>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                "</div>"+
+            "</div>"+
+            "<br>"
+        );
+    }
+});
+
+//--------------------------------- UNDER DEVELOPEMENT -------------------------------//
+// $("#remove-skill").click(()=> {
+//     var number_of_skills = Math.floor(($("#all-skills").children().length + 3)/3);
+//     console.log(number_of_skills);
+//     var skill_to_be_deleted = "skill-number-" + number_of_skills;
+//     console.log(skill_to_be_deleted);
+//     $(skill_to_be_deleted).remove();
+// });
+//-----------------------------------------------------------------------------------//
