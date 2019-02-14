@@ -301,7 +301,7 @@ function removeFileFromStorage(filePath) {
     });
     storageRefRemovePromise.catch(function(error){
         //wait till we get result, if we are not able to delete file we will move ahead as file size will be comparitively small and
-        //we don't want to waste time on it and also the failure rate is very less as firebase is scalable
+        //we don't want to waste time on it and also the failure rate is very less as firebase is scalable.
         return;  
     });
 
