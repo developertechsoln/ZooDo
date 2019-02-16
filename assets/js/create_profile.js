@@ -154,7 +154,8 @@ $("#remove-extra-work-experience").click(function() {
 
 $("#add-skill").click(()=> {
 
-    var number_of_skills = Math.floor(($("#all-skills").children().length + 3)/3);
+    // var number_of_skills = Math.floor(($("#sub-skills").children().length + 3)/3);
+    var number_of_skills =$("#all-skills").children().length + 1;
     var skill_name = $("#skill-name").val();
     var skill_description = $("#skill-description").val();
 
@@ -166,7 +167,6 @@ $("#add-skill").click(()=> {
     }
     else {
         $("#all-skills").append(
-            "<br>"+
             "<div class=\"col-lg-4\" id = \"skill-number-" + number_of_skills + "\">"+
                 "<div class=\"card bg-gradient-default\">"+
                     "<div class=\"card-body\">"+
@@ -196,6 +196,24 @@ $("#add-skill").click(()=> {
 //     $(skill_to_be_deleted).remove();
 // });
 //-----------------------------------------------------------------------------------//
+
+// For updating the headline when you click update headline button 
+$("#update-headline").click(() => {
+    var headline = $("#new-headline").val();
+    // console.log(headline);
+    if(headline == ""){
+        alert("Please fill in the headline box.");
+    } else {
+        $("#headline").text(headline);
+    }
+});
+
+// For updating the headline when you press enter after writing your headline
+$("#new-headline").keypress((event)=>{
+    if(event.keyCode == 13){
+        $("#update-headline").click();
+    }
+});
 
 /*Expected json
 
