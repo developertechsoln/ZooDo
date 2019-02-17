@@ -4,7 +4,7 @@ var userDescription = $("#description").val();
 
 });
 //This function is called when "+" button is pressed.
-//This function will add extra educatio information form for a user
+//This function will add extra education information form for a user
 $("#add-extra-education").click(function() {
     //this line will check in div block of html, how many form already exsists
     var educationInfoNumber = $("#extra-education").children().length + 2;
@@ -159,7 +159,8 @@ $("#remove-extra-work-experience").click(function() {
 
 $("#add-skill").click(()=> {
 
-    var number_of_skills = Math.floor(($("#all-skills").children().length + 3)/3);
+    // var number_of_skills = Math.floor(($("#sub-skills").children().length + 3)/3);
+    var number_of_skills =$("#all-skills").children().length + 1;
     var skill_name = $("#skill-name").val();
     var skill_description = $("#skill-description").val();
 
@@ -171,7 +172,6 @@ $("#add-skill").click(()=> {
     }
     else {
         $("#all-skills").append(
-            "<br>"+
             "<div class=\"col-lg-4\" id = \"skill-number-" + number_of_skills + "\">"+
                 "<div class=\"card bg-gradient-default\">"+
                     "<div class=\"card-body\">"+
@@ -189,6 +189,8 @@ $("#add-skill").click(()=> {
             "</div>"+
             "<br>"
         );
+        document.getElementById("skill-name").value = "";
+        document.getElementById("skill-description").value = "";
     }
 });
 
@@ -201,6 +203,25 @@ $("#add-skill").click(()=> {
 //     $(skill_to_be_deleted).remove();
 // });
 //-----------------------------------------------------------------------------------//
+
+// For updating the headline when you click update headline button 
+$("#update-headline").click(() => {
+    var headline = $("#new-headline").val();
+    // console.log(headline);
+    if(headline == ""){
+        alert("Please fill in the headline box.");
+    } else {
+        $("#headline").text(headline);
+        document.getElementById("new-headline").value = "";
+    }
+});
+
+// For updating the headline when you press enter after writing your headline
+$("#new-headline").keypress((event)=>{
+    if(event.keyCode == 13){
+        $("#update-headline").click();
+    }
+});
 
 /*Expected json
 
@@ -247,67 +268,84 @@ $("#add-skill").click(()=> {
 
 */
 
-//This function tries to send json to firebase 2 times if 1st fails and 
-//if it successfully sends json returns true or remove all files from storage and retrun false
-async function sendJsonToFirebase(profileJson) {
 
-    firebase.auth().onAuthStateChanged(function(user) {
-	    if (user) {
-            var userId = user.uid;
+function a(){
+    arr.push($('#temp').prop('files')[0]);
+    console.log(arr[0]);
+    var a = firebase.storage().ref().child(arr[0].name).put(arr[0]);
+    a.then(function(){
+        console.log("done")
+    })
+    a.then(function(error){
+        console.log(error)
+    })
+} 
+// async function sendAllFilesToStorage(file, file){
 
-            //tries to send json 1st time
-            var profileInfoPromise = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
-            profileInfoPromise.then(function() {
-                return true; //if 1st try successful
-            });
-            profileInfoPromise.catch(function(error) {
+// }
+
+
+// //This function tries to send json to firebase 2 times if 1st fails and 
+// //if it successfully sends json returns true or remove all files from storage and retrun false
+// async function sendJsonToFirebase(profileJson) {
+
+//     firebase.auth().onAuthStateChanged(function(user) {
+// 	    if (user) {
+//             var userId = user.uid;
+
+//             //tries to send json 1st time
+//             var profileInfoPromise = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
+//             profileInfoPromise.then(function() {
+//                 return true; //if 1st try successful
+//             });
+//             profileInfoPromise.catch(function(error) {
                 
-                //tries to send json 2nd time
-                var profileInfoPromiseReTry = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
-                profileInfoPromiseReTry.then(function() {
-                    return true; //if 2nd try successful
-                });
-                profileInfoPromiseReTry.catch(function(error) {
-                    //delete all files from stroge and return false as both tries failed.
-                    await removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
-                    return false;
-                });
+//                 //tries to send json 2nd time
+//                 var profileInfoPromiseReTry = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
+//                 profileInfoPromiseReTry.then(function() {
+//                     return true; //if 2nd try successful
+//                 });
+//                 profileInfoPromiseReTry.catch(function(error) {
+//                     //delete all files from stroge and return false as both tries failed.
+//                     await removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
+//                     return false;
+//                 });
 
-            })
-        } else {
-            //it deletes all the files and return false as no user is signed in
-            console.log("No user is signed in.");
-            await removeAllFilesFormStorage(userId, profileJson); //this is again asyncronous call, so we will wait till all files are deleted
-            return false;
-        }
-    });
+//             })
+//         } else {
+//             //it deletes all the files and return false as no user is signed in
+//             console.log("No user is signed in.");
+//             await removeAllFilesFormStorage(userId, profileJson); //this is again asyncronous call, so we will wait till all files are deleted
+//             return false;
+//         }
+//     });
 
-}
+// }
 
-// This funciton deletes all profile files of a specified user id
-async function removeAllFilesFormStorage(userId, profileJson){
-    var numberOfMedia = Object.keys(profileJson.profileMedia).length;
-    for(i=1; i<numberOfMedia; i++){
-        var mediaName = "media" + i; //this is a statement which grabs media name as we will have multiple media
-        var fileName = profileJson.profileMedia[mediaName].storageName; //once we have media name, we can now grab file name in storage
-        var filePath = 'photo/'+userId+'/profile_images/'+fileName; //now we have file name in stroage, so we can give the path to that file in storage
-        await removeFileFromStorage(filePath); //this is asyncronous call, so we will wait till required file is deleted
-    }
-    return;
-}
+// // This funciton deletes all profile files of a specified user id
+// async function removeAllFilesFormStorage(userId, profileJson){
+//     var numberOfMedia = Object.keys(profileJson.profileMedia).length;
+//     for(i=1; i<numberOfMedia; i++){
+//         var mediaName = "media" + i; //this is a statement which grabs media name as we will have multiple media
+//         var fileName = profileJson.profileMedia[mediaName].storageName; //once we have media name, we can now grab file name in storage
+//         var filePath = 'photo/'+userId+'/profile_images/'+fileName; //now we have file name in stroage, so we can give the path to that file in storage
+//         await removeFileFromStorage(filePath); //this is asyncronous call, so we will wait till required file is deleted
+//     }
+//     return;
+// }
 
-//This function will delete file from the path provided
-function removeFileFromStorage(filePath) {
+// //This function will delete file from the path provided
+// function removeFileFromStorage(filePath) {
 
-    var storageRef = firebase.storage().ref(filePath); //create reference to file
-    var storageRefRemovePromise = storageRef.delete(); //delete
-    storageRefRemovePromise.then(function() {
-        return; //wait till we get result
-    });
-    storageRefRemovePromise.catch(function(error){
-        //wait till we get result, if we are not able to delete file we will move ahead as file size will be comparitively small and
-        //we don't want to waste time on it and also the failure rate is very less as firebase is scalable.
-        return;  
-    });
+//     var storageRef = firebase.storage().ref(filePath); //create reference to file
+//     var storageRefRemovePromise = storageRef.delete(); //delete
+//     storageRefRemovePromise.then(function() {
+//         return; //wait till we get result
+//     });
+//     storageRefRemovePromise.catch(function(error){
+//         //wait till we get result, if we are not able to delete file we will move ahead as file size will be comparitively small and
+//         //we don't want to waste time on it and also the failure rate is very less as firebase is scalable.
+//         return;  
+//     });
 
-}
+// }
