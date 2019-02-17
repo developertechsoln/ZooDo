@@ -184,6 +184,8 @@ $("#add-skill").click(()=> {
             "</div>"+
             "<br>"
         );
+        document.getElementById("skill-name").value = "";
+        document.getElementById("skill-description").value = "";
     }
 });
 
@@ -205,6 +207,7 @@ $("#update-headline").click(() => {
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);
+        document.getElementById("new-headline").value = "";
     }
 });
 
