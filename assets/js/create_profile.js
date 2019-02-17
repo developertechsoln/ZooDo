@@ -263,6 +263,23 @@ $("#new-headline").keypress((event)=>{
 
 */
 
+
+function a(){
+    arr.push($('#temp').prop('files')[0]);
+    console.log(arr[0]);
+    var a = firebase.storage().ref().child(arr[0].name).put(arr[0]);
+    a.then(function(){
+        console.log("done")
+    })
+    a.then(function(error){
+        console.log(error)
+    })
+} 
+// async function sendAllFilesToStorage(file, file){
+
+// }
+
+
 // //This function tries to send json to firebase 2 times if 1st fails and 
 // //if it successfully sends json returns true or remove all files from storage and retrun false
 // async function sendJsonToFirebase(profileJson) {
