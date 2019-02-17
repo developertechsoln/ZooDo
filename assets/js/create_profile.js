@@ -1,3 +1,8 @@
+// this function will store values of all fields;
+$("#create-profile").click(function(){
+var userDescription = $("#description").val();
+
+});
 //This function is called when "+" button is pressed.
 //This function will add extra educatio information form for a user
 $("#add-extra-education").click(function() {
@@ -13,13 +18,13 @@ $("#add-extra-education").click(function() {
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-username\">School/University</label>"+
-                    "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative\" placeholder=\"School/University\">"+
+                    "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\" placeholder=\"School/University\">"+
                     "</div>"+
                 "</div>"+
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-email\">Degree Type</label>"+
-                    "<select class=\"form-control form-control-alternative\">"+
+                    "<select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">"+
                         "<option value=\"diploma\">Diploma</option>"+
                         "<option value=\"bachelors\">Bachelors</option>"+
                         "<option value=\"master\">Masters</option>"+
@@ -32,7 +37,7 @@ $("#add-extra-education").click(function() {
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-first-name\">Course Field</label>"+
-                    "<select class=\"form-control form-control-alternative\">"+
+                    "<select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">"+
                         "<option value=\"softwareEngineer\">Software Engineer</option>"+
                         "<option value=\"computerScience\">Computer Science</option>"+
                         "<option value=\"business\">Business</option>"+
@@ -43,7 +48,7 @@ $("#add-extra-education").click(function() {
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-last-name\">Date of Graduation</label>"+
-                    "<input type=\"date\" id=\"CompletionDate\" class=\"form-control form-control-alternative\">"+
+                    "<input type=\"date\" id=\"CompletionDate\" class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">"+
                     "</div>"+
                 "</div>"+
                 "</div>"+
@@ -92,19 +97,19 @@ $("#add-extra-work-experience").click(function() {
                     "<div class=\"col-lg-5\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Company Name</label>"+
-                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative\" placeholder=\"Company Name\">"+
+                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative work-experience-" + workInfoNumber + "\" placeholder=\"Company Name\">"+
                         "</div>"+
                     "</div>"+
                     "<div class=\"col-lg-5\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Job Title</label>"+
-                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative\" placeholder=\"Job Title\">"+
+                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative work-experience-" + workInfoNumber + "\" placeholder=\"Job Title\">"+
                         "</div>"+
                     "</div>"+
                     "<div class=\"col-lg-2\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Years</label>"+
-                        "<select class=\"form-control form-control-alternative\">"+
+                        "<select class=\"form-control form-control-alternative work-experience-" + workInfoNumber + "\">"+
                             "<option value=\"less-then-1-year\">< a year</option>"+
                             "<option value=\"1-year\">1 year</option>"+
                             "<option value=\"2-years\">2 years</option>"+
@@ -120,7 +125,7 @@ $("#add-extra-work-experience").click(function() {
                     "<div class=\"col-lg-12\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Job Discription</label>"+
-                        "<textarea rows=\"4\" class=\"form-control form-control-alternative\" placeholder=\"Discribe your work in few words ...\"></textarea>"+
+                        "<textarea rows=\"4\" class=\"form-control form-control-alternative work-experience-" + workInfoNumber + "\" placeholder=\"Discribe your work in few words ...\"></textarea>"+
                         "</div>"+
                     "</div>"+
                     "</div>"+
