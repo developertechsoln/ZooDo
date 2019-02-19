@@ -1,56 +1,3 @@
-// this function will store values of all fields;
-$("#create-profile").click(function(){
-    var userDescription = $("#description").val();
-    var userDescription = $("#personal-description").val();
-    var numberOfEducation = $("#extra-education").children().length + 1;
-    var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
-    var mainJson = {
-        education:{},
-        workExperience:{},
-        personalDescription: userDescription
-    };
-    for (i = 1; i <= numberOfEducation; i++){
-        var className = ".extra-education-" + i;
-        var eduObj = $(className);
-        var counter=1;
-        eduObj.each(function(){
-            if (counter == 1) {
-                        mainJson.education["education" + counter]["university"]=$(this).val()
-            }
-                if (counter==2){
-                        mainJson.education["education" + counter]["degreeType"]=$(this).val()
-                }
-                if (counter==3){
-                        mainJson.education["education" + counter]["courseField"]=$(this).val()
-                }
-                if (counter==4){
-                        mainJson.education["education" + counter]["dog"]=$(this).val()
-                }
-                counter++
-        })
-    }
-    for (j = 1; j <= numberOfWorkExperience; j++){
-        var className2 = ".extra-work-experience-" + j;
-        var workExObj = $(className2);
-        var counter2=1;
-        workExObj.each(function(){
-            if (counter2 == 1) {
-                        mainJson.workExperience["workEducation" + counter2]["companyName"]=$(this).val()
-            }
-                if (counter2==2){
-                        mainJson.workExperience["workExperience" + counter2]["jobTitle"]=$(this).val()
-                }
-                if (counter2==3){
-                        mainJson.workExperience["workExperience" + counter2]["years"]=$(this).val()
-                }
-                if (counter2==4){
-                        mainJson.workExperience["workExperience" + counter2]["description"]=$(this).val()
-                }
-                counter2++
-        })
-    }
-});
-
 //This function is called when "+" button is pressed.
 //This function will add extra education information form for a user
 $("#add-extra-education").click(function() {
@@ -316,6 +263,58 @@ $("#new-headline").keypress((event)=>{
 
 */
 
+// this function will store values of all fields;
+$("#create-profile").click(function(){
+    var userDescription = $("#description").val();
+    var userDescription = $("#personal-description").val();
+    var numberOfEducation = $("#extra-education").children().length + 1;
+    var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
+    var mainJson = {
+        education:{},
+        workExperience:{},
+        personalDescription: userDescription
+    };
+    for (i = 1; i <= numberOfEducation; i++){
+        var className = ".extra-education-" + i;
+        var eduObj = $(className);
+        var counter=1;
+        eduObj.each(function(){
+            if (counter == 1) {
+                        mainJson.education["education" + counter]["university"]=$(this).val()
+            }
+            if (counter==2){
+                    mainJson.education["education" + counter]["degreeType"]=$(this).val()
+            }
+            if (counter==3){
+                    mainJson.education["education" + counter]["courseField"]=$(this).val()
+            }
+            if (counter==4){
+                    mainJson.education["education" + counter]["dog"]=$(this).val()
+            }
+            counter++
+        })
+    }
+    for (j = 1; j <= numberOfWorkExperience; j++){
+        var className2 = ".extra-work-experience-" + j;
+        var workExObj = $(className2);
+        var counter2=1;
+        workExObj.each(function(){
+            if (counter2 == 1) {
+                        mainJson.workExperience["workEducation" + counter2]["companyName"]=$(this).val()
+            }
+            if (counter2==2){
+                    mainJson.workExperience["workExperience" + counter2]["jobTitle"]=$(this).val()
+            }
+            if (counter2==3){
+                    mainJson.workExperience["workExperience" + counter2]["years"]=$(this).val()
+            }
+            if (counter2==4){
+                    mainJson.workExperience["workExperience" + counter2]["description"]=$(this).val()
+            }
+            counter2++
+        })
+    }
+});
 
 // function a(){
 //     arr.push($('#temp').prop('files')[0]);
@@ -328,6 +327,7 @@ $("#new-headline").keypress((event)=>{
 //         console.log(error)
 //     })
 // } 
+
 async function sendAllFilesToStorage(file, uid){
     
     var numberOfFiles = file.length;
