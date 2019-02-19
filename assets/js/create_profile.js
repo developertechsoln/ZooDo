@@ -264,20 +264,28 @@ $("#new-headline").keypress((event)=>{
 */
 
 
-function a(){
-    arr.push($('#temp').prop('files')[0]);
-    console.log(arr[0]);
-    var a = firebase.storage().ref().child(arr[0].name).put(arr[0]);
-    a.then(function(){
-        console.log("done")
-    })
-    a.then(function(error){
-        console.log(error)
-    })
-} 
-// async function sendAllFilesToStorage(file, file){
+// function a(){
+//     arr.push($('#temp').prop('files')[0]);
+//     console.log(arr[0]);
+//     var a = firebase.storage().ref().child(arr[0].name).put(arr[0]);
+//     a.then(function(){
+//         console.log("done")
+//     })
+//     a.then(function(error){
+//         console.log(error)
+//     })
+// } 
+async function sendAllFilesToStorage(file, uid){
+    
+    var numberOfFiles = file.length;
 
-// }
+    for(var i=0; i<numberOfFiles; i++){
+        
+        var fileSentStatus = await sendAllFilesToStorage(file, uid, category)
+
+    }
+
+}
 
 
 // //This function tries to send json to firebase 2 times if 1st fails and 
