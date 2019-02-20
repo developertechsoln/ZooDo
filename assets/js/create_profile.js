@@ -154,7 +154,6 @@ $("#remove-extra-work-experience").click(function() {
 
 $("#add-skill").click(()=> {
 
-    // var number_of_skills = Math.floor(($("#sub-skills").children().length + 3)/3);
     var number_of_skills =$("#all-skills").children().length + 1;
     var skill_name = $("#skill-name").val();
     var skill_description = $("#skill-description").val();
@@ -199,11 +198,16 @@ $("#add-skill").click(()=> {
 // });
 //-----------------------------------------------------------------------------------//
 
+// For checking if a field has white spaces
+function has_white_spaces(str){
+    return str.indexOf(' ') >= 0;
+}
+
 // For updating the headline when you click update headline button 
 $("#update-headline").click(() => {
     var headline = $("#new-headline").val();
     // console.log(headline);
-    if(headline == ""){
+    if(headline == "" || has_white_spaces(headline)){
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);
@@ -262,23 +266,6 @@ $("#new-headline").keypress((event)=>{
 
 
 */
-
-
-function a(){
-    arr.push($('#temp').prop('files')[0]);
-    console.log(arr[0]);
-    var a = firebase.storage().ref().child(arr[0].name).put(arr[0]);
-    a.then(function(){
-        console.log("done")
-    })
-    a.then(function(error){
-        console.log(error)
-    })
-} 
-// async function sendAllFilesToStorage(file, file){
-
-// }
-
 
 // //This function tries to send json to firebase 2 times if 1st fails and 
 // //if it successfully sends json returns true or remove all files from storage and retrun false

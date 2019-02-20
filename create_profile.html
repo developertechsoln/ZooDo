@@ -103,8 +103,40 @@
                     <!-- add picture sections -->
                     <div class="text-center">
                         <h6 class="heading-small text-muted mb-4">Attach some pictures to impress your employers</h6>
-                      <button class="btn btn-primary">Add Picture</button>
-                    </div>
+                        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modal-default">Add Photos</button>
+                        <!-- <button class="btn btn-primary">Add Picture</button> -->
+                        <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                          <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                  <h6 class="modal-title" id="modal-title-default">Upload Photos</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">×</span>
+                                  </button>
+                              </div>
+                                  
+                              <div class="modal-body">
+                                <div class="row">
+                                  <div class="col-sm-4"></div>
+                                  <div class="col-sm-4">
+                                    <label for="files" class="btn btn-outline-primary">
+                                        <span class="btn-inner--text">Browse</span>
+                                        <span class="btn-inner--icon"><i class="ni ni-cloud-upload-96"></i></span></label>
+                                    <input id="files" style="display: none" type="file" accept="image/*" multiple/>
+                                  </div>
+                                  <div class="col-sm-4"></div>
+                                </div>
+                              </div>
+                                  
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                                  <button type="button" class="btn btn-outline-primary">Next</button> 
+                              </div>
+                                  
+                            </div>
+                            </div>
+                          </div>
+                        </div>
                     <br>
                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                       <div class="carousel-inner">
@@ -259,6 +291,7 @@
                             <div class="form-group">
                               <label class="form-control-label" for="input-email">Degree Type</label>
                               <select class="form-control form-control-alternative">
+                                  <option value="Select">Select</option>
                                   <option value="diploma">Diploma</option>
                                   <option value="bachelors">Bachelors</option>
                                   <option value="master">Masters</option>
@@ -272,6 +305,7 @@
                             <div class="form-group">
                               <label class="form-control-label" for="input-first-name">Course Field</label>
                               <select class="form-control form-control-alternative">
+                                <option value="Select">Select</option>
                                 <option value="softwareEngineer">Software Engineer</option>
                                 <option value="computerScience">Computer Science</option>
                                 <option value="business">Business</option>
@@ -322,6 +356,7 @@
                             <div class="form-group">
                               <label class="form-control-label">Years</label>
                               <select class="form-control form-control-alternative">
+                                <option value="diploma">Select</option>
                                 <option value="less-then-1-year">< a year</option>
                                 <option value="1-year">1 year</option>
                                 <option value="2-years">2 years</option>
@@ -336,8 +371,8 @@
                         <div class="row">
                           <div class="col-lg-12">
                             <div class="form-group">
-                              <label class="form-control-label" for="input-first-name">Job Discription</label>
-                              <textarea rows="4" class="form-control form-control-alternative" placeholder="Discribe your work in few words ..."></textarea>
+                              <label class="form-control-label" for="input-first-name">Job Description</label>
+                              <textarea rows="4" class="form-control form-control-alternative" placeholder="Describe your work in few words ..."></textarea>
                             </div>
                           </div>
                         </div>
@@ -394,99 +429,8 @@
                     </div>
                     <br>
                     <!-- All the skills will be dynamically placed under here. -->
-                    <div class="row" id="all-skills">
-                      <div class="col-lg-4">
-                        <div class="card card-stats mb-4 mb-xl-0">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col ml--2">
-                                <h3 class="card-title text-white">Skill Name</h3>
-                                <small class="text-white">Skill Discription</small>
-                              </div>
-                              <div class="col-auto">
-                                <button type="button" class="btn btn-sm btn-danger" id="">Remove</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="card card-stats mb-4 mb-xl-0">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col ml--2">
-                                <h3 class="card-title text-white">Skill Name</h3>
-                                <small class="text-white">Skill Discription</small>
-                              </div>
-                              <div class="col-auto">
-                                <button type="button" class="btn btn-sm btn-danger" id="">Remove</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="card card-stats mb-4 mb-xl-0">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col ml--2">
-                                <h3 class="card-title text-white">Skill Name</h3>
-                                <small class="text-white">Skill Discription</small>
-                              </div>
-                              <div class="col-auto">
-                                <button type="button" class="btn btn-sm btn-danger" id="">Remove</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div></br>
-                    <div class="row" id="all-skills">
-                      <div class="col-lg-4">
-                        <div class="card card-stats mb-4 mb-xl-0">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col ml--2">
-                                <h3 class="card-title text-white">Skill Name</h3>
-                                <small class="text-white">Skill Discription</small>
-                              </div>
-                              <div class="col-auto">
-                                <button type="button" class="btn btn-sm btn-danger" id="">Remove</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="card card-stats mb-4 mb-xl-0">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col ml--2">
-                                <h3 class="card-title text-white">Skill Name</h3>
-                                <small class="text-white">Skill Discription</small>
-                              </div>
-                              <div class="col-auto">
-                                <button type="button" class="btn btn-sm btn-danger" id="">Remove</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="card card-stats mb-4 mb-xl-0">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col ml--2">
-                                <h3 class="card-title text-white">Skill Name</h3>
-                                <small class="text-white">Skill Discription</small>
-                              </div>
-                              <div class="col-auto">
-                                <button type="button" class="btn btn-sm btn-danger" id="">Remove</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div id="all-skills">
+
                     </div>
                     <!-- Skills END -->
                   </form>
