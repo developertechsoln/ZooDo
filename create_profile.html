@@ -14,6 +14,8 @@
   <!-- Icons -->
   <link href="assets/vendor/nucleo/css/nucleo.css" rel="stylesheet">
   <link href="assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link type="text/css" rel="stylesheet" href="assets/css/create_profile.css">
   <!-- Argon CSS -->
   <link type="text/css" href="assets/css/argon.css?v=1.0.0" rel="stylesheet">
   <!-- page css -->
@@ -104,7 +106,6 @@
                     <div class="text-center">
                         <h6 class="heading-small text-muted mb-4">Attach some pictures to impress your employers</h6>
                         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modal-default">Add Photos</button>
-                        <!-- <button class="btn btn-primary">Add Picture</button> -->
                         <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
                           <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                             <div class="modal-content">
@@ -114,8 +115,8 @@
                                       <span aria-hidden="true">×</span>
                                   </button>
                               </div>
-                                  
-                              <div class="modal-body">
+                          
+                              <div class="modal-body" id="modal_body">
                                 <div class="row">
                                   <div class="col-sm-4"></div>
                                   <div class="col-sm-4">
@@ -128,9 +129,9 @@
                                 </div>
                               </div>
                                   
-                              <div class="modal-footer">
+                              <div class="modal-footer" id="modal_footer">
                                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                                  <button type="button" class="btn btn-outline-primary">Next</button> 
+                                  <button type="button" class="btn btn-outline-primary" id="next-button">Next</button> 
                               </div>
                                   
                             </div>
@@ -215,7 +216,11 @@
                     <!-- add video section -->
                     <div class="text-center">
                         <h6 class="heading-small text-muted mb-4">Attach some videos to impress your employers</h6>
-                      <button class="btn btn-primary">Add Videos</button>
+                        <label for="filess" class="btn btn-primary">
+                            <span class="btn-inner--text">Add Videos</span>
+                            <span class="btn-inner--icon"><i class="ni ni-cloud-upload-96"></i></span></label>
+                        <input id="filess" style="display: none" type="file" accept="video/*" multiple/>
+                        <!-- <button class="btn btn-primary" id="videos-upload">Add Videos</button> -->
                     </div>
                     <br>
                     <div class="row">
@@ -271,7 +276,7 @@
                     <h6 class="heading-small text-muted mb-4">About me</h6>
                     <div class="pl-lg-4">
                       <div class="form-group">
-                      <textarea rows="4" class="form-control form-control-alternative" placeholder="A few words about you ..."></textarea>
+                      <textarea id="personal-description" rows="4" class="form-control form-control-alternative" placeholder="A few words about you ..."></textarea>
                       </div>
                     </div>
                     <hr class="my-4" />
@@ -284,13 +289,13 @@
                           <div class="col-lg-6">
                             <div class="form-group">
                               <label class="form-control-label" for="input-username">School/University</label>
-                              <input type="text" id="" class="form-control form-control-alternative" placeholder="School/University">
+                              <input type="text" id="" class="form-control form-control-alternative extra-education-1" placeholder="School/University">
                             </div>
                           </div>
                           <div class="col-lg-6">
                             <div class="form-group">
                               <label class="form-control-label" for="input-email">Degree Type</label>
-                              <select class="form-control form-control-alternative">
+                              <select class="form-control form-control-alternative extra-education-1">
                                   <option value="Select">Select</option>
                                   <option value="diploma">Diploma</option>
                                   <option value="bachelors">Bachelors</option>
@@ -316,7 +321,7 @@
                           <div class="col-lg-6">
                             <div class="form-group">
                               <label class="form-control-label" for="input-last-name">Date of Graduation</label>
-                              <input type="date" id="CompletionDate" class="form-control form-control-alternative">
+                              <input type="date" id="CompletionDate" class="form-control form-control-alternative extra-education-1">
                             </div>
                           </div>
                         </div>
@@ -343,13 +348,13 @@
                           <div class="col-lg-5">
                             <div class="form-group">
                               <label class="form-control-label">Company Name</label>
-                              <input type="text" id="" class="form-control form-control-alternative" placeholder="Company Name">
+                              <input type="text" id="" class="form-control form-control-alternative work-experience-1" placeholder="Company Name">
                             </div>
                           </div>
                           <div class="col-lg-5">
                             <div class="form-group">
                               <label class="form-control-label">Job Title</label>
-                              <input type="text" id="" class="form-control form-control-alternative" placeholder="Job Title">
+                              <input type="text" id="" class="form-control form-control-alternative work-experience-1" placeholder="Job Title">
                             </div>
                           </div>
                           <div class="col-lg-2">

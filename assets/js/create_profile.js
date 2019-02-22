@@ -222,6 +222,81 @@ $("#new-headline").keypress((event)=>{
     }
 });
 
+// A global object for storing the pictures
+var image_object;
+
+$("#files").change(()=> {
+    // Gets an object of images selected 
+    image_object = document.querySelector('input[type=file]').files;
+    console.log(image_object);
+    //$("#next-button").click();
+});
+
+$("#next-button").click(()=> {
+    if($.isEmptyObject(image_object)){
+        alert("Please upload a file!");
+    } else {
+        upload_successful();
+        setTimeout(()=> { 
+            img_desc_temp(); 
+            preview_image(); 
+            img_desc_foot(); 
+        },2000);
+    }
+});
+
+var upload_successful = ()=> {
+    $("#modal_body").empty();
+    $("#modal_footer").empty();
+    $("#modal_body").append(
+        "<h2>Media Uploaded Successfully!!</h2>"
+    );
+};
+
+var img_desc_temp = ()=> {
+    $("#modal_body").empty();
+    $("#modal_body").append(
+        "<div class=\"row\">"+
+            "<div class=\"col-lg-6\">"+
+                "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
+            "</div>"+
+            "<div class=\"col-lg-6\">"+
+                "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\" placeholder=\"Anything special about the Photo?\"></textarea>"+
+            "</div>"+
+        "</div>"
+    );
+};
+
+var img_desc_foot = () => {
+    $("#modal_footer").append(
+        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
+        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button-img\">Next</button>"+
+        "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
+    );
+};
+
+var preview_image = function(input) {
+    if(image_object[0]){
+        var reader = new FileReader();
+        reader.onload = (e)=> {
+            $("#new-image").attr('src',e.target.result);
+        }
+        reader.readAsDataURL(image_object[0]);
+    }
+};
+
+var remove_photo_button = ()=> {
+    $("#modal_body").empty();
+    $("#modal_footer").empty();
+    $("#modal_body").append(
+        "<h2>Media Removed Successfully!!</h2>"
+    );
+    setTimeout(()=> {
+        $("#modal-default").modal('hide');
+    }, 2000);
+};
+
+
 /*Expected json
 
 {
