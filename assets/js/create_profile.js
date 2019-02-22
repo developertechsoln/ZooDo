@@ -229,7 +229,7 @@ $("#files").change(()=> {
     // Gets an object of images selected 
     image_object = document.querySelector('input[type=file]').files;
     console.log(image_object);
-    //$("#next-button").click();
+    $("#next-button").click();
 });
 
 $("#next-button").click(()=> {
