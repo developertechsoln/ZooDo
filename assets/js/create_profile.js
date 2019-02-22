@@ -316,92 +316,116 @@ $("#create-profile").click(function(){
     }
 });
 
-// function a(){
-//     arr.push($('#temp').prop('files')[0]);
-//     console.log(arr[0]);
-//     var a = firebase.storage().ref().child(arr[0].name).put(arr[0]);
-//     a.then(function(){
-//         console.log("done")
-//     })
-//     a.then(function(error){
-//         console.log(error)
-//     })
-// } 
-
-async function sendAllFilesToStorage(file, uid){
+//This function is responsible to send all the files in file array to firebase storage
+async function sendAllFilesToStorage(uid){
     
+    //create variables
     var numberOfFiles = file.length;
+    var URL = [];
+    var fileUrl;
 
+    //take one file at a time and send to storage
     for(var i=0; i<numberOfFiles; i++){
         
-        var fileSentStatus = await sendAllFilesToStorage(file, uid, category)
+        //call a function to send file and wait till it returns an url
+        fileUrl = await sendFileToStorage(i, uid, category)
+
+        //if we are able to send file to firebase we will save its url else we will put null
+        if(fileUrl != ""){ URL.push(fileUrl); }
+        else{ URL.push(null); }
 
     }
+
+    return URL;
+
+}
+
+//Send a single file to firebase storage
+async function sendFileToStorage(index, uid, category){
+
+    //collecting promise of file sent
+    var filePromise = firebase.storage().ref().child(category).child(uid).child("profilePage").put(FILES[index]);
+    filePromise.then(function(snapshot){
+
+        //get the url of the file uploaded
+        var getUrl = snapshot.ref.getDownloadURL();
+        getUrl.then((url) => {
+            return url; //return url
+        })
+        getUrl.catch(function(error){
+            //TODO think on it
+        })
+
+    })
+    filePromise.catch(function(error){
+        return ""; //return an empty array if file is not uploaded
+    })
 
 }
 
 
-// //This function tries to send json to firebase 2 times if 1st fails and 
-// //if it successfully sends json returns true or remove all files from storage and retrun false
-// async function sendJsonToFirebase(profileJson) {
+//This function tries to send json to firebase 2 times if 1st fails and 
+//if it successfully sends json returns true or remove all files from storage and retrun false
+async function sendJsonToFirebase(profileJson) {
 
-//     firebase.auth().onAuthStateChanged(function(user) {
-// 	    if (user) {
-//             var userId = user.uid;
+    firebase.auth().onAuthStateChanged(function(user) {
+	    if (user) {
 
-//             //tries to send json 1st time
-//             var profileInfoPromise = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
-//             profileInfoPromise.then(function() {
-//                 return true; //if 1st try successful
-//             });
-//             profileInfoPromise.catch(function(error) {
+            var userId = user.uid;
+
+            //tries to send json 1st time
+            var profileInfoPromise = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
+            profileInfoPromise.then(function() {
+                return true; //if 1st try successful
+            });
+            profileInfoPromise.catch(function(error) {
                 
-//                 //tries to send json 2nd time
-//                 var profileInfoPromiseReTry = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
-//                 profileInfoPromiseReTry.then(function() {
-//                     return true; //if 2nd try successful
-//                 });
-//                 profileInfoPromiseReTry.catch(function(error) {
-//                     //delete all files from stroge and return false as both tries failed.
-//                     await removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
-//                     return false;
-//                 });
+                //tries to send json 2nd time
+                var profileInfoPromiseReTry = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
+                profileInfoPromiseReTry.then(function() {
+                    return true; //if 2nd try successful
+                });
+                profileInfoPromiseReTry.catch(function(error) {
+                    //delete all files from stroge and return false as both tries failed.
+                    await removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
+                    return false;
+                });
 
-//             })
-//         } else {
-//             //it deletes all the files and return false as no user is signed in
-//             console.log("No user is signed in.");
-//             await removeAllFilesFormStorage(userId, profileJson); //this is again asyncronous call, so we will wait till all files are deleted
-//             return false;
-//         }
-//     });
+            })
+        } else {
+            //it deletes all the files and return false as no user is signed in
+            console.log("No user is signed in.");
+            await removeAllFilesFormStorage(userId, profileJson); //this is again asyncronous call, so we will wait till all files are deleted
+            return false;
+        }
+    });
 
-// }
+}
 
-// // This funciton deletes all profile files of a specified user id
-// async function removeAllFilesFormStorage(userId, profileJson){
-//     var numberOfMedia = Object.keys(profileJson.profileMedia).length;
-//     for(i=1; i<numberOfMedia; i++){
-//         var mediaName = "media" + i; //this is a statement which grabs media name as we will have multiple media
-//         var fileName = profileJson.profileMedia[mediaName].storageName; //once we have media name, we can now grab file name in storage
-//         var filePath = 'photo/'+userId+'/profile_images/'+fileName; //now we have file name in stroage, so we can give the path to that file in storage
-//         await removeFileFromStorage(filePath); //this is asyncronous call, so we will wait till required file is deleted
-//     }
-//     return;
-// }
+// This funciton deletes all profile files of a specified user id
+async function removeAllFilesFormStorage(userId, profileJson){
+    var numberOfMedia = Object.keys(profileJson.profileMedia).length;
+    for(i=1; i<numberOfMedia; i++){
+        var mediaName = "media" + i; //this is a statement which grabs media name as we will have multiple media
+        var fileName = profileJson.profileMedia[mediaName].storageName; //once we have media name, we can now grab file name in storage
+        var filePath = 'photo/'+userId+'/profile_images/'+fileName; //now we have file name in stroage, so we can give the path to that file in storage
+        await removeFileFromStorage(filePath); //this is asyncronous call, so we will wait till required file is deleted
+    }
+    return;
+}
 
-// //This function will delete file from the path provided
-// function removeFileFromStorage(filePath) {
+//This function will delete file from the path provided
+function removeFileFromStorage(filePath) {
 
-//     var storageRef = firebase.storage().ref(filePath); //create reference to file
-//     var storageRefRemovePromise = storageRef.delete(); //delete
-//     storageRefRemovePromise.then(function() {
-//         return; //wait till we get result
-//     });
-//     storageRefRemovePromise.catch(function(error){
-//         //wait till we get result, if we are not able to delete file we will move ahead as file size will be comparitively small and
-//         //we don't want to waste time on it and also the failure rate is very less as firebase is scalable.
-//         return;  
-//     });
+    var storageRef = firebase.storage().ref(filePath); //create reference to file
+    var storageRefRemovePromise = storageRef.delete(); //delete
+    storageRefRemovePromise.then(function() {
+        return; //wait till we get result
+    });
+    storageRefRemovePromise.catch(function(error){
+        //wait till we get result, if we are not able to delete file we will move ahead as file size will be comparitively small and
+        //we don't want to waste time on it and also the failure rate is very less as firebase is scalable.
+        return;  
+    });
 
-// }
+}
