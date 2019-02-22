@@ -13,13 +13,13 @@ $("#add-extra-education").click(function() {
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-username\">School/University</label>"+
-                    "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\" placeholder=\"School/University\">"+
+                    "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative\" placeholder=\"School/University\">"+
                     "</div>"+
                 "</div>"+
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-email\">Degree Type</label>"+
-                    "<select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">"+
+                    "<select class=\"form-control form-control-alternative\">"+
                         "<option value=\"diploma\">Diploma</option>"+
                         "<option value=\"bachelors\">Bachelors</option>"+
                         "<option value=\"master\">Masters</option>"+
@@ -32,7 +32,7 @@ $("#add-extra-education").click(function() {
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-first-name\">Course Field</label>"+
-                    "<select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">"+
+                    "<select class=\"form-control form-control-alternative\">"+
                         "<option value=\"softwareEngineer\">Software Engineer</option>"+
                         "<option value=\"computerScience\">Computer Science</option>"+
                         "<option value=\"business\">Business</option>"+
@@ -43,7 +43,7 @@ $("#add-extra-education").click(function() {
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-last-name\">Date of Graduation</label>"+
-                    "<input type=\"date\" id=\"CompletionDate\" class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">"+
+                    "<input type=\"date\" id=\"CompletionDate\" class=\"form-control form-control-alternative\">"+
                     "</div>"+
                 "</div>"+
                 "</div>"+
@@ -92,19 +92,19 @@ $("#add-extra-work-experience").click(function() {
                     "<div class=\"col-lg-5\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Company Name</label>"+
-                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative work-experience-" + workInfoNumber + "\" placeholder=\"Company Name\">"+
+                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative\" placeholder=\"Company Name\">"+
                         "</div>"+
                     "</div>"+
                     "<div class=\"col-lg-5\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Job Title</label>"+
-                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative work-experience-" + workInfoNumber + "\" placeholder=\"Job Title\">"+
+                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative\" placeholder=\"Job Title\">"+
                         "</div>"+
                     "</div>"+
                     "<div class=\"col-lg-2\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Years</label>"+
-                        "<select class=\"form-control form-control-alternative work-experience-" + workInfoNumber + "\">"+
+                        "<select class=\"form-control form-control-alternative\">"+
                             "<option value=\"less-then-1-year\">< a year</option>"+
                             "<option value=\"1-year\">1 year</option>"+
                             "<option value=\"2-years\">2 years</option>"+
@@ -120,7 +120,7 @@ $("#add-extra-work-experience").click(function() {
                     "<div class=\"col-lg-12\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Job Discription</label>"+
-                        "<textarea rows=\"4\" class=\"form-control form-control-alternative work-experience-" + workInfoNumber + "\" placeholder=\"Discribe your work in few words ...\"></textarea>"+
+                        "<textarea rows=\"4\" class=\"form-control form-control-alternative\" placeholder=\"Discribe your work in few words ...\"></textarea>"+
                         "</div>"+
                     "</div>"+
                     "</div>"+
@@ -154,7 +154,6 @@ $("#remove-extra-work-experience").click(function() {
 
 $("#add-skill").click(()=> {
 
-    // var number_of_skills = Math.floor(($("#sub-skills").children().length + 3)/3);
     var number_of_skills =$("#all-skills").children().length + 1;
     var skill_name = $("#skill-name").val();
     var skill_description = $("#skill-description").val();
@@ -199,11 +198,16 @@ $("#add-skill").click(()=> {
 // });
 //-----------------------------------------------------------------------------------//
 
+// For checking if a field has white spaces
+function has_white_spaces(str){
+    return str.indexOf(' ') >= 0;
+}
+
 // For updating the headline when you click update headline button 
 $("#update-headline").click(() => {
     var headline = $("#new-headline").val();
     // console.log(headline);
-    if(headline == ""){
+    if(headline == "" || has_white_spaces(headline)){
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);
@@ -217,6 +221,81 @@ $("#new-headline").keypress((event)=>{
         $("#update-headline").click();
     }
 });
+
+// A global object for storing the pictures
+var image_object;
+
+$("#files").change(()=> {
+    // Gets an object of images selected 
+    image_object = document.querySelector('input[type=file]').files;
+    console.log(image_object);
+    $("#next-button").click();
+});
+
+$("#next-button").click(()=> {
+    if($.isEmptyObject(image_object)){
+        alert("Please upload a file!");
+    } else {
+        upload_successful();
+        setTimeout(()=> { 
+            img_desc_temp(); 
+            preview_image(); 
+            img_desc_foot(); 
+        },2000);
+    }
+});
+
+var upload_successful = ()=> {
+    $("#modal_body").empty();
+    $("#modal_footer").empty();
+    $("#modal_body").append(
+        "<h2>Media Uploaded Successfully!!</h2>"
+    );
+};
+
+var img_desc_temp = ()=> {
+    $("#modal_body").empty();
+    $("#modal_body").append(
+        "<div class=\"row\">"+
+            "<div class=\"col-lg-6\">"+
+                "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
+            "</div>"+
+            "<div class=\"col-lg-6\">"+
+                "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\" placeholder=\"Anything special about the Photo?\"></textarea>"+
+            "</div>"+
+        "</div>"
+    );
+};
+
+var img_desc_foot = () => {
+    $("#modal_footer").append(
+        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
+        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button-img\">Next</button>"+
+        "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
+    );
+};
+
+var preview_image = function(input) {
+    if(image_object[0]){
+        var reader = new FileReader();
+        reader.onload = (e)=> {
+            $("#new-image").attr('src',e.target.result);
+        }
+        reader.readAsDataURL(image_object[0]);
+    }
+};
+
+var remove_photo_button = ()=> {
+    $("#modal_body").empty();
+    $("#modal_footer").empty();
+    $("#modal_body").append(
+        "<h2>Media Removed Successfully!!</h2>"
+    );
+    setTimeout(()=> {
+        $("#modal-default").modal('hide');
+    }, 2000);
+};
+
 
 /*Expected json
 
