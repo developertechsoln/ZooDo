@@ -10,3 +10,11 @@
     color: #172b4d !important;
     border-color: #172b4d !important;
 }
+#new-image {
+    max-width: 180px;
+}
+
+#image-description {
+    border: 1px solid #5e72e4;
+    padding: 8px 80px 8px 8px;
+}
