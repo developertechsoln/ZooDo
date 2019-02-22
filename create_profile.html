@@ -59,16 +59,33 @@
           <!-- Mask -->
           <span class="mask bg-gradient-default opacity-8"></span>
           <!-- Header container -->
-          <div class="container-fluid d-flex align-items-center">
+          <div class="container-fluid align-items-center">
             <div class="row">
-              <div class="col-lg-9 col-md-10">
-                <h1 class="display-2 text-white">Hello Jesse</h1>
-                <p class="text-white mt-0 mb-5" id="headline">This is your Introdcution Headline. Change it using below text field.</p>
+              <div class="col-lg-6 col-md-6">
+                <div class="row">
+                  <div class="col-lg-9">
+                      <h1 class="display-2 text-white">Hello Jesse</h1>
+                      <p class="text-white mt-0 mb-5" id="headline">This is your Introdcution Headline. Change it using below text field.</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-9">
+                    <input type="text" id="new-headline" class="form-control form-control-alternative" placeholder="Headline (Test Engineer @ PCL Construction)">
+                    <br>
+                    <button class="btn btn-primary" id="update-headline">Update Headline</button>
+                  </div>
+                </div>
               </div>
-              <div class="col-lg-9">              
-                <input type="text" id="new-headline" class="form-control form-control-alternative" placeholder="Headline (Test Engineer @ PCL Construction)">
-                <br>
-                <button class="btn btn-primary" id="update-headline">Update Headline</button>
+              <div class="col-lg-6 col-md-6">
+                <div class="row">
+                  <div class="col-lg-6"></div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6"></div>
+                  <div class="col-lg-6">
+                    <button class="btn btn-outline-secondary text-secondary skip-btn">Skip</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -404,6 +421,13 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-13">
+              <br>
+              <button class="btn btn-outline-secondary text-secondary skip-btn">Skip</button>
+              <button class="btn btn-success next-btn">Next</button>
           </div>
         </div>
       </div>
