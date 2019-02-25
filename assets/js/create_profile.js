@@ -225,26 +225,104 @@ $("#new-headline").keypress((event)=>{
 // A global object for storing the pictures
 var image_object;
 
-$("#files").change(()=> {
-    // Gets an object of images selected 
-    image_object = document.querySelector('input[type=file]').files;
-    console.log(image_object);
-    $("#next-button").click();
+$("#add-photo-btn").click(() => {
+    $("#add-photos").empty();
+    $("#add-photos").append(
+        "<div class=\"modal fade\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" aria-hidden=\"true\">"+
+        "<div class=\"modal-dialog modal- modal-dialog-centered modal-\" role=\"document\">"+
+          "<div class=\"modal-content\">"+
+            "<div class=\"modal-header\">"+
+                "<h6 class=\"modal-title\" id=\"modal-title-default\">Upload Photos</h6>"+
+                "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">"+
+                    "<span aria-hidden=\"true\">×</span>"+
+                "</button>"+
+            "</div>"+
+        
+            "<div class=\"modal-body\" id=\"modal_body\">"+
+              "<div class=\"row\">"+
+                "<div class=\"col-sm-4\"></div>"+
+                "<div class=\"col-sm-4\">"+
+                  "<label for=\"files\" class=\"btn btn-outline-primary\">"+
+                      "<span class=\"btn-inner--text\">Browse</span>"+
+                      " <span class=\"btn-inner--icon\"><i class=\"ni ni-cloud-upload-96\"></i></span>"+
+                  "</label>"+
+                  "<input id=\"files\" style=\"display: none\" type=\"file\" accept=\"image/\*\" multiple/>"+
+                "</div>"+
+                "<div class=\"col-sm-4\"></div>"+
+              "</div>"+
+            "</div>"+
+                
+            "<div class=\"modal-footer\" id=\"modal_footer\">"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button\" onClick=\"next_button()\">Next</button>"+
+            "</div>"+
+                
+          "</div>"+
+          "</div>"+
+        "</div>"
+    )
+
+    image_object = {};
+    $("#files").change(()=> {
+        // Gets an object of images selected
+        image_object = document.querySelector('input[type=file]').files;
+        if($.isEmptyObject(image_object)){
+            alert("Please upload a file!");
+        }else{
+            upload_successful();
+            setTimeout(()=> { 
+                $("#modal_footer").empty();
+                img_desc_temp(); 
+                preview_image(); 
+                if(image_object.length == 1){
+                    img_footer();
+                }else{
+                    img_desc_foot(); 
+                }
+            },2000);
+        }
+    });
 });
 
-$("#next-button").click(()=> {
-    if($.isEmptyObject(image_object)){
-        alert("Please upload a file!");
-    } else {
-        upload_successful();
-        setTimeout(()=> { 
-            img_desc_temp(); 
+var next_click = new Boolean(false);
+var current = 0;
+var next_button = () => {
+    next_click = true;
+    var image_description = $("#image-description").val();
+    if(image_description == ""){
+        alert("Please fill out the description!");
+    } else{
+        if(current < image_object.length-1){
+            current++;
+            $("#modal_footer").empty();
+            img_desc_temp();    
             preview_image(); 
-            img_desc_foot(); 
-        },2000);
+            if(current == image_object.length-1){
+                img_footer();
+            } else {
+                img_desc_foot(); 
+            }
+        } else{
+            $("#modal_body").empty();
+            $("#modal_footer").empty();
+            $("#modal_body").append(
+                "<h2>Photos Added Successfully!!</h2>"
+            );
+            setTimeout(() => {
+                $("#modal-default").modal('hide');
+                current = 0;
+                next_click = false;
+            },2000);
+        }
     }
-});
-
+}
+        
+var img_footer = () => {
+    $("#modal_footer").append(
+        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
+        "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
+    );
+}
 var upload_successful = ()=> {
     $("#modal_body").empty();
     $("#modal_footer").empty();
@@ -270,31 +348,42 @@ var img_desc_temp = ()=> {
 var img_desc_foot = () => {
     $("#modal_footer").append(
         "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
-        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button-img\">Next</button>"+
-        "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
+        "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
+        // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
     );
 };
 
 var preview_image = function(input) {
-    if(image_object[0]){
         var reader = new FileReader();
         reader.onload = (e)=> {
             $("#new-image").attr('src',e.target.result);
         }
-        reader.readAsDataURL(image_object[0]);
-    }
+        reader.readAsDataURL(image_object[current]);
+        next_click = false;
 };
 
-var remove_photo_button = ()=> {
-    $("#modal_body").empty();
-    $("#modal_footer").empty();
-    $("#modal_body").append(
-        "<h2>Media Removed Successfully!!</h2>"
-    );
-    setTimeout(()=> {
-        $("#modal-default").modal('hide');
-    }, 2000);
-};
+// /* IN PROGRESS */
+// var remove_photo_button = ()=> {
+//     $("#modal_body").empty();
+//     $("#modal_footer").empty();
+//     $("#modal_body").append(
+//         "<h2>Media Removed Successfully!!</h2>"
+//     );
+//     setTimeout(()=> {
+//         image_object[current] = null;
+//         current--;
+// console.log("in remove current is ",current);
+// console.log("in remove image len is ",image_object.length);
+//         if(current < image_object.length-1){
+//             $("#modal_footer").empty();
+//             img_desc_temp();    
+//             preview_image(); 
+// console.log("after preview in remove next click is ",next_click);
+//             img_desc_foot(); 
+//         }
+//         //$("#modal-default").modal('hide');
+//     }, 2000);
+// };
 
 
 /*Expected json
