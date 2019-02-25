@@ -151,52 +151,102 @@ $("#remove-extra-work-experience").click(function() {
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
 });
+// For storing the total number of skills
+var total_number_of_skills = 1;
 
 $("#add-skill").click(()=> {
+    var number_of_skills = $("#all-skills").children().length;
+    var sub_skill_string = "#sub-skills-"+number_of_skills;
+    var number_of_sub_skills = $(sub_skill_string).children().length;
 
-    var number_of_skills =$("#all-skills").children().length + 1;
     var skill_name = $("#skill-name").val();
-    var skill_description = $("#skill-description").val();
+    var skill_desc = $("#skill-description").val();
 
-    if(skill_name == "" && skill_description == ""){
-        alert("Please fill in the required fields!")
+    if(skill_name == "" && skill_desc == ""){
+        alert("Please fill in the required field to add a skill!");
     }
     else if(skill_name == ""){
-        alert("Please fill in skill name to continue!")
-    }
-    else {
-        $("#all-skills").append(
-            "<div class=\"col-lg-4\" id = \"skill-number-" + number_of_skills + "\">"+
-                "<div class=\"card bg-gradient-default\">"+
-                    "<div class=\"card-body\">"+
-                        "<div class=\"row align-items-center\">"+
-                            "<div class=\"col ml--2\">"+
-                                "<h3 class=\"card-title text-white\">" + skill_name + "</h3>"+
-                                "<small class=\"text-white\">" + skill_description + "</small>"+
+        alert("Please fill in the Skill Name to add a skill!");
+    } 
+    else{
+
+        if(number_of_sub_skills == 0 && number_of_sub_skills < 3){
+            $(sub_skill_string).append(
+                "<div class=\"col-lg-4\" id=\"skill-"+total_number_of_skills+"\">"+
+                        "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
+                            "<div class=\"card-body\">"+
+                                "<div class=\"row align-items-center\">"+
+                                    "<div class=\"col ml--2\">"+
+                                        "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                                        "<small class=\"text-white\">"+skill_desc+"</small>"+
+                                    "</div>"+
+                                    "<div class=\"col-auto\">"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\">Remove</button>"+
+                                    "</div>"+
+                                "</div>"+
                             "</div>"+
-                            "<div class=\"col-auto\">"+
-                                "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\">Remove</button>"+
+                        "</div>"+
+                    "</div>"
+            );
+        } else if(number_of_sub_skills < 3){
+            $(sub_skill_string).append(
+                "<div class=\"col-lg-4\"  id=\"skill-"+total_number_of_skills+"\">"+
+                        "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
+                            "<div class=\"card-body\">"+
+                                "<div class=\"row align-items-center\">"+
+                                    "<div class=\"col ml--2\">"+
+                                        "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                                        "<small class=\"text-white\">"+skill_desc+"</small>"+
+                                    "</div>"+
+                                    "<div class=\"col-auto\">"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" >Remove</button>"+
+                                    "</div>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"
+            );
+        }
+        else {
+            var sub_skill = "sub-skills-"+(number_of_skills+1);
+            $("#all-skills").append(
+                "<div class=\"row\" id=\""+sub_skill +"\">"+
+                    "<div class=\"col-lg-4\"  id=\"skill-"+total_number_of_skills+"\">"+
+                        "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
+                            "<div class=\"card-body\">"+
+                                "<div class=\"row align-items-center\">"+
+                                    "<div class=\"col ml--2\">"+
+                                        "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                                        "<small class=\"text-white\">"+skill_desc+"</small>"+
+                                    "</div>"+
+                                    "<div class=\"col-auto\">"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" >Remove</button>"+
+                                    "</div>"+
+                                "</div>"+
                             "</div>"+
                         "</div>"+
                     "</div>"+
-                "</div>"+
-            "</div>"+
-            "<br>"
-        );
+                "</div>"
+            );
+        }
         document.getElementById("skill-name").value = "";
         document.getElementById("skill-description").value = "";
+        total_number_of_skills++;
     }
 });
 
-//--------------------------------- UNDER DEVELOPEMENT -------------------------------//
+// var remove_skill = (num_of_skill) => {
+//     var element_to_be_removed = "#skill-"+num_of_skill;
+//     $(element_to_be_removed).empty();
+// }
+// --------------------------------- UNDER DEVELOPEMENT -------------------------------//
 // $("#remove-skill").click(()=> {
-//     var number_of_skills = Math.floor(($("#all-skills").children().length + 3)/3);
-//     console.log(number_of_skills);
+
 //     var skill_to_be_deleted = "skill-number-" + number_of_skills;
 //     console.log(skill_to_be_deleted);
 //     $(skill_to_be_deleted).remove();
 // });
-//-----------------------------------------------------------------------------------//
+// -----------------------------------------------------------------------------------//
 
 // For checking if a field has white spaces
 function has_white_spaces(str){
@@ -207,7 +257,7 @@ function has_white_spaces(str){
 $("#update-headline").click(() => {
     var headline = $("#new-headline").val();
     // console.log(headline);
-    if(headline == "" || has_white_spaces(headline)){
+    if(headline == "" || (has_white_spaces(headline) && headline.match("^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$") == false) ){
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);
@@ -295,6 +345,24 @@ var remove_photo_button = ()=> {
         $("#modal-default").modal('hide');
     }, 2000);
 };
+
+var video_object;
+// $(document).on("change", "#videos", function(evt) {
+//     var $source = $('#video_here');
+//     $source[0].src = URL.createObjectURL(this.files[0]);
+//     $source.parent()[0].load();
+//   });
+$("#videos").change(() => {
+    var total_len_video = document.getElementById("videos").files.length;
+    for(var temp_vid = 0; temp_vid < total_len_video; temp_vid++){
+        var url_vid = URL.createObjectURL(event.target.files[temp_vid]);
+        $("#video_preview").append("<video width=\"200\" height=\"200\" id=\"vid-"+temp_vid+">"+
+            // "<source src=''>"+
+            "</video>");
+        $("#video_preview").attr({ "src" : url_vid});
+        window.URL.revokeObjectURL(url_vid);
+    }
+});
 
 
 /*Expected json
