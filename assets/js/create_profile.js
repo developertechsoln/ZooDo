@@ -151,52 +151,109 @@ $("#remove-extra-work-experience").click(function() {
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
 });
-
+// For storing the total number of skills
+var total_number_of_skills = 1;
+var number_of_sub_skills;
 $("#add-skill").click(()=> {
+    var number_of_skills = $("#all-skills").children().length;
+    var sub_skill_string = "#sub-skills-"+number_of_skills;
+    number_of_sub_skills = $(sub_skill_string).children().length;
 
-    var number_of_skills =$("#all-skills").children().length + 1;
     var skill_name = $("#skill-name").val();
-    var skill_description = $("#skill-description").val();
+    var skill_desc = $("#skill-description").val();
 
-    if(skill_name == "" && skill_description == ""){
-        alert("Please fill in the required fields!")
+    if(skill_name == "" && skill_desc == ""){
+        alert("Please fill in the required field to add a skill!");
     }
     else if(skill_name == ""){
-        alert("Please fill in skill name to continue!")
-    }
-    else {
-        $("#all-skills").append(
-            "<div class=\"col-lg-4\" id = \"skill-number-" + number_of_skills + "\">"+
-                "<div class=\"card bg-gradient-default\">"+
-                    "<div class=\"card-body\">"+
-                        "<div class=\"row align-items-center\">"+
-                            "<div class=\"col ml--2\">"+
-                                "<h3 class=\"card-title text-white\">" + skill_name + "</h3>"+
-                                "<small class=\"text-white\">" + skill_description + "</small>"+
+        alert("Please fill in the Skill Name to add a skill!");
+        document.getElementById("skill-description").value = "";
+    } 
+    else{
+
+        if(number_of_sub_skills == 0 && number_of_sub_skills < 3){
+            $(sub_skill_string).append(
+                "<div class=\"col-lg-4\" id=\"skill-"+total_number_of_skills+"\">"+
+                        "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
+                            "<div class=\"card-body\">"+
+                                "<div class=\"row align-items-center\">"+
+                                    "<div class=\"col ml--2\">"+
+                                        "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                                        "<small class=\"text-white\">"+skill_desc+"</small>"+
+                                    "</div>"+
+                                    "<div class=\"col-auto\">"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
+                                    "</div>"+
+                                "</div>"+
                             "</div>"+
-                            "<div class=\"col-auto\">"+
-                                "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\">Remove</button>"+
+                        "</div>"+
+                    "</div>"
+            );
+        } else if(number_of_sub_skills < 3){
+            $(sub_skill_string).append(
+                "<div class=\"col-lg-4\"  id=\"skill-"+total_number_of_skills+"\">"+
+                        "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
+                            "<div class=\"card-body\">"+
+                                "<div class=\"row align-items-center\">"+
+                                    "<div class=\"col ml--2\">"+
+                                        "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                                        "<small class=\"text-white\">"+skill_desc+"</small>"+
+                                    "</div>"+
+                                    "<div class=\"col-auto\">"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
+                                    "</div>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"
+            );
+        }
+        else {
+            var sub_skill = "sub-skills-"+(number_of_skills+1);
+            $("#all-skills").append(
+                "<div class=\"row\" id=\""+sub_skill +"\">"+
+                    "<div class=\"col-lg-4\"  id=\"skill-"+total_number_of_skills+"\">"+
+                        "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
+                            "<div class=\"card-body\">"+
+                                "<div class=\"row align-items-center\">"+
+                                    "<div class=\"col ml--2\">"+
+                                        "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                                        "<small class=\"text-white\">"+skill_desc+"</small>"+
+                                    "</div>"+
+                                    "<div class=\"col-auto\">"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
+                                    "</div>"+
+                                "</div>"+
                             "</div>"+
                         "</div>"+
                     "</div>"+
-                "</div>"+
-            "</div>"+
-            "<br>"
-        );
+                "</div>"
+            );
+        }
         document.getElementById("skill-name").value = "";
         document.getElementById("skill-description").value = "";
+        total_number_of_skills++;
     }
 });
 
-//--------------------------------- UNDER DEVELOPEMENT -------------------------------//
+var remove_skill = (num_of_skill) => {
+    var count_card_delete = Math.ceil(num_of_skill/3);
+    var new_temp = count_card_delete + 1;
+    for(; new_temp < number_of_sub_skills; new_temp++){
+        var new_ID = document.getElementById(new_temp);
+        document.getElementById("sub-skill-"+count_card_delete).id=new_ID;
+    }
+
+    $("#skill-"+num_of_skill).empty();
+}
+// --------------------------------- UNDER DEVELOPEMENT -------------------------------//
 // $("#remove-skill").click(()=> {
-//     var number_of_skills = Math.floor(($("#all-skills").children().length + 3)/3);
-//     console.log(number_of_skills);
+
 //     var skill_to_be_deleted = "skill-number-" + number_of_skills;
 //     console.log(skill_to_be_deleted);
 //     $(skill_to_be_deleted).remove();
 // });
-//-----------------------------------------------------------------------------------//
+// -----------------------------------------------------------------------------------//
 
 // For checking if a field has white spaces
 function has_white_spaces(str){
@@ -207,7 +264,7 @@ function has_white_spaces(str){
 $("#update-headline").click(() => {
     var headline = $("#new-headline").val();
     // console.log(headline);
-    if(headline == "" || has_white_spaces(headline)){
+    if(headline == "" || (has_white_spaces(headline) && headline.match("^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$") == false) ){
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);
@@ -225,26 +282,104 @@ $("#new-headline").keypress((event)=>{
 // A global object for storing the pictures
 var image_object;
 
-$("#files").change(()=> {
-    // Gets an object of images selected 
-    image_object = document.querySelector('input[type=file]').files;
-    console.log(image_object);
-    $("#next-button").click();
+$("#add-photo-btn").click(() => {
+    $("#add-photos").empty();
+    $("#add-photos").append(
+        "<div class=\"modal fade\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" aria-hidden=\"true\">"+
+        "<div class=\"modal-dialog modal- modal-dialog-centered modal-\" role=\"document\">"+
+          "<div class=\"modal-content\">"+
+            "<div class=\"modal-header\">"+
+                "<h6 class=\"modal-title\" id=\"modal-title-default\">Upload Photos</h6>"+
+                "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">"+
+                    "<span aria-hidden=\"true\">×</span>"+
+                "</button>"+
+            "</div>"+
+        
+            "<div class=\"modal-body\" id=\"modal_body\">"+
+              "<div class=\"row\">"+
+                "<div class=\"col-sm-4\"></div>"+
+                "<div class=\"col-sm-4\">"+
+                  "<label for=\"files\" class=\"btn btn-outline-primary\">"+
+                      "<span class=\"btn-inner--text\">Browse</span>"+
+                      " <span class=\"btn-inner--icon\"><i class=\"ni ni-cloud-upload-96\"></i></span>"+
+                  "</label>"+
+                  "<input id=\"files\" style=\"display: none\" type=\"file\" accept=\"image/\*\" multiple/>"+
+                "</div>"+
+                "<div class=\"col-sm-4\"></div>"+
+              "</div>"+
+            "</div>"+
+                
+            "<div class=\"modal-footer\" id=\"modal_footer\">"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button\" onClick=\"next_button()\">Next</button>"+
+            "</div>"+
+                
+          "</div>"+
+          "</div>"+
+        "</div>"
+    )
+
+    image_object = {};
+    $("#files").change(()=> {
+        // Gets an object of images selected
+        image_object = document.querySelector('input[type=file]').files;
+        if($.isEmptyObject(image_object)){
+            alert("Please upload a file!");
+        }else{
+            upload_successful();
+            setTimeout(()=> { 
+                $("#modal_footer").empty();
+                img_desc_temp(); 
+                preview_image(); 
+                if(image_object.length == 1){
+                    img_footer();
+                }else{
+                    img_desc_foot(); 
+                }
+            },2000);
+        }
+    });
 });
 
-$("#next-button").click(()=> {
-    if($.isEmptyObject(image_object)){
-        alert("Please upload a file!");
-    } else {
-        upload_successful();
-        setTimeout(()=> { 
-            img_desc_temp(); 
+var next_click = new Boolean(false);
+var current = 0;
+var next_button = () => {
+    next_click = true;
+    var image_description = $("#image-description").val();
+    if(image_description == ""){
+        alert("Please fill out the description!");
+    } else{
+        if(current < image_object.length-1){
+            current++;
+            $("#modal_footer").empty();
+            img_desc_temp();    
             preview_image(); 
-            img_desc_foot(); 
-        },2000);
+            if(current == image_object.length-1){
+                img_footer();
+            } else {
+                img_desc_foot(); 
+            }
+        } else{
+            $("#modal_body").empty();
+            $("#modal_footer").empty();
+            $("#modal_body").append(
+                "<h2>Photos Added Successfully!!</h2>"
+            );
+            setTimeout(() => {
+                $("#modal-default").modal('hide');
+                current = 0;
+                next_click = false;
+            },2000);
+        }
     }
-});
-
+}
+        
+var img_footer = () => {
+    $("#modal_footer").append(
+        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
+        "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
+    );
+}
 var upload_successful = ()=> {
     $("#modal_body").empty();
     $("#modal_footer").empty();
@@ -270,31 +405,60 @@ var img_desc_temp = ()=> {
 var img_desc_foot = () => {
     $("#modal_footer").append(
         "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
-        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button-img\">Next</button>"+
-        "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
+        "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
+        // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
     );
 };
 
 var preview_image = function(input) {
-    if(image_object[0]){
         var reader = new FileReader();
         reader.onload = (e)=> {
             $("#new-image").attr('src',e.target.result);
         }
-        reader.readAsDataURL(image_object[0]);
-    }
+        reader.readAsDataURL(image_object[current]);
+        next_click = false;
 };
 
-var remove_photo_button = ()=> {
-    $("#modal_body").empty();
-    $("#modal_footer").empty();
-    $("#modal_body").append(
-        "<h2>Media Removed Successfully!!</h2>"
-    );
-    setTimeout(()=> {
-        $("#modal-default").modal('hide');
-    }, 2000);
-};
+// /* IN PROGRESS */
+// var remove_photo_button = ()=> {
+//     $("#modal_body").empty();
+//     $("#modal_footer").empty();
+//     $("#modal_body").append(
+//         "<h2>Media Removed Successfully!!</h2>"
+//     );
+//     setTimeout(()=> {
+//         image_object[current] = null;
+//         current--;
+// console.log("in remove current is ",current);
+// console.log("in remove image len is ",image_object.length);
+//         if(current < image_object.length-1){
+//             $("#modal_footer").empty();
+//             img_desc_temp();    
+//             preview_image(); 
+// console.log("after preview in remove next click is ",next_click);
+//             img_desc_foot(); 
+//         }
+//         //$("#modal-default").modal('hide');
+//     }, 2000);
+// };
+
+var video_object;
+// $(document).on("change", "#videos", function(evt) {
+//     var $source = $('#video_here');
+//     $source[0].src = URL.createObjectURL(this.files[0]);
+//     $source.parent()[0].load();
+//   });
+$("#videos").change(() => {
+    var total_len_video = document.getElementById("videos").files.length;
+    for(var temp_vid = 0; temp_vid < total_len_video; temp_vid++){
+        var url_vid = URL.createObjectURL(event.target.files[temp_vid]);
+        $("#video_preview").append("<video width=\"200\" height=\"200\" id=\"vid-"+temp_vid+">"+
+            // "<source src=''>"+
+            "</video>");
+        $("#video_preview").attr({ "src" : url_vid});
+        window.URL.revokeObjectURL(url_vid);
+    }
+});
 
 
 /*Expected json
