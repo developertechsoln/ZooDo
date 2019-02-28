@@ -447,7 +447,7 @@ async function sendFileToStorage(index, uid, category){
 //if it successfully sends json returns true or remove all files from storage and retrun false
 async function sendJsonToFirebase(profileJson) {
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(async function(user) {
 	    if (user) {
 
             var userId = user.uid;
@@ -464,7 +464,7 @@ async function sendJsonToFirebase(profileJson) {
                 profileInfoPromiseReTry.then(function() {
                     return true; //if 2nd try successful
                 });
-                profileInfoPromiseReTry.catch(function(error) {
+                profileInfoPromiseReTry.catch(async function(error) {
                     //delete all files from stroge and return false as both tries failed.
                     await removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
                     return false;
