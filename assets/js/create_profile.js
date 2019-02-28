@@ -153,11 +153,11 @@ $("#remove-extra-work-experience").click(function() {
 });
 // For storing the total number of skills
 var total_number_of_skills = 1;
-
+var number_of_sub_skills;
 $("#add-skill").click(()=> {
     var number_of_skills = $("#all-skills").children().length;
     var sub_skill_string = "#sub-skills-"+number_of_skills;
-    var number_of_sub_skills = $(sub_skill_string).children().length;
+    number_of_sub_skills = $(sub_skill_string).children().length;
 
     var skill_name = $("#skill-name").val();
     var skill_desc = $("#skill-description").val();
@@ -167,6 +167,7 @@ $("#add-skill").click(()=> {
     }
     else if(skill_name == ""){
         alert("Please fill in the Skill Name to add a skill!");
+        document.getElementById("skill-description").value = "";
     } 
     else{
 
@@ -181,7 +182,7 @@ $("#add-skill").click(()=> {
                                         "<small class=\"text-white\">"+skill_desc+"</small>"+
                                     "</div>"+
                                     "<div class=\"col-auto\">"+
-                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\">Remove</button>"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>"+
@@ -199,7 +200,7 @@ $("#add-skill").click(()=> {
                                         "<small class=\"text-white\">"+skill_desc+"</small>"+
                                     "</div>"+
                                     "<div class=\"col-auto\">"+
-                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" >Remove</button>"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>"+
@@ -220,7 +221,7 @@ $("#add-skill").click(()=> {
                                         "<small class=\"text-white\">"+skill_desc+"</small>"+
                                     "</div>"+
                                     "<div class=\"col-auto\">"+
-                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" >Remove</button>"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>"+
@@ -235,10 +236,16 @@ $("#add-skill").click(()=> {
     }
 });
 
-// var remove_skill = (num_of_skill) => {
-//     var element_to_be_removed = "#skill-"+num_of_skill;
-//     $(element_to_be_removed).empty();
-// }
+var remove_skill = (num_of_skill) => {
+    var count_card_delete = Math.ceil(num_of_skill/3);
+    var new_temp = count_card_delete + 1;
+    for(; new_temp < number_of_sub_skills; new_temp++){
+        var new_ID = document.getElementById(new_temp);
+        document.getElementById("sub-skill-"+count_card_delete).id=new_ID;
+    }
+
+    $("#skill-"+num_of_skill).empty();
+}
 // --------------------------------- UNDER DEVELOPEMENT -------------------------------//
 // $("#remove-skill").click(()=> {
 
@@ -275,26 +282,104 @@ $("#new-headline").keypress((event)=>{
 // A global object for storing the pictures
 var image_object;
 
-$("#files").change(()=> {
-    // Gets an object of images selected 
-    image_object = document.querySelector('input[type=file]').files;
-    console.log(image_object);
-    $("#next-button").click();
+$("#add-photo-btn").click(() => {
+    $("#add-photos").empty();
+    $("#add-photos").append(
+        "<div class=\"modal fade\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" aria-hidden=\"true\">"+
+        "<div class=\"modal-dialog modal- modal-dialog-centered modal-\" role=\"document\">"+
+          "<div class=\"modal-content\">"+
+            "<div class=\"modal-header\">"+
+                "<h6 class=\"modal-title\" id=\"modal-title-default\">Upload Photos</h6>"+
+                "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">"+
+                    "<span aria-hidden=\"true\">×</span>"+
+                "</button>"+
+            "</div>"+
+        
+            "<div class=\"modal-body\" id=\"modal_body\">"+
+              "<div class=\"row\">"+
+                "<div class=\"col-sm-4\"></div>"+
+                "<div class=\"col-sm-4\">"+
+                  "<label for=\"files\" class=\"btn btn-outline-primary\">"+
+                      "<span class=\"btn-inner--text\">Browse</span>"+
+                      " <span class=\"btn-inner--icon\"><i class=\"ni ni-cloud-upload-96\"></i></span>"+
+                  "</label>"+
+                  "<input id=\"files\" style=\"display: none\" type=\"file\" accept=\"image/\*\" multiple/>"+
+                "</div>"+
+                "<div class=\"col-sm-4\"></div>"+
+              "</div>"+
+            "</div>"+
+                
+            "<div class=\"modal-footer\" id=\"modal_footer\">"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button\" onClick=\"next_button()\">Next</button>"+
+            "</div>"+
+                
+          "</div>"+
+          "</div>"+
+        "</div>"
+    )
+
+    image_object = {};
+    $("#files").change(()=> {
+        // Gets an object of images selected
+        image_object = document.querySelector('input[type=file]').files;
+        if($.isEmptyObject(image_object)){
+            alert("Please upload a file!");
+        }else{
+            upload_successful();
+            setTimeout(()=> { 
+                $("#modal_footer").empty();
+                img_desc_temp(); 
+                preview_image(); 
+                if(image_object.length == 1){
+                    img_footer();
+                }else{
+                    img_desc_foot(); 
+                }
+            },2000);
+        }
+    });
 });
 
-$("#next-button").click(()=> {
-    if($.isEmptyObject(image_object)){
-        alert("Please upload a file!");
-    } else {
-        upload_successful();
-        setTimeout(()=> { 
-            img_desc_temp(); 
+var next_click = new Boolean(false);
+var current = 0;
+var next_button = () => {
+    next_click = true;
+    var image_description = $("#image-description").val();
+    if(image_description == ""){
+        alert("Please fill out the description!");
+    } else{
+        if(current < image_object.length-1){
+            current++;
+            $("#modal_footer").empty();
+            img_desc_temp();    
             preview_image(); 
-            img_desc_foot(); 
-        },2000);
+            if(current == image_object.length-1){
+                img_footer();
+            } else {
+                img_desc_foot(); 
+            }
+        } else{
+            $("#modal_body").empty();
+            $("#modal_footer").empty();
+            $("#modal_body").append(
+                "<h2>Photos Added Successfully!!</h2>"
+            );
+            setTimeout(() => {
+                $("#modal-default").modal('hide');
+                current = 0;
+                next_click = false;
+            },2000);
+        }
     }
-});
-
+}
+        
+var img_footer = () => {
+    $("#modal_footer").append(
+        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
+        "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
+    );
+}
 var upload_successful = ()=> {
     $("#modal_body").empty();
     $("#modal_footer").empty();
@@ -320,31 +405,42 @@ var img_desc_temp = ()=> {
 var img_desc_foot = () => {
     $("#modal_footer").append(
         "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
-        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button-img\">Next</button>"+
-        "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
+        "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
+        // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
     );
 };
 
 var preview_image = function(input) {
-    if(image_object[0]){
         var reader = new FileReader();
         reader.onload = (e)=> {
             $("#new-image").attr('src',e.target.result);
         }
-        reader.readAsDataURL(image_object[0]);
-    }
+        reader.readAsDataURL(image_object[current]);
+        next_click = false;
 };
 
-var remove_photo_button = ()=> {
-    $("#modal_body").empty();
-    $("#modal_footer").empty();
-    $("#modal_body").append(
-        "<h2>Media Removed Successfully!!</h2>"
-    );
-    setTimeout(()=> {
-        $("#modal-default").modal('hide');
-    }, 2000);
-};
+// /* IN PROGRESS */
+// var remove_photo_button = ()=> {
+//     $("#modal_body").empty();
+//     $("#modal_footer").empty();
+//     $("#modal_body").append(
+//         "<h2>Media Removed Successfully!!</h2>"
+//     );
+//     setTimeout(()=> {
+//         image_object[current] = null;
+//         current--;
+// console.log("in remove current is ",current);
+// console.log("in remove image len is ",image_object.length);
+//         if(current < image_object.length-1){
+//             $("#modal_footer").empty();
+//             img_desc_temp();    
+//             preview_image(); 
+// console.log("after preview in remove next click is ",next_click);
+//             img_desc_foot(); 
+//         }
+//         //$("#modal-default").modal('hide');
+//     }, 2000);
+// };
 
 var video_object;
 // $(document).on("change", "#videos", function(evt) {
@@ -410,67 +506,169 @@ $("#videos").change(() => {
 
 */
 
-// //This function tries to send json to firebase 2 times if 1st fails and 
-// //if it successfully sends json returns true or remove all files from storage and retrun false
-// async function sendJsonToFirebase(profileJson) {
+// this function will store values of all fields;
+$("#create-profile").click(function(){
+    var userDescription = $("#description").val();
+    var userDescription = $("#personal-description").val();
+    var numberOfEducation = $("#extra-education").children().length + 1;
+    var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
+    var mainJson = {
+        education:{},
+        workExperience:{},
+        personalDescription: userDescription
+    };
+    for (i = 1; i <= numberOfEducation; i++){
+        var className = ".extra-education-" + i;
+        var eduObj = $(className);
+        var counter=1;
+        eduObj.each(function(){
+            if (counter == 1) {
+                        mainJson.education["education" + counter]["university"]=$(this).val()
+            }
+            if (counter==2){
+                    mainJson.education["education" + counter]["degreeType"]=$(this).val()
+            }
+            if (counter==3){
+                    mainJson.education["education" + counter]["courseField"]=$(this).val()
+            }
+            if (counter==4){
+                    mainJson.education["education" + counter]["dog"]=$(this).val()
+            }
+            counter++
+        })
+    }
+    for (j = 1; j <= numberOfWorkExperience; j++){
+        var className2 = ".extra-work-experience-" + j;
+        var workExObj = $(className2);
+        var counter2=1;
+        workExObj.each(function(){
+            if (counter2 == 1) {
+                        mainJson.workExperience["workEducation" + counter2]["companyName"]=$(this).val()
+            }
+            if (counter2==2){
+                    mainJson.workExperience["workExperience" + counter2]["jobTitle"]=$(this).val()
+            }
+            if (counter2==3){
+                    mainJson.workExperience["workExperience" + counter2]["years"]=$(this).val()
+            }
+            if (counter2==4){
+                    mainJson.workExperience["workExperience" + counter2]["description"]=$(this).val()
+            }
+            counter2++
+        })
+    }
+});
 
-//     firebase.auth().onAuthStateChanged(function(user) {
-// 	    if (user) {
-//             var userId = user.uid;
+//This function is responsible to send all the files in file array to firebase storage
+async function sendAllFilesToStorage(uid){
+    
+    //create variables
+    var numberOfFiles = file.length;
+    var URL = [];
+    var fileUrl;
 
-//             //tries to send json 1st time
-//             var profileInfoPromise = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
-//             profileInfoPromise.then(function() {
-//                 return true; //if 1st try successful
-//             });
-//             profileInfoPromise.catch(function(error) {
+    //take one file at a time and send to storage
+    for(var i=0; i<numberOfFiles; i++){
+        
+        //call a function to send file and wait till it returns an url
+        fileUrl = await sendFileToStorage(i, uid, category)
+
+        //if we are able to send file to firebase we will save its url else we will put null
+        if(fileUrl != ""){ URL.push(fileUrl); }
+        else{ URL.push(null); }
+
+    }
+
+    return URL;
+
+}
+
+//Send a single file to firebase storage
+async function sendFileToStorage(index, uid, category){
+
+    //collecting promise of file sent
+    var filePromise = firebase.storage().ref().child(category).child(uid).child("profilePage").put(FILES[index]);
+    filePromise.then(function(snapshot){
+
+        //get the url of the file uploaded
+        var getUrl = snapshot.ref.getDownloadURL();
+        getUrl.then((url) => {
+            return url; //return url
+        })
+        getUrl.catch(function(error){
+            //TODO think on it
+        })
+
+    })
+    filePromise.catch(function(error){
+        return ""; //return an empty array if file is not uploaded
+    })
+
+}
+
+
+//This function tries to send json to firebase 2 times if 1st fails and 
+//if it successfully sends json returns true or remove all files from storage and retrun false
+async function sendJsonToFirebase(profileJson) {
+
+    firebase.auth().onAuthStateChanged(function(user) {
+	    if (user) {
+
+            var userId = user.uid;
+
+            //tries to send json 1st time
+            var profileInfoPromise = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
+            profileInfoPromise.then(function() {
+                return true; //if 1st try successful
+            });
+            profileInfoPromise.catch(function(error) {
                 
-//                 //tries to send json 2nd time
-//                 var profileInfoPromiseReTry = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
-//                 profileInfoPromiseReTry.then(function() {
-//                     return true; //if 2nd try successful
-//                 });
-//                 profileInfoPromiseReTry.catch(function(error) {
-//                     //delete all files from stroge and return false as both tries failed.
-//                     await removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
-//                     return false;
-//                 });
+                //tries to send json 2nd time
+                var profileInfoPromiseReTry = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
+                profileInfoPromiseReTry.then(function() {
+                    return true; //if 2nd try successful
+                });
+                profileInfoPromiseReTry.catch(function(error) {
+                    //delete all files from stroge and return false as both tries failed.
+                    await removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
+                    return false;
+                });
 
-//             })
-//         } else {
-//             //it deletes all the files and return false as no user is signed in
-//             console.log("No user is signed in.");
-//             await removeAllFilesFormStorage(userId, profileJson); //this is again asyncronous call, so we will wait till all files are deleted
-//             return false;
-//         }
-//     });
+            })
+        } else {
+            //it deletes all the files and return false as no user is signed in
+            console.log("No user is signed in.");
+            await removeAllFilesFormStorage(userId, profileJson); //this is again asyncronous call, so we will wait till all files are deleted
+            return false;
+        }
+    });
 
-// }
+}
 
-// // This funciton deletes all profile files of a specified user id
-// async function removeAllFilesFormStorage(userId, profileJson){
-//     var numberOfMedia = Object.keys(profileJson.profileMedia).length;
-//     for(i=1; i<numberOfMedia; i++){
-//         var mediaName = "media" + i; //this is a statement which grabs media name as we will have multiple media
-//         var fileName = profileJson.profileMedia[mediaName].storageName; //once we have media name, we can now grab file name in storage
-//         var filePath = 'photo/'+userId+'/profile_images/'+fileName; //now we have file name in stroage, so we can give the path to that file in storage
-//         await removeFileFromStorage(filePath); //this is asyncronous call, so we will wait till required file is deleted
-//     }
-//     return;
-// }
+// This funciton deletes all profile files of a specified user id
+async function removeAllFilesFormStorage(userId, profileJson){
+    var numberOfMedia = Object.keys(profileJson.profileMedia).length;
+    for(i=1; i<numberOfMedia; i++){
+        var mediaName = "media" + i; //this is a statement which grabs media name as we will have multiple media
+        var fileName = profileJson.profileMedia[mediaName].storageName; //once we have media name, we can now grab file name in storage
+        var filePath = 'photo/'+userId+'/profile_images/'+fileName; //now we have file name in stroage, so we can give the path to that file in storage
+        await removeFileFromStorage(filePath); //this is asyncronous call, so we will wait till required file is deleted
+    }
+    return;
+}
 
-// //This function will delete file from the path provided
-// function removeFileFromStorage(filePath) {
+//This function will delete file from the path provided
+function removeFileFromStorage(filePath) {
 
-//     var storageRef = firebase.storage().ref(filePath); //create reference to file
-//     var storageRefRemovePromise = storageRef.delete(); //delete
-//     storageRefRemovePromise.then(function() {
-//         return; //wait till we get result
-//     });
-//     storageRefRemovePromise.catch(function(error){
-//         //wait till we get result, if we are not able to delete file we will move ahead as file size will be comparitively small and
-//         //we don't want to waste time on it and also the failure rate is very less as firebase is scalable.
-//         return;  
-//     });
+    var storageRef = firebase.storage().ref(filePath); //create reference to file
+    var storageRefRemovePromise = storageRef.delete(); //delete
+    storageRefRemovePromise.then(function() {
+        return; //wait till we get result
+    });
+    storageRefRemovePromise.catch(function(error){
+        //wait till we get result, if we are not able to delete file we will move ahead as file size will be comparitively small and
+        //we don't want to waste time on it and also the failure rate is very less as firebase is scalable.
+        return;  
+    });
 
-// }
+}
