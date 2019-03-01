@@ -154,8 +154,9 @@ $("#remove-extra-work-experience").click(function() {
 // For storing the total number of skills
 var total_number_of_skills = 1;
 var number_of_sub_skills;
+var number_of_skills;
 $("#add-skill").click(()=> {
-    var number_of_skills = ($("#all-skills").children().length) /2;
+    number_of_skills = ($("#all-skills").children().length) /2;
     var sub_skill_string = "#sub-skills-"+number_of_skills;
     number_of_sub_skills = $(sub_skill_string).children().length;
 
@@ -218,16 +219,54 @@ $("#add-skill").click(()=> {
         total_number_of_skills++;
     }
 });
+// three arrays - skill number, skills, skill desc
 
 var remove_skill = (num_of_skill) => {
-    var count_card_delete = Math.ceil(num_of_skill/3);
-    var new_temp = count_card_delete + 1;
-    for(; new_temp < number_of_sub_skills; new_temp++){
-        var new_ID = document.getElementById(new_temp);
-        document.getElementById("sub-skill-"+count_card_delete).id=new_ID;
-    }
+    // var count_card_delete = Math.ceil(num_of_skill/3);
+    // var new_temp = count_card_delete - 1;
+    // // var count_row = 0;
+    // // if (number_of_sub_skills == 1){
+    // //     $("#skill-"+num_of_skill).remove();
+    // //     // count_row++;
+    // // } else {
+    // //     $("#skill-"+num_of_skill).remove();
 
-    $("#skill-"+num_of_skill).empty();
+    //     for(; new_temp < number_of_sub_skills; new_temp++){
+    //         var new_ID = document.getElementById(new_temp);
+    //         document.getElementById("sub-skill-"+count_card_delete).id=new_ID;
+    //     }
+    // }
+    var sub_skill = $('#skill-'+num_of_skill).parent().attr('id');
+    var sub_skill_num = parseInt(sub_skill.replace("sub-skills-",''));
+
+    console.log(sub_skill);
+    console.log(sub_skill_num);
+    console.log(num_of_skill);
+    
+        
+        var id_last = $("#skill-"+num_of_skill).parent().attr('id');
+        $("#skill-"+num_of_skill).remove();
+        console.log(id_last)
+        var id_last_num = id_last.replace("sub-skills-",'');
+        console.log(id_last_num+ "after replace")
+        var next_id_num = parseInt(id_last_num)+1;
+        var next_id_name = "#sub-skills-"+next_id_num;
+        console.log(next_id_name)
+        // var next_skill_id_name = next_id_name+ ":first-child";
+        var next_skill_id = $(next_id_name).children(":first").attr("id");
+        console.log(next_skill_id);
+        $('#' + next_skill_id).appendTo('#'+id_last);
+
+        if($('#sub-skills-'+number_of_sub_skills).children().length == 0){
+            $('#sub-skills-'+number_of_sub_skills).next('br').remove();
+            $('#sub-skills-'+number_of_sub_skills).remove();
+            number_of_sub_skills--;
+        }
+        console.log(number_of_sub_skills + "-sub-skills");
+
+    // // $("#skill-"+num_of_skill).empty();
+    // var target = $("#skill-"+num_of_skill);
+    // $(target).remove();
 }
 // --------------------------------- UNDER DEVELOPEMENT -------------------------------//
 // $("#remove-skill").click(()=> {
@@ -268,7 +307,7 @@ var image_object;
 $("#add-photo-btn").click(() => {
     $("#add-photos").empty();
     $("#add-photos").append(
-        "<div class=\"modal fade\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" aria-hidden=\"true\">"+
+        "<div class=\"modal fade\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" data-backdrop=\"static\" data-keyboard=\"false\" aria-hidden=\"true\">"+
         "<div class=\"modal-dialog modal- modal-dialog-centered modal-\" role=\"document\">"+
           "<div class=\"modal-content\">"+
             "<div class=\"modal-header\">"+
@@ -329,6 +368,7 @@ var current = 0;
 var next_button = () => {
     next_click = true;
     var image_description = $("#image-description").val();
+    // Do we need to make it in an important field?
     if(image_description == ""){
         alert("Please fill out the description!");
     } else{
@@ -394,12 +434,12 @@ var img_desc_foot = () => {
 };
 
 var preview_image = function(input) {
-        var reader = new FileReader();
-        reader.onload = (e)=> {
-            $("#new-image").attr('src',e.target.result);
-        }
-        reader.readAsDataURL(image_object[current]);
-        next_click = false;
+    var reader = new FileReader();
+    reader.onload = (e)=> {
+        $("#new-image").attr('src',e.target.result);
+    }
+    reader.readAsDataURL(image_object[current]);
+    next_click = false;
 };
 
 // /* IN PROGRESS */
@@ -488,7 +528,7 @@ $(document).on("change", "#videos", function(evt) {
                         "<div class=\"card-body\">"+
                             "<div class=\"row\">"+
                                 "<div class=\"col-12 text-center\">"+
-                                    "<button type=\"button\" class=\"close\">"+
+                                    "<button type=\"button\" class=\"close\" id=\"remove-vid\">"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
                                     "<video style=\"max-width: 100%;\" controls>"+
