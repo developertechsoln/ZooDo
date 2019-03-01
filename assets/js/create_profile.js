@@ -386,7 +386,7 @@ var preview_image = function(input) {
 // };
 
 
-/*Expected json
+Expected json
 
 {
     profileInfo:{
@@ -429,7 +429,7 @@ var preview_image = function(input) {
 }
 
 
-*/
+
 
 // this function will store values of all fields;
 $("#create-profile").click(function(){
@@ -483,7 +483,7 @@ $("#create-profile").click(function(){
         })
     }
 });
-
+/*
 //This function is responsible to send all the files in file array to firebase storage
 async function sendAllFilesToStorage(uid){
     
@@ -581,7 +581,7 @@ async function removeAllFilesFormStorage(userId, profileJson){
     }
     return;
 }
-
+*/
 //This function will delete file from the path provided
 function removeFileFromStorage(filePath) {
 
