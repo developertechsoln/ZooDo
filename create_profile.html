@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
   <meta name="author" content="Creative Tim">
   <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
@@ -25,33 +25,13 @@
 <body class="bg-default">
   <div class="main-content">
     <!-- Navbar -->
-    <nav class="navbar navbar-top navbar-horizontal navbar-expand-md navbar-dark">
-      <div class="container px-4">
-        <a class="navbar-brand">
-          <img src="assets/img/brand/white.png" />
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse-main" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar-collapse-main">
-          <div class="navbar-collapse-header d-md-none">
-            <div class="row">
-              <div class="collapse-brand text-center">
-                <img src="assets/img/brand/blue.png">
-              </div>
-              <div class="col-6 collapse-close">
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle sidenav">
-                  <span></span>
-                  <span></span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- Navbar items
-          <ul class="navbar-nav ml-auto">
-            
-          </ul> -->
-        </div>
+    <nav class="navbar navbar-top navbar-horizontal navbar-dark row text-center">
+      <div class="col-lg-2 col-sm-2"></div>
+      <div class="col-lg-8 col-sm-8">
+          <h1 class="text-secondary">ZOODO</h1>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <button class="btn btn-outline-secondary text-secondary skip-btn">Skip</button>
       </div>
     </nav>
     <!-- Page content -->
@@ -66,8 +46,8 @@
               <div class="col-lg-6 col-md-6">
                 <div class="row">
                   <div class="col-lg-9">
-                      <h1 class="display-2 text-white">Hello Jesse</h1>
-                      <p class="text-white mt-0 mb-5" id="headline">This is your Introdcution Headline. Change it using below text field.</p>
+                    <h1 class="display-2 text-white">Hello Jesse</h1>
+                    <p class="text-white mt-0 mb-5" id="headline">This is your Introdcution Headline. Change it using below text field.</p>
                   </div>
                 </div>
                 <div class="row">
@@ -75,17 +55,6 @@
                     <input type="text" id="new-headline" class="form-control form-control-alternative" placeholder="Headline (Test Engineer @ PCL Construction)">
                     <br>
                     <button class="btn btn-primary" id="update-headline">Update Headline</button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <div class="row">
-                  <div class="col-lg-6"></div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-6"></div>
-                  <div class="col-lg-6">
-                    <button class="btn btn-outline-secondary text-secondary skip-btn">Skip</button>
                   </div>
                 </div>
               </div>
@@ -206,47 +175,16 @@
                     <!-- add video section -->
                     <div class="text-center">
                         <h6 class="heading-small text-muted mb-4">Attach some videos to impress your employers</h6>
-                        <label for="filess" class="btn btn-primary">
+                        <label for="videos" class="btn btn-primary">
                             <span class="btn-inner--text">Add Videos</span>
                             <span class="btn-inner--icon"><i class="ni ni-cloud-upload-96"></i></span></label>
-                        <input id="filess" style="display: none" type="file" accept="video/*" multiple/>
+                        <input id="videos" style="display: none;" type="file" accept="video/*"/>
                         <!-- <button class="btn btn-primary" id="videos-upload">Add Videos</button> -->
                     </div>
                     <br>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div style="width: auto;">
-                          <a href="http://example.com">
-                            <div class="card card-stats mb-4 mb-lg-0">
-                              <div class="card-body">
-                                <div class="row">
-                                  <div class="col text-center">
-                                    <label class="form-control-label">Video 1.MP4</label>
-                                    <video style="max-width: 100%;" src="assets/img/theme/SampleVideo_1280x720_5mb.mp4"></video>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div style="width: auto;">
-                          <a href="http://example.com">
-                            <div class="card card-stats mb-4 mb-lg-0">
-                              <div class="card-body">
-                                <div class="row">
-                                  <div class="col text-center">
-                                    <label class="form-control-label">Video 2.MP4</label>
-                                    <video style="max-width: 100%;" src="assets/img/theme/P6090053.mp4"></video>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </div>                    
+                    <div id="video_preview">
+                      
+                    </div>                
                   </div>
                 </div>
               </div>
@@ -424,8 +362,11 @@
                     </div>
                     <br>
                     <!-- All the skills will be dynamically placed under here. -->
-                    <div id="all-skills">
+                    <div class="pl-lg-4" id="all-skills">
+                      <div class="row" id="sub-skills-1">
 
+                      </div>
+                      <br>
                     </div>
                     <!-- Skills END -->
                   </form>

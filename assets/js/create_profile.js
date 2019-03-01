@@ -151,52 +151,92 @@ $("#remove-extra-work-experience").click(function() {
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
 });
-
+// For storing the total number of skills
+var total_number_of_skills = 1;
+var number_of_sub_skills;
 $("#add-skill").click(()=> {
+    var number_of_skills = ($("#all-skills").children().length) /2;
+    var sub_skill_string = "#sub-skills-"+number_of_skills;
+    number_of_sub_skills = $(sub_skill_string).children().length;
 
-    var number_of_skills =$("#all-skills").children().length + 1;
     var skill_name = $("#skill-name").val();
-    var skill_description = $("#skill-description").val();
+    var skill_desc = $("#skill-description").val();
 
-    if(skill_name == "" && skill_description == ""){
-        alert("Please fill in the required fields!")
+    if(skill_name == "" && skill_desc == ""){
+        alert("Please fill in the required field to add a skill!");
     }
     else if(skill_name == ""){
-        alert("Please fill in skill name to continue!")
-    }
-    else {
-        $("#all-skills").append(
-            "<div class=\"col-lg-4\" id = \"skill-number-" + number_of_skills + "\">"+
-                "<div class=\"card bg-gradient-default\">"+
-                    "<div class=\"card-body\">"+
-                        "<div class=\"row align-items-center\">"+
-                            "<div class=\"col ml--2\">"+
-                                "<h3 class=\"card-title text-white\">" + skill_name + "</h3>"+
-                                "<small class=\"text-white\">" + skill_description + "</small>"+
+        alert("Please fill in the Skill Name to add a skill!");
+        document.getElementById("skill-description").value = "";
+    } 
+    else{
+
+        if(number_of_sub_skills < 3){
+            $(sub_skill_string).append(
+                "<div class=\"col-lg-4\"  id=\"skill-"+total_number_of_skills+"\">"+
+                    "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
+                        "<div class=\"card-body\">"+
+                            "<div class=\"row align-items-center\">"+
+                                "<div class=\"col ml--2\">"+
+                                    "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                                    "<small class=\"text-white\">"+skill_desc+"</small>"+
+                                "</div>"+
+                                "<div class=\"col-auto\">"+
+                                    "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
+                                "</div>"+
                             "</div>"+
-                            "<div class=\"col-auto\">"+
-                                "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\">Remove</button>"+
+                        "</div>"+
+                    "</div>"+
+                "</div>"
+            );
+        }
+        else {
+            var sub_skill = "sub-skills-"+((number_of_skills)+1);
+            $("#all-skills").append(
+                "<div class=\"row\" id=\""+sub_skill +"\">"+
+                    "<div class=\"col-lg-4\"  id=\"skill-"+total_number_of_skills+"\">"+
+                        "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
+                            "<div class=\"card-body\">"+
+                                "<div class=\"row align-items-center\">"+
+                                    "<div class=\"col ml--2\">"+
+                                        "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                                        "<small class=\"text-white\">"+skill_desc+"</small>"+
+                                    "</div>"+
+                                    "<div class=\"col-auto\">"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
+                                    "</div>"+
+                                "</div>"+
                             "</div>"+
                         "</div>"+
                     "</div>"+
                 "</div>"+
-            "</div>"+
-            "<br>"
-        );
+                "<br>"
+            );
+        }
         document.getElementById("skill-name").value = "";
         document.getElementById("skill-description").value = "";
+        total_number_of_skills++;
     }
 });
 
-//--------------------------------- UNDER DEVELOPEMENT -------------------------------//
+var remove_skill = (num_of_skill) => {
+    var count_card_delete = Math.ceil(num_of_skill/3);
+    var new_temp = count_card_delete + 1;
+    for(; new_temp < number_of_sub_skills; new_temp++){
+        var new_ID = document.getElementById(new_temp);
+        document.getElementById("sub-skill-"+count_card_delete).id=new_ID;
+    }
+
+    $("#skill-"+num_of_skill).empty();
+}
+// --------------------------------- UNDER DEVELOPEMENT -------------------------------//
 // $("#remove-skill").click(()=> {
-//     var number_of_skills = Math.floor(($("#all-skills").children().length + 3)/3);
-//     console.log(number_of_skills);
+
 //     var skill_to_be_deleted = "skill-number-" + number_of_skills;
 //     console.log(skill_to_be_deleted);
 //     $(skill_to_be_deleted).remove();
 // });
-//-----------------------------------------------------------------------------------//
+// -----------------------------------------------------------------------------------//
 
 // For checking if a field has white spaces
 function has_white_spaces(str){
@@ -207,7 +247,7 @@ function has_white_spaces(str){
 $("#update-headline").click(() => {
     var headline = $("#new-headline").val();
     // console.log(headline);
-    if(headline == "" || has_white_spaces(headline)){
+    if(headline == "" || (has_white_spaces(headline) && headline.match("^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$") == false) ){
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);
@@ -385,6 +425,93 @@ var preview_image = function(input) {
 //     }, 2000);
 // };
 
+var total_number_of_videos = 1;
+$(document).on("change", "#videos", function(evt) {
+
+    var number_of_sub_videos = ($("#video_preview").children().length) /2;
+
+    if(number_of_sub_videos == 0){
+        number_of_sub_videos++;
+
+        var sub_video = "sub-videos-"+number_of_sub_videos;
+        $("#video_preview").append(
+            "<div class=\"row\" id="+sub_video+">"+
+                
+            "</div>"+
+            "<br>"
+        );
+    }
+
+    var sub_video_string = "#sub-videos-"+number_of_sub_videos;
+    var number_of_videos = $(sub_video_string).children().length;
+
+    if(number_of_videos == 2){
+    
+        number_of_sub_videos++;
+
+        var sub_video = "sub-videos-"+number_of_sub_videos;
+        $("#video_preview").append(
+            "<div class=\"row\" id="+sub_video+">"+
+                
+            "</div>"+
+            "<br>"
+        );
+
+        sub_video_string = "#sub-videos-"+number_of_sub_videos;
+
+        $(sub_video_string).append(
+            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\">"+
+                "<div style=\"width: auto;\">"+
+                    "<div class=\"card card-stats mb-4 mb-lg-0\">"+
+                        "<div class=\"card-body\">"+
+                            "<div class=\"row\">"+
+                                "<div class=\"col-12 text-center\">"+
+                                    "<button type=\"button\" class=\"close\">"+
+                                        "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
+                                    "</button><br><br>"+
+                                    "<video style=\"max-width: 100%;\" controls>"+
+                                        "<source id=\"video-preview-"+total_number_of_videos+"\">"+
+                                    "</video>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                "</div>"+
+            "</div>"
+        );
+    } else {
+
+        $(sub_video_string).append(
+            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\">"+
+                "<div style=\"width: auto;\">"+
+                    "<div class=\"card card-stats mb-4 mb-lg-0\">"+
+                        "<div class=\"card-body\">"+
+                            "<div class=\"row\">"+
+                                "<div class=\"col-12 text-center\">"+
+                                    "<button type=\"button\" class=\"close\">"+
+                                        "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
+                                    "</button><br><br>"+
+                                    "<video style=\"max-width: 100%;\" controls>"+
+                                        "<source id=\"video-preview-"+total_number_of_videos+"\">"+
+                                    "</video>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                "</div>"+
+            "</div>"
+        );
+    }
+
+    var video_preview_string = "#video-preview-"+total_number_of_videos;
+
+    var source = $(video_preview_string);
+    source[0].src = URL.createObjectURL(this.files[0]);
+    source.parent()[0].load();
+
+    total_number_of_videos++;
+});
+
 
 Expected json
 
@@ -536,7 +663,7 @@ async function sendFileToStorage(index, uid, category){
 //if it successfully sends json returns true or remove all files from storage and retrun false
 async function sendJsonToFirebase(profileJson) {
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(async function(user) {
 	    if (user) {
 
             var userId = user.uid;
@@ -553,7 +680,7 @@ async function sendJsonToFirebase(profileJson) {
                 profileInfoPromiseReTry.then(function() {
                     return true; //if 2nd try successful
                 });
-                profileInfoPromiseReTry.catch(function(error) {
+                profileInfoPromiseReTry.catch(async function(error) {
                     //delete all files from stroge and return false as both tries failed.
                     await removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
                     return false;
