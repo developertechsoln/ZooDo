@@ -173,7 +173,7 @@ $("#add-skill").click(()=> {
     if(skill_name == "" && skill_desc == ""){
         alert("Please fill in the required field to add a skill!");
     }
-    else if(skill_name == ""){
+    else if(skill_name == "" || (!skill_name.replace(/\s/g, '').length)){
         alert("Please fill in the Skill Name to add a skill!");
         document.getElementById("skill-description").value = "";
     } 
