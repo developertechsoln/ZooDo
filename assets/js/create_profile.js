@@ -308,10 +308,7 @@ var photo_desc = [];
 $("#add-photo-btn").click(() => {
     $("#add-photos").empty();
     $("#add-photos").append(
-<<<<<<<
-=======
         "<div class=\"modal fade\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" data-backdrop=\"static\" data-keyboard=\"false\" aria-hidden=\"true\">"+
->>>>>>> 9ef6383a64a72235cec8a3e6561ccde4216722a3
         "<div class=\"modal-dialog modal- modal-dialog-centered modal-\" role=\"document\">"+
           "<div class=\"modal-content\">"+
             "<div class=\"modal-header\">"+
