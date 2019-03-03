@@ -263,12 +263,13 @@ $("#new-headline").keypress((event)=>{
 });
 
 // A global object for storing the pictures
-var image_object;
+var image_object = [];
+var photo_desc = [];
 
 $("#add-photo-btn").click(() => {
     $("#add-photos").empty();
     $("#add-photos").append(
-        "<div class=\"modal fade\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" aria-hidden=\"true\">"+
+        "<div class=\"modal fade\" data-backdrop=\"static\" data-keyboard=\"false\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" aria-hidden=\"true\">"+
         "<div class=\"modal-dialog modal- modal-dialog-centered modal-\" role=\"document\">"+
           "<div class=\"modal-content\">"+
             "<div class=\"modal-header\">"+
@@ -302,10 +303,13 @@ $("#add-photo-btn").click(() => {
         "</div>"
     )
 
-    image_object = {};
     $("#files").change(()=> {
         // Gets an object of images selected
-        image_object = document.querySelector('input[type=file]').files;
+
+        var numberOfFilesUploaded = document.querySelector('input[type=file]').files.length;
+        for(var i=0; i<numberOfFilesUploaded; i++){
+            image_object[i] = document.querySelector('input[type=file]').files[i];
+        }
         if($.isEmptyObject(image_object)){
             alert("Please upload a file!");
         }else{
@@ -332,6 +336,7 @@ var next_button = () => {
     if(image_description == ""){
         alert("Please fill out the description!");
     } else{
+        photo_desc[current] = image_description;
         if(current < image_object.length-1){
             current++;
             $("#modal_footer").empty();
@@ -352,17 +357,27 @@ var next_button = () => {
                 $("#modal-default").modal('hide');
                 current = 0;
                 next_click = false;
+                photo_desc = [];
             },2000);
         }
     }
 }
         
 var img_footer = () => {
-    $("#modal_footer").append(
-        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
-        "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
-    );
+    if(image_object.length == 1){
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
+        );
+    } else {
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"prev_photo_button\" onClick=\"prev_photo_button()\">Previous</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
+        );
+    }
 }
+
 var upload_successful = ()=> {
     $("#modal_body").empty();
     $("#modal_footer").empty();
@@ -373,24 +388,46 @@ var upload_successful = ()=> {
 
 var img_desc_temp = ()=> {
     $("#modal_body").empty();
-    $("#modal_body").append(
-        "<div class=\"row\">"+
-            "<div class=\"col-lg-6\">"+
-                "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
-            "</div>"+
-            "<div class=\"col-lg-6\">"+
-                "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\" placeholder=\"Anything special about the Photo?\"></textarea>"+
-            "</div>"+
-        "</div>"
-    );
+    if(photo_desc[current] == null){
+        $("#modal_body").append(
+            "<div class=\"row\">"+
+                "<div class=\"col-lg-6\">"+
+                    "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
+                "</div>"+
+                "<div class=\"col-lg-6\">"+
+                    "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\" placeholder=\"Anything special about the Photo?\"></textarea>"+
+                "</div>"+
+            "</div>"
+        );
+    } else {
+        $("#modal_body").append(
+            "<div class=\"row\">"+
+                "<div class=\"col-lg-6\">"+
+                    "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
+                "</div>"+
+                "<div class=\"col-lg-6\">"+
+                    "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\">"+ photo_desc[current] +"</textarea>"+
+                "</div>"+
+            "</div>"
+        );
+    }
+   
 };
 
 var img_desc_foot = () => {
-    $("#modal_footer").append(
-        "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-button\" onClick=\"remove_photo_button()\">Remove</button>"+
-        "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
-        // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
-    );
+    if(current == 0){
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
+        );
+    } else {
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"prev_photo_button\" onClick=\"prev_photo_button()\">Previous</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
+            // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
+        );
+    }
 };
 
 var preview_image = function(input) {
@@ -402,28 +439,46 @@ var preview_image = function(input) {
         next_click = false;
 };
 
-// /* IN PROGRESS */
-// var remove_photo_button = ()=> {
-//     $("#modal_body").empty();
-//     $("#modal_footer").empty();
-//     $("#modal_body").append(
-//         "<h2>Media Removed Successfully!!</h2>"
-//     );
-//     setTimeout(()=> {
-//         image_object[current] = null;
-//         current--;
-// console.log("in remove current is ",current);
-// console.log("in remove image len is ",image_object.length);
-//         if(current < image_object.length-1){
-//             $("#modal_footer").empty();
-//             img_desc_temp();    
-//             preview_image(); 
-// console.log("after preview in remove next click is ",next_click);
-//             img_desc_foot(); 
-//         }
-//         //$("#modal-default").modal('hide');
-//     }, 2000);
-// };
+var prev_photo_button = ()=> {
+    var image_description = $("#image-description").val();
+    photo_desc[current] = image_description;
+    current--;
+    if(current < image_object.length-1){
+        $("#modal_footer").empty();
+        img_desc_temp();    
+        preview_image(); 
+        img_desc_foot(); 
+    }
+};
+
+var remove_photo_button = ()=> {
+    $("#modal_body").empty();
+    $("#modal_footer").empty();
+    $("#modal_body").append(
+        "<h2>Media Removed Successfully!!</h2>"
+    );
+    setTimeout(()=> {
+        image_object.splice(current, 1);
+        photo_desc.splice(current,1);
+        current--;
+        if(image_object.length == 0){
+            $("#modal-default").modal('hide');
+            current = 0;
+            next_click = false;
+        } else if(current <= image_object.length-1  && current >= 0){ //when image removed is not first in the list, it displays the previous image in list
+            $("#modal_footer").empty();
+            img_desc_temp();    
+            preview_image(); 
+            img_desc_foot(); 
+        } else { //when the image removed is first one in the list, it displays the next image in list
+            current++;
+            $("#modal_footer").empty();
+            img_desc_temp();    
+            preview_image(); 
+            img_desc_foot(); 
+        }
+    }, 2000);
+};
 
 var total_number_of_videos = 1;
 $(document).on("change", "#videos", function(evt) {
@@ -435,7 +490,7 @@ $(document).on("change", "#videos", function(evt) {
 
         var sub_video = "sub-videos-"+number_of_sub_videos;
         $("#video_preview").append(
-            "<div class=\"row\" id="+sub_video+">"+
+            "<div class=\"row\" id=\""+sub_video+"\">"+
                 
             "</div>"+
             "<br>"
@@ -451,7 +506,7 @@ $(document).on("change", "#videos", function(evt) {
 
         var sub_video = "sub-videos-"+number_of_sub_videos;
         $("#video_preview").append(
-            "<div class=\"row\" id="+sub_video+">"+
+            "<div class=\"row\" id=\""+sub_video+"\">"+
                 
             "</div>"+
             "<br>"
@@ -469,7 +524,7 @@ $(document).on("change", "#videos", function(evt) {
                                     "<button type=\"button\" class=\"close\">"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
-                                    "<video style=\"max-width: 100%;\" controls>"+
+                                    "<video style=\"max-width: 100%; z-index:1000\" controls>"+
                                         "<source id=\"video-preview-"+total_number_of_videos+"\">"+
                                     "</video>"+
                                 "</div>"+
@@ -491,7 +546,7 @@ $(document).on("change", "#videos", function(evt) {
                                     "<button type=\"button\" class=\"close\">"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
-                                    "<video style=\"max-width: 100%;\" controls>"+
+                                    "<video style=\"max-width: 100%;  z-index:1000\" controls>"+
                                         "<source id=\"video-preview-"+total_number_of_videos+"\">"+
                                     "</video>"+
                                 "</div>"+
@@ -513,47 +568,47 @@ $(document).on("change", "#videos", function(evt) {
 });
 
 
-Expected json
+// Expected json
 
-{
-    profileInfo:{
-        Education:{
-            edu1:{
+// {
+//     profileInfo:{
+//         Education:{
+//             edu1:{
 
-            },
-            edu2:{
+//             },
+//             edu2:{
 
-            },
-            placeholder: "0"
-        },
-        Work:{
-            work1:{
+//             },
+//             placeholder: "0"
+//         },
+//         Work:{
+//             work1:{
 
-            },
-            work2:{
+//             },
+//             work2:{
 
-            },
-            placeholder: "0"
-        }
-    },
-    profileMedia:{
-        media1:{
-            url: "",
-            storageName: "",
-            userSelectedName: "",
-            mediaFileType: "Image",
-            placeholder: "0"
-        },
-        media2:{
-            url: "",
-            storageName: "",
-            userSelectedName: "",
-            mediaFileType: "Video",
-            placeholder: "0"
-        }
-    },
-    placeholder: "0"
-}
+//             },
+//             placeholder: "0"
+//         }
+//     },
+//     profileMedia:{
+//         media1:{
+//             url: "",
+//             storageName: "",
+//             userSelectedName: "",
+//             mediaFileType: "Image",
+//             placeholder: "0"
+//         },
+//         media2:{
+//             url: "",
+//             storageName: "",
+//             userSelectedName: "",
+//             mediaFileType: "Video",
+//             placeholder: "0"
+//         }
+//     },
+//     placeholder: "0"
+// }
 
 
 
