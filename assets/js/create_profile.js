@@ -151,6 +151,12 @@ $("#remove-extra-work-experience").click(function() {
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
 });
+
+var skill_name_arr =[];
+var skill_desc_arr = [];
+var skill_num_arr = [];
+var skill_n_index = 0;
+var skill_d_index = 0;
 // For storing the total number of skills
 var total_number_of_skills = 1;
 var number_of_sub_skills;
@@ -163,6 +169,7 @@ $("#add-skill").click(()=> {
     var skill_name = $("#skill-name").val();
     var skill_desc = $("#skill-description").val();
 
+
     if(skill_name == "" && skill_desc == ""){
         alert("Please fill in the required field to add a skill!");
     }
@@ -171,7 +178,11 @@ $("#add-skill").click(()=> {
         document.getElementById("skill-description").value = "";
     } 
     else{
-
+        skill_name_arr[skill_n_index] = skill_name;
+        skill_desc_arr[skill_d_index] = skill_desc;
+        skill_num_arr[skill_n_index] = total_number_of_skills;
+        skill_n_index++;
+        skill_d_index++;
         if(number_of_sub_skills < 3){
             $(sub_skill_string).append(
                 "<div class=\"col-lg-4\"  id=\"skill-"+total_number_of_skills+"\">"+
@@ -217,8 +228,12 @@ $("#add-skill").click(()=> {
         document.getElementById("skill-name").value = "";
         document.getElementById("skill-description").value = "";
         total_number_of_skills++;
+        console.log(skill_name_arr);
+        console.log(skill_desc_arr);
+        console.log(skill_num_arr);
     }
 });
+
 // three arrays - skill number, skills, skill desc
 
 var remove_skill = (num_of_skill) => {
@@ -239,22 +254,22 @@ var remove_skill = (num_of_skill) => {
     var sub_skill = $('#skill-'+num_of_skill).parent().attr('id');
     var sub_skill_num = parseInt(sub_skill.replace("sub-skills-",''));
 
-    console.log(sub_skill);
-    console.log(sub_skill_num);
-    console.log(num_of_skill);
+    // console.log(sub_skill);
+    // console.log(sub_skill_num);
+    // console.log(num_of_skill);
     
         
         var id_last = $("#skill-"+num_of_skill).parent().attr('id');
         $("#skill-"+num_of_skill).remove();
-        console.log(id_last)
+        // console.log(id_last)
         var id_last_num = id_last.replace("sub-skills-",'');
-        console.log(id_last_num+ "after replace")
+        // console.log(id_last_num+ "after replace")
         var next_id_num = parseInt(id_last_num)+1;
         var next_id_name = "#sub-skills-"+next_id_num;
-        console.log(next_id_name)
+        // console.log(next_id_name)
         // var next_skill_id_name = next_id_name+ ":first-child";
         var next_skill_id = $(next_id_name).children(":first").attr("id");
-        console.log(next_skill_id);
+        // console.log(next_skill_id);
         $('#' + next_skill_id).appendTo('#'+id_last);
 
         if($('#sub-skills-'+number_of_sub_skills).children().length == 0){
@@ -262,8 +277,20 @@ var remove_skill = (num_of_skill) => {
             $('#sub-skills-'+number_of_sub_skills).remove();
             number_of_sub_skills--;
         }
-        console.log(number_of_sub_skills + "-sub-skills");
-
+        // console.log(number_of_sub_skills + "-sub-skills");
+        
+        // for appropriately removing skills from the skill, description, skill number array 
+        console.log(num_of_skill);
+        for(var ch = 0; ch<skill_n_index; ch++){
+            if (skill_num_arr[ch]==num_of_skill){
+                skill_name_arr.splice(ch,1);
+                skill_desc_arr.splice(ch,1);
+                skill_num_arr.splice(ch,1);
+            }
+        }
+        console.log(skill_name_arr);
+        console.log(skill_desc_arr);
+        console.log(skill_num_arr);
     // // $("#skill-"+num_of_skill).empty();
     // var target = $("#skill-"+num_of_skill);
     // $(target).remove();
@@ -277,16 +304,11 @@ var remove_skill = (num_of_skill) => {
 // });
 // -----------------------------------------------------------------------------------//
 
-// For checking if a field has white spaces
-function has_white_spaces(str){
-    return str.indexOf(' ') >= 0;
-}
-
 // For updating the headline when you click update headline button 
 $("#update-headline").click(() => {
     var headline = $("#new-headline").val();
     // console.log(headline);
-    if(headline == "" || (has_white_spaces(headline) && headline.match("^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$") == false) ){
+    if(headline == "" || (!headline.replace(/\s/g, '').length)){
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);

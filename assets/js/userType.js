@@ -48,7 +48,7 @@ $("#employee").click(function(){
                         deleteTempUserInfoPromise.then(function(){
                             var storeUserInfoInEmployeePromise = firebase.database().ref().child("data").child("employee").child("userInfo").child(userId).set(userInfo);
                             storeUserInfoInEmployeePromise.then(function(){
-                                console.log("DONE!");
+                                self.location = "create_profile.html";
                             });
                             storeUserInfoInEmployeePromise.catch(function(error){
                                 console.log(error.message)

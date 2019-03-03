@@ -20,25 +20,14 @@
     height: 20px;
       
 }
-/* .img-wrapper{
-    position: relative;
-    width: 100%;
+
+#carouselExampleControls .carousel-control-prev,
+#carouselExampleControls .carousel-control-next{
+    top: 200px;
+    bottom: 200px;
+    width: 5%;
 }
-.img-overlay {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-  }
-  
-  .img-overlay:before {
-    content: ' ';
-    display: block;
-    /* adjust 'height' to position overlay content vertically */
-    /* height: 2%; */
-  /* } */ 
+
 .skip-btn:hover{
     color: #172b4d !important;
     border-color: #172b4d !important;
