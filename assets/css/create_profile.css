@@ -1,4 +1,9 @@
-
+.line {
+    display: block;
+    border-top: 2px solid black;
+    margin: 1em 0;
+    
+}
 .carousel-control-prev-icon {
     left:0;
     margin-top: 80%;
