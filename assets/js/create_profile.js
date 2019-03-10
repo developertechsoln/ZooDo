@@ -324,12 +324,15 @@ $("#new-headline").keypress((event)=>{
 });
 
 // A global object for storing the pictures
+var temp_image_object = [];
 var image_object = [];
-var photo_desc = [];
+var temp_image_desc = [];
+var image_desc = [];
+var is_photo_odd = false;
 
 $("#add-photo-btn").click(() => {
-    $("#add-photos").empty();
-    $("#add-photos").append(
+    $("#modal-content").empty();
+    $("#modal-content").append(
         "<div class=\"modal fade\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" data-backdrop=\"static\" data-keyboard=\"false\" aria-hidden=\"true\">"+
         "<div class=\"modal-dialog modal- modal-dialog-centered modal-\" role=\"document\">"+
           "<div class=\"modal-content\">"+
@@ -369,9 +372,9 @@ $("#add-photo-btn").click(() => {
 
         var numberOfFilesUploaded = document.querySelector('input[type=file]').files.length;
         for(var i=0; i<numberOfFilesUploaded; i++){
-            image_object[i] = document.querySelector('input[type=file]').files[i];
+            temp_image_object[i] = document.querySelector('input[type=file]').files[i];
         }
-        if($.isEmptyObject(image_object)){
+        if($.isEmptyObject(temp_image_object)){
             alert("Please upload a file!");
         }else{
             upload_successful();
@@ -379,7 +382,7 @@ $("#add-photo-btn").click(() => {
                 $("#modal_footer").empty();
                 img_desc_temp(); 
                 preview_image(); 
-                if(image_object.length == 1){
+                if(temp_image_object.length == 1){
                     img_footer();
                 }else{
                     img_desc_foot(); 
@@ -398,13 +401,13 @@ var next_button = () => {
     if(image_description == ""){
         alert("Please fill out the description!");
     } else{
-        photo_desc[current] = image_description;
-        if(current < image_object.length-1){
+        temp_image_desc[current] = image_description;
+        if(current < temp_image_object.length-1){
             current++;
             $("#modal_footer").empty();
             img_desc_temp();    
             preview_image(); 
-            if(current == image_object.length-1){
+            if(current == temp_image_object.length-1){
                 img_footer();
             } else {
                 img_desc_foot(); 
@@ -419,14 +422,140 @@ var next_button = () => {
                 $("#modal-default").modal('hide');
                 current = 0;
                 next_click = false;
-                photo_desc = [];
+                image_desc = image_desc.concat(temp_image_desc);
+                image_object = image_object.concat(temp_image_object);
+                show_preview();
+                temp_image_object = [];
+                temp_image_desc = [];
             },2000);
         }
     }
 }
+
+function show_preview() {
+
+    var temp_image_object_len = temp_image_object.length;
+    var next_sub_photo;
+    var i;
+    var rowNumber;
+    var was_previous_odd = false;
+    var create_new_row = true;
+
+    if(is_photo_odd) {
+        
+        next_sub_photo = $("#add-photos").children().length;
+        rowNumber = next_sub_photo;
+        var rowName = "#row-" + rowNumber;
+        rowNumber++;
+        i=1;
+
+        $(rowName).append("<div class=\"col-lg-6\">"+
+                                "<div class=\"card\" style=\"width: 12rem auto;\">"+
+                                    "<img class=\"card-img-top\" src=\"" + URL.createObjectURL(temp_image_object[0]) + "\" alt=\"Card image cap\">"+
+                                    "<div class=\"card-body\">"+
+                                        "<p class=\"card-text\">" + temp_image_desc[0] + "</p>"+
+                                        "<div class=\"col-auto\">"+
+                                            "<button type=\"button\" class=\"btn btn-sm btn-danger\">Delete</button>"+
+                                        "</div>"+
+                                    "</div>"+
+                                "</div>"+
+                            "</div>");
+
+        was_previous_odd = true;
+
+    } else { 
+        
+        next_sub_photo = $("#add-photos").children().length + 1;
+        rowNumber = next_sub_photo;
+        i=0;
+    
+    }
+    
+    var html = "";
+
+    if(temp_image_object_len % 2 !=0) { 
+        if(was_previous_odd) {
+            is_photo_odd = false; 
+        } else{
+            is_photo_odd = true; 
+        }
+    } else { 
+        if(was_previous_odd) {
+            is_photo_odd = true; 
+        } else{
+            is_photo_odd = false; 
+        } 
+    }  //logic for odd+odd=even and odd+even=odd etc
+
+    for(; i<temp_image_object_len; i++){
+
+        if((i%2 == 0 || was_previous_odd) && create_new_row) {
+            var rowName = "row-" + rowNumber;
+            var containerName = "container-" + rowNumber;
+            if(next_sub_photo == 1 && $("#add-photos").children().length == 0) {
+
+                html = html + "<div class=\"carousel-item active\" id=\""+ containerName +"\">" +
+                    "<div class=\"row\" id=\""+ rowName +"\">"+
+                        "<div class=\"col-lg-6\">"+
+                            "<div class=\"card\" style=\"width: 12rem auto;\">"+
+                                "<img class=\"card-img-top\" src=\"" + URL.createObjectURL(temp_image_object[i]) + "\" alt=\"Card image cap\">"+
+                                "<div class=\"card-body\">"+
+                                    "<p class=\"card-text\">" + temp_image_desc[i] + "</p>"+
+                                    "<div class=\"col-auto\">"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\">Delete</button>"+
+                                    "</div>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>";
+                next_sub_photo++;
+            } else {
+
+                html = html + "<div class=\"carousel-item\" id=\""+ containerName +"\">" +
+                                "<div class=\"row\" id=\""+ rowName +"\">"+
+                                    "<div class=\"col-lg-6\">"+
+                                        "<div class=\"card\" style=\"width: 12rem auto;\">"+
+                                            "<img class=\"card-img-top\" src=\"" + URL.createObjectURL(temp_image_object[i]) + "\" alt=\"Card image cap\">"+
+                                            "<div class=\"card-body\">"+
+                                                "<p class=\"card-text\">" + temp_image_desc[i] + "</p>"+
+                                                "<div class=\"col-auto\">"+
+                                                    "<button type=\"button\" class=\"btn btn-sm btn-danger\">Delete</button>"+
+                                                "</div>"+
+                                            "</div>"+
+                                        "</div>"+
+                                    "</div>";
+            }
+            rowNumber++;
+            create_new_row = false;
+        } else {
+
+            html = html + "<div class=\"col-lg-6\">"+
+                            "<div class=\"card\" style=\"width: 12rem auto;\">"+
+                                "<img class=\"card-img-top\" src=\"" + URL.createObjectURL(temp_image_object[i]) + "\" alt=\"Card image cap\">"+
+                                "<div class=\"card-body\">"+
+                                    "<p class=\"card-text\">" + temp_image_desc[i] + "</p>"+
+                                    "<div class=\"col-auto\">"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\">Delete</button>"+
+                                    "</div>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                "</div>";
+            create_new_row = true;
+        }
+
+    }
+
+    if(is_photo_odd){
+        html = html + "</div></div>";
+    }
+
+    $("#add-photos").append(html);
+
+}
         
 var img_footer = () => {
-    if(image_object.length == 1){
+    if(temp_image_object.length == 1){
         $("#modal_footer").append(
             "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
             "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
@@ -450,7 +579,7 @@ var upload_successful = ()=> {
 
 var img_desc_temp = ()=> {
     $("#modal_body").empty();
-    if(photo_desc[current] == null){
+    if(temp_image_desc[current] == null){
         $("#modal_body").append(
             "<div class=\"row\">"+
                 "<div class=\"col-lg-6\">"+
@@ -468,7 +597,7 @@ var img_desc_temp = ()=> {
                     "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
                 "</div>"+
                 "<div class=\"col-lg-6\">"+
-                    "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\">"+ photo_desc[current] +"</textarea>"+
+                    "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\">"+ temp_image_desc[current] +"</textarea>"+
                 "</div>"+
             "</div>"
         );
@@ -497,15 +626,15 @@ var preview_image = function(input) {
     reader.onload = (e)=> {
         $("#new-image").attr('src',e.target.result);
     }
-    reader.readAsDataURL(image_object[current]);
+    reader.readAsDataURL(temp_image_object[current]);
     next_click = false;
 };
 
 var prev_photo_button = ()=> {
     var image_description = $("#image-description").val();
-    photo_desc[current] = image_description;
+    temp_image_desc[current] = image_description;
     current--;
-    if(current < image_object.length-1){
+    if(current < temp_image_object.length-1){
         $("#modal_footer").empty();
         img_desc_temp();    
         preview_image(); 
@@ -520,14 +649,14 @@ var remove_photo_button = ()=> {
         "<h2>Media Removed Successfully!!</h2>"
     );
     setTimeout(()=> {
-        image_object.splice(current, 1);
-        photo_desc.splice(current,1);
+        temp_image_object.splice(current, 1);
+        temp_image_desc.splice(current,1);
         current--;
-        if(image_object.length == 0){
+        if(temp_image_object.length == 0){
             $("#modal-default").modal('hide');
             current = 0;
             next_click = false;
-        } else if(current <= image_object.length-1  && current >= 0){ //when image removed is not first in the list, it displays the previous image in list
+        } else if(current <= temp_image_object.length-1  && current >= 0){ //when image removed is not first in the list, it displays the previous image in list
             $("#modal_footer").empty();
             img_desc_temp();    
             preview_image(); 
