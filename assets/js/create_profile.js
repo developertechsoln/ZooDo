@@ -681,6 +681,15 @@ var delete_photo = (element)=> {
         $('#row-'+total_rows).remove();
         total_rows--;
     }
+
+    if($('#row-'+total_rows).children().length == 1){
+        is_photo_odd = true;
+    } else if ($('#row-'+total_rows).children().length == 2){
+        is_photo_odd = false;
+    }
+
+    
+
     // for (i = next_rowID_num; i < total_rows; i++) { 
     //     var curr_row_id = "#" + "row-"+next_rowID_num;
     //     var curr_row_length = $(curr_row_id).children().length;
