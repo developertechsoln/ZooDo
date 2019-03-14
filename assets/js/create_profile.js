@@ -178,6 +178,7 @@ $("#add-skill").click(()=> {
         document.getElementById("skill-description").value = "";
     } 
     else{
+        skill_desc = skill_desc.replace(/\n/g, '<br />');
         skill_name_arr[skill_n_index] = skill_name;
         skill_desc_arr[skill_d_index] = skill_desc;
         skill_num_arr[skill_n_index] = total_number_of_skills;
@@ -228,81 +229,35 @@ $("#add-skill").click(()=> {
         document.getElementById("skill-name").value = "";
         document.getElementById("skill-description").value = "";
         total_number_of_skills++;
-        console.log(skill_name_arr);
-        console.log(skill_desc_arr);
-        console.log(skill_num_arr);
     }
 });
 
-// three arrays - skill number, skills, skill desc
-
 var remove_skill = (num_of_skill) => {
-    // var count_card_delete = Math.ceil(num_of_skill/3);
-    // var new_temp = count_card_delete - 1;
-    // // var count_row = 0;
-    // // if (number_of_sub_skills == 1){
-    // //     $("#skill-"+num_of_skill).remove();
-    // //     // count_row++;
-    // // } else {
-    // //     $("#skill-"+num_of_skill).remove();
 
-    //     for(; new_temp < number_of_sub_skills; new_temp++){
-    //         var new_ID = document.getElementById(new_temp);
-    //         document.getElementById("sub-skill-"+count_card_delete).id=new_ID;
-    //     }
-    // }
-    var sub_skill = $('#skill-'+num_of_skill).parent().attr('id');
-    var sub_skill_num = parseInt(sub_skill.replace("sub-skills-",''));
-
-    // console.log(sub_skill);
-    // console.log(sub_skill_num);
-    // console.log(num_of_skill);
+    // for removing skills in order
+    var id_last = $("#skill-"+num_of_skill).parent().attr('id');
+    $("#skill-"+num_of_skill).remove();
+    var id_last_num = id_last.replace("sub-skills-",'');
+    var next_id_num = parseInt(id_last_num)+1;
+    var next_id_name = "#sub-skills-"+next_id_num;
+    var next_skill_id = $(next_id_name).children(":first").attr("id");
+    $('#' + next_skill_id).appendTo('#'+id_last);
     
-        
-        var id_last = $("#skill-"+num_of_skill).parent().attr('id');
-        $("#skill-"+num_of_skill).remove();
-        // console.log(id_last)
-        var id_last_num = id_last.replace("sub-skills-",'');
-        // console.log(id_last_num+ "after replace")
-        var next_id_num = parseInt(id_last_num)+1;
-        var next_id_name = "#sub-skills-"+next_id_num;
-        // console.log(next_id_name)
-        // var next_skill_id_name = next_id_name+ ":first-child";
-        var next_skill_id = $(next_id_name).children(":first").attr("id");
-        // console.log(next_skill_id);
-        $('#' + next_skill_id).appendTo('#'+id_last);
-
-        if($('#sub-skills-'+number_of_sub_skills).children().length == 0){
-            $('#sub-skills-'+number_of_sub_skills).next('br').remove();
-            $('#sub-skills-'+number_of_sub_skills).remove();
-            number_of_sub_skills--;
+    if($('#sub-skills-'+number_of_sub_skills).children().length == 0){
+        $('#sub-skills-'+number_of_sub_skills).next('br').remove();
+        $('#sub-skills-'+number_of_sub_skills).remove();
+        number_of_sub_skills--;
+    }
+    
+    // for appropriately removing skills from the skill, description, skill number array 
+    for(var ch = 0; ch<skill_n_index; ch++){
+        if (skill_num_arr[ch]==num_of_skill){
+            skill_name_arr.splice(ch,1);
+            skill_desc_arr.splice(ch,1);
+            skill_num_arr.splice(ch,1);
         }
-        // console.log(number_of_sub_skills + "-sub-skills");
-        
-        // for appropriately removing skills from the skill, description, skill number array 
-        console.log(num_of_skill);
-        for(var ch = 0; ch<skill_n_index; ch++){
-            if (skill_num_arr[ch]==num_of_skill){
-                skill_name_arr.splice(ch,1);
-                skill_desc_arr.splice(ch,1);
-                skill_num_arr.splice(ch,1);
-            }
-        }
-        console.log(skill_name_arr);
-        console.log(skill_desc_arr);
-        console.log(skill_num_arr);
-    // // $("#skill-"+num_of_skill).empty();
-    // var target = $("#skill-"+num_of_skill);
-    // $(target).remove();
+    }
 }
-// --------------------------------- UNDER DEVELOPEMENT -------------------------------//
-// $("#remove-skill").click(()=> {
-
-//     var skill_to_be_deleted = "skill-number-" + number_of_skills;
-//     console.log(skill_to_be_deleted);
-//     $(skill_to_be_deleted).remove();
-// });
-// -----------------------------------------------------------------------------------//
 
 // For updating the headline when you click update headline button 
 $("#update-headline").click(() => {
@@ -401,6 +356,7 @@ var next_button = () => {
     if(image_description == ""){
         alert("Please fill out the description!");
     } else{
+        image_description = image_description.replace(/\n/g, '<br />');
         temp_image_desc[current] = image_description;
         if(current < temp_image_object.length-1){
             current++;
