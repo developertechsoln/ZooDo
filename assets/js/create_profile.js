@@ -455,7 +455,7 @@ function show_preview() {
                                     "<div class=\"card-body\">"+
                                         "<p class=\"card-text\">" + temp_image_desc[0] + "</p>"+
                                         "<div class=\"col-auto\">"+
-                                            "<button type=\"button\" class=\"btn btn-sm btn-danger\">Delete</button>"+
+                                            "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick = delete_photo(this)>Delete</button>"+
                                         "</div>"+
                                     "</div>"+
                                 "</div>"+
@@ -502,7 +502,7 @@ function show_preview() {
                                 "<div class=\"card-body\">"+
                                     "<p class=\"card-text\">" + temp_image_desc[i] + "</p>"+
                                     "<div class=\"col-auto\">"+
-                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\">Delete</button>"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick = delete_photo(this)>Delete</button>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>"+
@@ -518,7 +518,7 @@ function show_preview() {
                                             "<div class=\"card-body\">"+
                                                 "<p class=\"card-text\">" + temp_image_desc[i] + "</p>"+
                                                 "<div class=\"col-auto\">"+
-                                                    "<button type=\"button\" class=\"btn btn-sm btn-danger\">Delete</button>"+
+                                                    "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick = delete_photo(this)>Delete</button>"+
                                                 "</div>"+
                                             "</div>"+
                                         "</div>"+
@@ -534,7 +534,7 @@ function show_preview() {
                                 "<div class=\"card-body\">"+
                                     "<p class=\"card-text\">" + temp_image_desc[i] + "</p>"+
                                     "<div class=\"col-auto\">"+
-                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\">Delete</button>"+
+                                        "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick = delete_photo(this)>Delete</button>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>"+
@@ -642,6 +642,45 @@ var prev_photo_button = ()=> {
     }
 };
 
+
+/* 
+    Delete photo - under developement by DC
+*/
+var delete_photo = (element)=> {
+    var delete_photo_rowID = $(element).parent().parent().parent().parent().parent().attr('id');
+    $(element).parent().parent().parent().parent().remove()
+    var delete_photo_rowID_num = delete_photo_rowID.replace("row-",'');
+    var next_rowID_num = parseInt(delete_photo_rowID_num)+1;
+    var next_rowID = "row-"+next_rowID_num;
+    var NextElement= document.getElementById(next_rowID).getElementsByClassName("col-lg-6")[0]
+    $(NextElement).appendTo('#'+delete_photo_rowID);
+    var total_rows = $("#add-photos").children().length;
+    console.log(total_rows);
+    if($('#row-'+total_rows).children().length == 0){
+        $('#row-'+total_rows).remove();
+        total_rows--;
+    }
+    // for (i = next_rowID_num; i < total_rows; i++) { 
+    //     var curr_row_id = "#" + "row-"+next_rowID_num;
+    //     var curr_row_length = $(curr_row_id).children().length;
+    //     if(curr_row_length < 2){
+    //         var next_photo_row = parseInt(next_rowID_num)+1;
+    //         var next_photo_rowID = "row-"+next_photo_row;
+    //         var next_photo= document.getElementById(next_photo_rowID).getElementsByClassName("col-lg-6")[0];
+    //         $(next_photo).appendTo(curr_row_id);
+    //     }
+    //   }
+    
+    // if($('#row-2').children().length == 0){
+    //     $('.carousel-control-next-icon').hide();
+    //     $('.carousel-control-prev-icon').hide();
+    // }
+    // else{
+    //     $('.carousel-control-next-icon').show();
+    //     $('.carousel-control-prev-icon').show();
+    // }
+};
+
 var remove_photo_button = ()=> {
     $("#modal_body").empty();
     $("#modal_footer").empty();
@@ -712,7 +751,7 @@ $(document).on("change", "#videos", function(evt) {
                         "<div class=\"card-body\">"+
                             "<div class=\"row\">"+
                                 "<div class=\"col-12 text-center\">"+
-                                    "<button type=\"button\" class=\"close\">"+
+                                    "<button type=\"button\" class=\"close\" onclick = delete_video("+total_number_of_videos+")>"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
                                     "<video style=\"max-width: 100%; z-index:1000\" controls>"+
@@ -734,7 +773,7 @@ $(document).on("change", "#videos", function(evt) {
                         "<div class=\"card-body\">"+
                             "<div class=\"row\">"+
                                 "<div class=\"col-12 text-center\">"+
-                                    "<button type=\"button\" class=\"close\" id=\"remove-vid\">"+
+                                    "<button type=\"button\" class=\"close\" id=\"remove-vid\" onclick = delete_video("+total_number_of_videos+")>"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
                                     "<video style=\"max-width: 100%;  z-index:1000\" controls>"+
@@ -748,7 +787,7 @@ $(document).on("change", "#videos", function(evt) {
             "</div>"
         );
     }
-
+``
     var video_preview_string = "#video-preview-"+total_number_of_videos;
 
     var source = $(video_preview_string);
@@ -757,6 +796,32 @@ $(document).on("change", "#videos", function(evt) {
 
     total_number_of_videos++;
 });
+
+
+/* 
+    Delete video - DC
+*/
+var delete_video = (video_to_delete) => {
+    var delete_video_row_id = $("#video-"+video_to_delete).parent().attr('id');
+    $("#video-"+video_to_delete).remove();
+ 
+    var delete_video_rowID_num = delete_video_row_id.replace("sub-videos-",'');
+    
+    var next_row_num = parseInt(delete_video_rowID_num)+1;
+    var next_row_name = "#sub-videos-"+next_row_num;
+   
+    var first_video_next_row = $(next_row_name).children(":first").attr("id");
+  
+    $('#' + first_video_next_row).appendTo('#'+delete_video_row_id);
+
+    var total_rows_of_video = $("#video-preview").children().length;
+    if($('#sub-videos-'+total_rows_of_video).children().length == 0){
+        $('#sub-videos-'+total_rows_of_video).next('br').remove();
+        $('#sub-videos-'+total_rows_of_video).remove();
+        total_rows_of_video--;
+    }
+}
+
 
 
 // Expected json
