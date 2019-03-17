@@ -892,7 +892,7 @@ $("#create-profile").click(function(){
         var counter2=1;
         workExObj.each(function(){
             if (counter2 == 1) {
-                        mainJson.workExperience["workEducation" + counter2]["companyName"]=$(this).val()
+                        mainJson.workExperience["workExperience" + counter2]["companyName"]=$(this).val()
             }
             if (counter2==2){
                     mainJson.workExperience["workExperience" + counter2]["jobTitle"]=$(this).val()
