@@ -13,13 +13,13 @@ $("#add-extra-education").click(function() {
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-username\">School/University</label>"+
-                    "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative\" placeholder=\"School/University\">"+
+                    "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\" placeholder=\"School/University\">"+
                     "</div>"+
                 "</div>"+
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-email\">Degree Type</label>"+
-                    "<select class=\"form-control form-control-alternative\">"+
+                    "<select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">"+
                         "<option value=\"diploma\">Diploma</option>"+
                         "<option value=\"bachelors\">Bachelors</option>"+
                         "<option value=\"master\">Masters</option>"+
@@ -32,7 +32,7 @@ $("#add-extra-education").click(function() {
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-first-name\">Course Field</label>"+
-                    "<select class=\"form-control form-control-alternative\">"+
+                    "<select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">"+
                         "<option value=\"softwareEngineer\">Software Engineer</option>"+
                         "<option value=\"computerScience\">Computer Science</option>"+
                         "<option value=\"business\">Business</option>"+
@@ -43,7 +43,7 @@ $("#add-extra-education").click(function() {
                 "<div class=\"col-lg-6\">"+
                     "<div class=\"form-group\">"+
                     "<label class=\"form-control-label\" for=\"input-last-name\">Date of Graduation</label>"+
-                    "<input type=\"date\" id=\"CompletionDate\" class=\"form-control form-control-alternative\">"+
+                    "<input type=\"date\" id=\"CompletionDate\" class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">"+
                     "</div>"+
                 "</div>"+
                 "</div>"+
@@ -92,19 +92,19 @@ $("#add-extra-work-experience").click(function() {
                     "<div class=\"col-lg-5\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Company Name</label>"+
-                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative\" placeholder=\"Company Name\">"+
+                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative extra-work-experience-" + workInfoNumber + "\" placeholder=\"Company Name\">"+
                         "</div>"+
                     "</div>"+
                     "<div class=\"col-lg-5\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Job Title</label>"+
-                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative\" placeholder=\"Job Title\">"+
+                        "<input type=\"text\" id=\"\" class=\"form-control form-control-alternative extra-work-experience-" + workInfoNumber + "\" placeholder=\"Job Title\">"+
                         "</div>"+
                     "</div>"+
                     "<div class=\"col-lg-2\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Years</label>"+
-                        "<select class=\"form-control form-control-alternative\">"+
+                        "<select class=\"form-control form-control-alternative extra-work-experience-" + workInfoNumber + "\">"+
                             "<option value=\"less-then-1-year\">< a year</option>"+
                             "<option value=\"1-year\">1 year</option>"+
                             "<option value=\"2-years\">2 years</option>"+
@@ -120,7 +120,7 @@ $("#add-extra-work-experience").click(function() {
                     "<div class=\"col-lg-12\">"+
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Job Discription</label>"+
-                        "<textarea rows=\"4\" class=\"form-control form-control-alternative\" placeholder=\"Discribe your work in few words ...\"></textarea>"+
+                        "<textarea rows=\"4\" class=\"form-control form-control-alternative extra-work-experience-" + workInfoNumber + "\" placeholder=\"Discribe your work in few words ...\"></textarea>"+
                         "</div>"+
                     "</div>"+
                     "</div>"+
@@ -261,18 +261,18 @@ var remove_skill = (num_of_skill) => {
 
 // For updating the headline when you click update headline button 
 $("#update-headline").click(() => {
-    var headline = $("#new-headline").val();
+    var headline = $("#headline-input").val();
     // console.log(headline);
     if(headline == "" || (!headline.replace(/\s/g, '').length)){
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);
-        document.getElementById("new-headline").value = "";
+        //document.getElementById("#headline-input").value = ""; //todo what is this used for and is it needed ??
     }
 });
 
 // For updating the headline when you press enter after writing your headline
-$("#new-headline").keypress((event)=>{
+$("#headline-input").keypress((event)=>{
     if(event.keyCode == 13){
         $("#update-headline").click();
     }
@@ -697,6 +697,7 @@ var remove_photo_button = ()=> {
 };
 
 var total_number_of_videos = 1;
+var video_object = [];
 $(document).on("change", "#videos", function(evt) {
 
     var number_of_sub_videos = ($("#video_preview").children().length) /2;
@@ -773,12 +774,14 @@ $(document).on("change", "#videos", function(evt) {
             "</div>"
         );
     }
-``
+
     var video_preview_string = "#video-preview-"+total_number_of_videos;
 
     var source = $(video_preview_string);
     source[0].src = URL.createObjectURL(this.files[0]);
     source.parent()[0].load();
+
+    video_object[total_number_of_videos-1] = this.files[0];
 
     total_number_of_videos++;
 });
@@ -857,170 +860,255 @@ var delete_video = (video_to_delete) => {
 
 // this function will store values of all fields;
 $("#create-profile").click(function(){
-    var userDescription = $("#description").val();
+
+    document.getElementById("createProfileLoader").style.display = "inline-block";
+
     var userDescription = $("#personal-description").val();
+    var headline = $("#headline").html();
     var numberOfEducation = $("#extra-education").children().length + 1;
     var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
     var mainJson = {
+        personalDescription: userDescription,
+        headline: headline,
         education:{},
         workExperience:{},
-        personalDescription: userDescription
+        skills:{},
+        images:{},
+        videos:{}
     };
-    for (i = 1; i <= numberOfEducation; i++){
+
+    for (var i = 1; i <= numberOfEducation; i++){
         var className = ".extra-education-" + i;
         var eduObj = $(className);
-        var counter=1;
-        eduObj.each(function(){
-            if (counter == 1) {
-                        mainJson.education["education" + counter]["university"]=$(this).val()
-            }
-            if (counter==2){
-                    mainJson.education["education" + counter]["degreeType"]=$(this).val()
-            }
-            if (counter==3){
-                    mainJson.education["education" + counter]["courseField"]=$(this).val()
-            }
-            if (counter==4){
-                    mainJson.education["education" + counter]["dog"]=$(this).val()
-            }
-            counter++
-        })
+        var keyName = "education" + i;
+        mainJson.education[keyName] = {};
+
+        mainJson.education[keyName].university = eduObj[0].value;
+        mainJson.education[keyName].degreeType = eduObj[1].value;
+        mainJson.education[keyName].courseField = eduObj[2].value;
+        mainJson.education[keyName].dateOfGraduation = eduObj[3].value;
     }
-    for (j = 1; j <= numberOfWorkExperience; j++){
-        var className2 = ".extra-work-experience-" + j;
-        var workExObj = $(className2);
-        var counter2=1;
-        workExObj.each(function(){
-            if (counter2 == 1) {
-                        mainJson.workExperience["workExperience" + counter2]["companyName"]=$(this).val()
-            }
-            if (counter2==2){
-                    mainJson.workExperience["workExperience" + counter2]["jobTitle"]=$(this).val()
-            }
-            if (counter2==3){
-                    mainJson.workExperience["workExperience" + counter2]["years"]=$(this).val()
-            }
-            if (counter2==4){
-                    mainJson.workExperience["workExperience" + counter2]["description"]=$(this).val()
-            }
-            counter2++
-        })
+
+    for (var i = 1; i <= numberOfWorkExperience; i++){
+        var className = ".extra-work-experience-" + i;
+        var workExObj = $(className);
+        var keyName = "workExperience" + i;
+        mainJson.workExperience[keyName] = {};
+
+        mainJson.workExperience[keyName].companyName = workExObj[0].value;
+        mainJson.workExperience[keyName].jobTitle = workExObj[1].value;
+        mainJson.workExperience[keyName].years = workExObj[2].value;
+        mainJson.workExperience[keyName].description = workExObj[3].value;
     }
-});
-/*
-//This function is responsible to send all the files in file array to firebase storage
-async function sendAllFilesToStorage(uid){
+
+    for (var i = 1; i <= skill_name_arr.length; i++){
+        var keyName = "skill" + i;
+        mainJson.skills[keyName] = {};
+
+        mainJson.skills[keyName].skill = skill_name_arr[i-1];
+        mainJson.skills[keyName].description = skill_desc_arr[i-1];
+    }
     
-    //create variables
-    var numberOfFiles = file.length;
-    var URL = [];
-    var fileUrl;
+    var imageURL;
+    var videoURL;
 
-    //take one file at a time and send to storage
-    for(var i=0; i<numberOfFiles; i++){
-        
-        //call a function to send file and wait till it returns an url
-        fileUrl = await sendFileToStorage(i, uid, category)
+    firebase.auth().onAuthStateChanged(function(user){
+        if (user){
+            var userId = user.uid;
 
-        //if we are able to send file to firebase we will save its url else we will put null
-        if(fileUrl != ""){ URL.push(fileUrl); }
-        else{ URL.push(null); }
+            var promises = [];
 
-    }
+            var promise1 = sendAllFilesToStorage(userId, "images");
+            promises.push(promise1);
+            promise1.then(URL => { imageURL = URL; });
+            var promise2 = sendAllFilesToStorage(userId, "videos");
+            promises.push(promise2);
+            promise2.then(URL => { videoURL = URL; })
 
-    return URL;
+            const all = Promise.all(promises);
+            all.then(function() {
+                
+                for (var i = 1; i <= imageURL.length; i++){
+                    var keyName = "image" + i;
+                    mainJson.images[keyName] = {};
+            
+                    mainJson.images[keyName].url = imageURL[i-1];
+                    mainJson.images[keyName].description = image_desc[i-1];
+                    mainJson.images[keyName].name = image_object[i-1].name;
+                }
+
+                for (var i = 1; i <= videoURL.length; i++){
+                    var keyName = "video" + i;
+                    mainJson.videos[keyName] = {};
+            
+                    mainJson.videos[keyName].url = imageURL[i-1];
+                    mainJson.videos[keyName].name = video_object[i-1].name;
+                }
+
+                var promise3 = sendJsonToFirebase(mainJson);
+                promise3.then(function(){
+                    document.getElementById("createProfileLoader").style.display = "none";
+                    console.log("Congratulations, we created your profile.");
+                });
+                promise3.catch(function(){
+                    document.getElementById("createProfileLoader").style.display = "none";
+                    console.log("Sorry, Not able to create profile. Please try again.")
+                });
+
+            });
+            
+        } else {
+            document.getElementById("createProfileLoader").style.display = "none";
+            console.log("Sorry, Not able to create profile. Please try again.")
+        }
+    });
+
+});
+
+//This function is responsible to send all the files in file array to firebase storage
+function sendAllFilesToStorage(uid, category){
+   
+    return new Promise(function (resolve, reject) {
+    
+        //create variables
+        var file;
+
+        if(category == "images"){
+            file = image_object;
+        } else if (category == "videos") {
+            file = video_object;
+        }
+        var numberOfFiles = file.length;
+        var URL = [];
+        var promises = [];
+
+        //take one file at a time and send to storage
+        for(var i=0; i<numberOfFiles; i++){
+            
+            //call a function to send file and wait till it returns an url
+            var promise = sendFileToStorage(i, uid, category, file);
+            promises.push(promise);
+            promise.then(fileUrl => { URL.push(fileUrl); });
+            promise.catch(fileUrl => { URL.push(fileUrl); });
+
+        }
+
+        const all = Promise.all(promises);
+        all.then(function() {
+            return resolve(URL)
+        });
+
+    });
 
 }
 
 //Send a single file to firebase storage
-async function sendFileToStorage(index, uid, category){
+function sendFileToStorage(index, uid, category, file){
 
-    //collecting promise of file sent
-    var filePromise = firebase.storage().ref().child(category).child(uid).child("profilePage").put(FILES[index]);
-    filePromise.then(function(snapshot){
+    return new Promise(function (resolve, reject) {
 
-        //get the url of the file uploaded
-        var getUrl = snapshot.ref.getDownloadURL();
-        getUrl.then((url) => {
-            return url; //return url
+        //collecting promise of file sent
+        var filePromise = firebase.storage().ref().child(category).child(uid).child("profilePage").child(file[index].name).put(file[index]);
+        filePromise.then(function(snapshot){
+
+            //get the url of the file uploaded
+            var getUrl = snapshot.ref.getDownloadURL();
+            getUrl.then((url) => {
+                return resolve(url); //return url
+            })
+            getUrl.catch(function(error){
+                //TODO think on it, may be we can delete file and return ""
+            })
+
         })
-        getUrl.catch(function(error){
-            //TODO think on it
+        filePromise.catch(function(error){
+            return reject(""); //return an empty array if file is not uploaded
         })
-
-    })
-    filePromise.catch(function(error){
-        return ""; //return an empty array if file is not uploaded
-    })
-
+    });
 }
 
 
 //This function tries to send json to firebase 2 times if 1st fails and 
 //if it successfully sends json returns true or remove all files from storage and retrun false
-async function sendJsonToFirebase(profileJson) {
+function sendJsonToFirebase(profileJson) {
 
-    firebase.auth().onAuthStateChanged(async function(user) {
-	    if (user) {
+    return new Promise(function (resolve, reject) {
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
 
-            var userId = user.uid;
+                var userId = user.uid;
 
-            //tries to send json 1st time
-            var profileInfoPromise = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
-            profileInfoPromise.then(function() {
-                return true; //if 1st try successful
-            });
-            profileInfoPromise.catch(function(error) {
-                
-                //tries to send json 2nd time
-                var profileInfoPromiseReTry = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
-                profileInfoPromiseReTry.then(function() {
-                    return true; //if 2nd try successful
+                //tries to send json 1st time
+                var profileInfoPromise = firebase.database().ref().child("data").child("employee").child("profile").child(userId).set(profileJson);
+                profileInfoPromise.then(function() {
+                    return resolve(); //if 1st try successful
                 });
-                profileInfoPromiseReTry.catch(async function(error) {
-                    //delete all files from stroge and return false as both tries failed.
-                    await removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
-                    return false;
+                profileInfoPromise.catch(function(error) {
+                    //delete all files from stroge and return reject
+                    var promise1 = removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
+                    promise1.then(function(){
+                        return reject();
+                    });
+                    promise1.catch(function(){
+                        return reject();
+                    })
                 });
-
-            })
-        } else {
-            //it deletes all the files and return false as no user is signed in
-            console.log("No user is signed in.");
-            await removeAllFilesFormStorage(userId, profileJson); //this is again asyncronous call, so we will wait till all files are deleted
-            return false;
-        }
+            } else {
+                //delete all files from stroge and return reject
+                var promise2 = removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
+                promise2.then(function(){
+                    return reject();
+                });
+                promise2.catch(function(){
+                    return reject();
+                })
+            }
+        });
     });
 
 }
 
 // This funciton deletes all profile files of a specified user id
-async function removeAllFilesFormStorage(userId, profileJson){
-    var numberOfMedia = Object.keys(profileJson.profileMedia).length;
-    for(i=1; i<numberOfMedia; i++){
-        var mediaName = "media" + i; //this is a statement which grabs media name as we will have multiple media
-        var fileName = profileJson.profileMedia[mediaName].storageName; //once we have media name, we can now grab file name in storage
-        var filePath = 'photo/'+userId+'/profile_images/'+fileName; //now we have file name in stroage, so we can give the path to that file in storage
-        await removeFileFromStorage(filePath); //this is asyncronous call, so we will wait till required file is deleted
-    }
-    return;
+function removeAllFilesFormStorage(userId, profileJson){
+   
+    return new Promise(function (resolve, reject) {
+
+        var promises = [];
+
+        var numberOfMedia = Object.keys(profileJson.profileMedia).length;
+        for(i=1; i<numberOfMedia; i++){
+            var mediaName = "media" + i; //this is a statement which grabs media name as we will have multiple media
+            var fileName = profileJson.profileMedia[mediaName].storageName; //once we have media name, we can now grab file name in storage
+            var filePath = 'photo/'+userId+'/profile_images/'+fileName; //now we have file name in stroage, so we can give the path to that file in storage
+            var promise1 = removeFileFromStorage(filePath); //this is asyncronous call, so we will wait till required file is deleted
+            promises.push(promise1);
+        }
+
+
+        const all = Promise.all(promises);
+        all.then(function() {
+            return resolve();
+        });
+
+    });
 }
-*/
+
 //This function will delete file from the path provided
 function removeFileFromStorage(filePath) {
 
-    var storageRef = firebase.storage().ref(filePath); //create reference to file
-    var storageRefRemovePromise = storageRef.delete(); //delete
-    storageRefRemovePromise.then(function() {
-        return; //wait till we get result
-    });
-    storageRefRemovePromise.catch(function(error){
-        //wait till we get result, if we are not able to delete file we will move ahead as file size will be comparitively small and
-        //we don't want to waste time on it and also the failure rate is very less as firebase is scalable.
-        return;  
+    return new Promise(function (resolve, reject) {
+
+        var storageRef = firebase.storage().ref(filePath); //create reference to file
+        var storageRefRemovePromise = storageRef.delete(); //delete
+        storageRefRemovePromise.then(function() {
+            return resolve(); //wait till we get result
+        });
+        storageRefRemovePromise.catch(function(error){
+            //wait till we get result, if we are not able to delete file we will move ahead as file size will be comparitively small and
+            //we don't want to waste time on it and also the failure rate is very less as firebase is scalable.
+            return resolve();  
+        });
+    
     });
 
 }
-
-
-//end

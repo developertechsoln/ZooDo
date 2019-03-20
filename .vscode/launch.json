@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "file:///C:/Users/sesa526501/Documents/Zoodo/main/login.html",
+            "url": "file:///C:/Users/sesa526501/Documents/Zoodo/main/create_profile.html",
             "webRoot": "${workspaceFolder}"
         }
     ]
