@@ -668,47 +668,48 @@ var prev_photo_button = ()=> {
     Delete photo - under developement by DC
 */
 var delete_photo = (element)=> {
+    var total_rows = $("#add-photos").children().length;
     var delete_photo_rowID = $(element).parent().parent().parent().parent().parent().attr('id');
-    $(element).parent().parent().parent().parent().remove()
     var delete_photo_rowID_num = delete_photo_rowID.replace("row-",'');
     var next_rowID_num = parseInt(delete_photo_rowID_num)+1;
-    var next_rowID = "row-"+next_rowID_num;
-    var NextElement= document.getElementById(next_rowID).getElementsByClassName("col-lg-6")[0]
-    $(NextElement).appendTo('#'+delete_photo_rowID);
-    var total_rows = $("#add-photos").children().length;
-    console.log(total_rows);
-    if($('#row-'+total_rows).children().length == 0){
-        $('#row-'+total_rows).remove();
-        total_rows--;
+    var prev_rowID_num = parseInt(delete_photo_rowID_num)-1;
+    
+    //if the last row has only one photo, then make the row before if active before deleting that element
+    if(delete_photo_rowID_num == total_rows){
+        if(($('#row-'+total_rows).children().length == 1) || (total_rows == 1)){
+            $("#container-"+prev_rowID_num).addClass('active');
+            $(element).parent().parent().parent().parent().remove();
+            // dont remove the container if there is one photo in container 1
+            if(!((total_rows == 1) && ($('#row-'+total_rows).children().length == 1))){
+                $('#container-'+total_rows).remove();
+                total_rows--;
+            }
+        }
     }
-
+    else{
+        $(element).parent().parent().parent().parent().remove();
+        var next_rowID = "row-"+next_rowID_num;
+        var NextElement= document.getElementById(next_rowID).getElementsByClassName("col-lg-6")[0]
+        $(NextElement).appendTo('#'+delete_photo_rowID);
+        if(($('#row-'+total_rows).children().length == 0)){
+            $(element).parent().parent().parent().parent().remove();
+            $('#container-'+total_rows).remove();
+            total_rows--;
+        }
+    }
+    total_rows = $("#add-photos").children().length;
+    //if the last row has only one child, then is_photo_odd is true
     if($('#row-'+total_rows).children().length == 1){
         is_photo_odd = true;
-    } else if ($('#row-'+total_rows).children().length == 2){
+    } else{
         is_photo_odd = false;
     }
 
-    
-
-    // for (i = next_rowID_num; i < total_rows; i++) { 
-    //     var curr_row_id = "#" + "row-"+next_rowID_num;
-    //     var curr_row_length = $(curr_row_id).children().length;
-    //     if(curr_row_length < 2){
-    //         var next_photo_row = parseInt(next_rowID_num)+1;
-    //         var next_photo_rowID = "row-"+next_photo_row;
-    //         var next_photo= document.getElementById(next_photo_rowID).getElementsByClassName("col-lg-6")[0];
-    //         $(next_photo).appendTo(curr_row_id);
-    //     }
-    //   }
-    
-    // if($('#row-2').children().length == 0){
-    //     $('.carousel-control-next-icon').hide();
-    //     $('.carousel-control-prev-icon').hide();
-    // }
-    // else{
-    //     $('.carousel-control-next-icon').show();
-    //     $('.carousel-control-prev-icon').show();
-    // }
+    if(total_rows < 2){
+        $(carousel-control-prev-icon).hide();
+        $(carousel-control-next-icon).hide();
+    }
+    temp_image_object_len = 2*(total_rows-1) + ($('#row-'+total_rows).children().length);
 };
 
 var remove_photo_button = ()=> {
