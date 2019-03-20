@@ -396,7 +396,6 @@ function show_preview() {
     var rowNumber;
     var was_previous_odd = false;
     var create_new_row = true;
-
     if(is_photo_odd) {
         
         next_sub_photo = $("#add-photos").children().length;
@@ -529,6 +528,13 @@ function show_preview() {
 
     $("#add-photos").append(html);
 
+    console.log(rowName);
+    if(rowName !=  "#row-1"){
+        $(".carousel-control-prev-icon").show();
+        $(".carousel-control-next-icon").show(); 
+        
+    }
+
 }
         
 var img_footer = () => {
@@ -640,7 +646,13 @@ var delete_photo = (element)=> {
                 $('#container-'+total_rows).remove();
                 total_rows--;
             }
-        }
+       }
+       else{
+            $(element).parent().parent().parent().parent().remove();
+       }
+    }
+    else if(delete_photo_rowID_num == total_rows){
+        $(element).parent().parent().parent().parent().remove();
     }
     else{
         $(element).parent().parent().parent().parent().remove();
@@ -660,12 +672,12 @@ var delete_photo = (element)=> {
     } else{
         is_photo_odd = false;
     }
-
     if(total_rows < 2){
-        $(carousel-control-prev-icon).hide();
-        $(carousel-control-next-icon).hide();
+        $(".carousel-control-prev-icon").hide();
+        $(".carousel-control-next-icon").hide();
     }
-    temp_image_object_len = 2*(total_rows-1) + ($('#row-'+total_rows).children().length);
+    
+    //temp_image_object_len = 2*(total_rows-1) + ($('#row-'+total_rows).children().length);
 };
 
 var remove_photo_button = ()=> {
