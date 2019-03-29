@@ -567,8 +567,9 @@ var img_desc_temp = ()=> {
             "<div class=\"row\">"+
                 "<div class=\"col-lg-6\">"+
                     "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
-                "</div>"+
+                "</div>"+           
                 "<div class=\"col-lg-6\">"+
+                "<div class=\"mobile-margin\">" + "</div>" +      
                     "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\" placeholder=\"Anything special about the Photo?\"></textarea>"+
                 "</div>"+
             "</div>"
