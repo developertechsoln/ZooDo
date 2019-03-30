@@ -755,7 +755,7 @@ $(document).on("change", "#videos", function(evt) {
                                     "<button type=\"button\" class=\"close\" onclick = delete_video("+total_number_of_videos+")>"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
-                                    "<video style=\"max-width: 100%; z-index:1000\" controls>"+
+                                    "<video style=\"max-width: 100%; \" controls>"+
                                         "<source id=\"video-preview-"+total_number_of_videos+"\">"+
                                     "</video>"+
                                 "</div>"+
@@ -777,7 +777,7 @@ $(document).on("change", "#videos", function(evt) {
                                     "<button type=\"button\" class=\"close\" id=\"remove-vid\" onclick = delete_video("+total_number_of_videos+")>"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
-                                    "<video style=\"max-width: 100%;  z-index:1000\" controls>"+
+                                    "<video style=\"max-width: 100%; \" controls>"+
                                         "<source id=\"video-preview-"+total_number_of_videos+"\">"+
                                     "</video>"+
                                 "</div>"+
