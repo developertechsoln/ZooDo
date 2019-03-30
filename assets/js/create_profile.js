@@ -267,7 +267,7 @@ $("#update-headline").click(() => {
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);
-        //document.getElementById("#headline-input").value = ""; //todo what is this used for and is it needed ??
+        document.getElementById("headline-input").value = ""; 
     }
 });
 
@@ -878,7 +878,7 @@ $("#create-profile").click(function(){
     document.getElementById("createProfileLoader").style.display = "inline-block";
 
     var userDescription = $("#personal-description").val();
-    var headline = $("#headline").html();
+    var headline = headlineCorrector();
     var numberOfEducation = $("#extra-education").children().length + 1;
     var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
     var mainJson = {
@@ -978,6 +978,16 @@ $("#create-profile").click(function(){
     });
 
 });
+
+var headlineCorrector = () => {
+    var headline = $("#headline").html();
+    console.log(headline);
+    if(headline == "This is your Introduction Headline. Change it using below text field."){
+        headline = "";
+    }
+    console.log("This - "+headline+"-yea");
+    return headline;
+}
 
 //This function is responsible to send all the files in file array to firebase storage
 function sendAllFilesToStorage(uid, category){
