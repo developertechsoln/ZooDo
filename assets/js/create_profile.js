@@ -746,12 +746,12 @@ $(document).on("change", "#videos", function(evt) {
         sub_video_string = "#sub-videos-"+number_of_sub_videos;
 
         $(sub_video_string).append(
-            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\">"+
+            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\" style=\"z-index:1;\">"+
                 "<div style=\"width: auto;\">"+
                     "<div class=\"card card-stats mb-4 mb-lg-0\">"+
                         "<div class=\"card-body\">"+
                             "<div class=\"row\">"+
-                                "<div class=\"col-12 text-center\">"+
+                                "<div class=\"col-12 text-center\" >"+
                                     "<button type=\"button\" class=\"close\" onclick = delete_video("+total_number_of_videos+")>"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
@@ -768,7 +768,7 @@ $(document).on("change", "#videos", function(evt) {
     } else {
 
         $(sub_video_string).append(
-            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\">"+
+            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\" style=\"z-index:1;\">"+
                 "<div style=\"width: auto;\">"+
                     "<div class=\"card card-stats mb-4 mb-lg-0\">"+
                         "<div class=\"card-body\">"+
