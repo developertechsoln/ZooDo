@@ -628,7 +628,7 @@ var prev_photo_button = ()=> {
 
 
 /* 
-    Delete photo - under developement by DC
+    Delete photo - DC
 */
 var delete_photo = (element)=> {
     var total_rows = $("#add-photos").children().length;
@@ -807,17 +807,18 @@ $(document).on("change", "#videos", function(evt) {
 var delete_video = (video_to_delete) => {
     var delete_video_row_id = $("#video-"+video_to_delete).parent().attr('id');
     $("#video-"+video_to_delete).remove();
- 
-    var delete_video_rowID_num = delete_video_row_id.replace("sub-videos-",'');
-    
-    var next_row_num = parseInt(delete_video_rowID_num)+1;
-    var next_row_name = "#sub-videos-"+next_row_num;
-   
-    var first_video_next_row = $(next_row_name).children(":first").attr("id");
-  
-    $('#' + first_video_next_row).appendTo('#'+delete_video_row_id);
 
-    var total_rows_of_video = $("#video-preview").children().length;
+    var delete_video_rowID_num = delete_video_row_id.replace("sub-videos-",'');
+    var total_rows_of_video = ($("#video_preview").children().length)/2;
+    var next_row_num = parseInt(delete_video_rowID_num)+1;
+
+    for(i = next_row_num; i <= total_rows_of_video; i++){
+        var curr= i-1;
+        var curr_row_name = "#sub-videos-"+ curr;
+        var next_row_name = "#sub-videos-"+ i;
+        var first_video_next_row = $(next_row_name).children(":first").attr("id");
+         $('#' + first_video_next_row).appendTo(curr_row_name);
+    }
     if($('#sub-videos-'+total_rows_of_video).children().length == 0){
         $('#sub-videos-'+total_rows_of_video).next('br').remove();
         $('#sub-videos-'+total_rows_of_video).remove();
