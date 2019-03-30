@@ -378,9 +378,59 @@
                             </div>
                         </div>
                         <div class="card-body" id="photos-section">
-                            <div class="row ml-2">
 
+                            <div class="row ml-2" id="photos-row-1">
+
+                                    <div class="card col-lg-3 border-primary" id="photo1">
+                                        <div class="pic-content">
+                                            <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-1-800x800.jpg">
+                                            <div class="icons">
+                                                <a href="#" id="viewPic" class="btn-icon btn-secondary" title="View Image" data-toggle="modal" data-target="#viewPicModal">
+                                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
+                                                </a>
+                                                <hr>
+                                                <a href="#" id="viewDesc" class="btn-icon btn-secondary" title="View description" data-toggle="modal" data-target="#viewDescModal">
+                                                    <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1"></div>
                                     <div class="card col-lg-3 border-primary">
+                                        <div class="pic-content">
+                                            <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-2-800x800.jpg">
+                                            <div class="icons">
+                                                <a href="#" class="btn-icon btn-secondary" title="View Image">
+                                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
+                                                </a>
+                                                <hr>
+                                                <a href="#" class="btn-icon btn-secondary" title="View description">
+                                                    <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1"></div>
+                                    <div class="card col-lg-3 border-primary">
+                                        <div class="pic-content">
+                                            <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-3-800x800.jpg">
+                                            <div class="icons">
+                                                <a href="#" class="btn-icon btn-secondary" title="View Image">
+                                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
+                                                </a>
+                                                <hr>
+                                                <a href="#" class="btn-icon btn-secondary" title="View description">
+                                                    <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            </div>
+                            <br>
+                            <div class="row ml-2" id="photos-row-2">
+
+                                    <div class="card col-lg-3 border-primary" id="photo4">
                                         <div class="pic-content">
                                             <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-1-800x800.jpg">
                                             <div class="icons">
@@ -425,11 +475,65 @@
                                         </div>
                                     </div>
 
+                                    <!-- View Picture Modal -->
+                                  <div class="modal fade" id="viewPicModal" tabindex="-1" role="dialog" aria-labelledby="viewPicModal" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <!-- <h5 class="modal-title" id="viewPicModal">Modal title</h5> -->
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <img class="card-img-top mb-3 mt-3" id="Pic1" src="assets/img/theme/team-1-800x800.jpg">
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                   <!-- Description Modal -->
+                                   <div class="modal fade" id="viewDescModal" tabindex="-1" role="dialog" aria-labelledby="viewDescModal" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <!-- <h5 class="modal-title" id="viewDescModal">Modal title</h5> -->
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <div class="row">
+                                            <div class="col-lg-6">
+                                                <img class="card-img-top mb-3 mt-3" id="Pic1" src="assets/img/theme/team-1-800x800.jpg">
+                                            </div>
+                                            <div class="col-lg-6">
+                                              <div class="container" id="descCont">
+                                                Hey yessss.
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
+            
             <!-- Videos -->
             <div class="row">
                 <div class="col-xl-12 mb-5">

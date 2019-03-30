@@ -14,6 +14,13 @@
 
 }
 
+#Pic1 {
+	transition: none;
+}
+#Pic1:hover {
+	transform: none;
+}
+
 .pic-content:hover .icons{
     opacity: 1;
 }
@@ -49,4 +56,11 @@
 	-moz-transition: all 0.2s linear, 0.3s;
 	-o-transition: all 0.2s linear, 0.3s;
 	-transition: all 0.2s linear, 0.3s;
+}
+
+#descCont {	
+	border: 1px solid #5e72e4;
+	padding: 8px 80px 8px 8px;
+	height: 100%;
+	border-radius: 10px;
 }
