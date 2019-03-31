@@ -637,8 +637,9 @@ var delete_photo = (element)=> {
     var next_rowID_num = parseInt(delete_photo_rowID_num)+1;
     var prev_rowID_num = parseInt(delete_photo_rowID_num)-1;
     
-    //if the last row has only one photo, then make the row before if active before deleting that element
+    //If deleting from the last row
     if(delete_photo_rowID_num == total_rows){
+        //if the last row has only one photo, then make the row before if active before deleting that element
         if(($('#row-'+total_rows).children().length == 1) || (total_rows == 1)){
             $("#container-"+prev_rowID_num).addClass('active');
             $(element).parent().parent().parent().parent().remove();
@@ -652,20 +653,23 @@ var delete_photo = (element)=> {
             $(element).parent().parent().parent().parent().remove();
        }
     }
-    else if(delete_photo_rowID_num == total_rows){
-        $(element).parent().parent().parent().parent().remove();
-    }
     else{
+        // For shifting all elements by 1 to fill the gap
         $(element).parent().parent().parent().parent().remove();
-        var next_rowID = "row-"+next_rowID_num;
-        var NextElement= document.getElementById(next_rowID).getElementsByClassName("col-lg-6")[0]
-        $(NextElement).appendTo('#'+delete_photo_rowID);
-        if(($('#row-'+total_rows).children().length == 0)){
-            $(element).parent().parent().parent().parent().remove();
-            $('#container-'+total_rows).remove();
-            total_rows--;
-        }
+        for(i = next_rowID_num; i<=total_rows; i++){
+            var curr = i-1;
+            var curr_rowID = "row-" + curr;
+            var next_rowID = "row-" + i;
+            var NextElement= document.getElementById(next_rowID).getElementsByClassName("col-lg-6")[0]
+            $(NextElement).appendTo('#' + curr_rowID);
+            if(($('#row-'+total_rows).children().length == 0)){
+                $(element).parent().parent().parent().parent().remove();
+                $('#container-'+total_rows).remove();
+                total_rows--;
+            }
+        } 
     }
+
     total_rows = $("#add-photos").children().length;
     //if the last row has only one child, then is_photo_odd is true
     if($('#row-'+total_rows).children().length == 1){
@@ -680,6 +684,7 @@ var delete_photo = (element)=> {
     
     //temp_image_object_len = 2*(total_rows-1) + ($('#row-'+total_rows).children().length);
 };
+
 
 var remove_photo_button = ()=> {
     $("#modal_body").empty();
@@ -811,7 +816,7 @@ var delete_video = (video_to_delete) => {
     var delete_video_rowID_num = delete_video_row_id.replace("sub-videos-",'');
     var total_rows_of_video = ($("#video_preview").children().length)/2;
     var next_row_num = parseInt(delete_video_rowID_num)+1;
-
+    // For shifting all elements by 1 to fill the gap
     for(i = next_row_num; i <= total_rows_of_video; i++){
         var curr= i-1;
         var curr_row_name = "#sub-videos-"+ curr;
