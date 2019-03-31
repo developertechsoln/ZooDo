@@ -239,23 +239,25 @@ var remove_skill = (num_of_skill) => {
     $("#skill-"+num_of_skill).remove();
     var id_last_num = id_last.replace("sub-skills-",'');
     var next_id_num = parseInt(id_last_num)+1;
-    var next_id_name = "#sub-skills-"+next_id_num;
-    var next_skill_id = $(next_id_name).children(":first").attr("id");
-    $('#' + next_skill_id).appendTo('#'+id_last);
-    
-    if($('#sub-skills-'+number_of_sub_skills).children().length == 0){
-        $('#sub-skills-'+number_of_sub_skills).next('br').remove();
-        $('#sub-skills-'+number_of_sub_skills).remove();
-        number_of_sub_skills--;
+    var total_skills = ($("#all-skills").children().length)/2;
+    for(i = next_id_num; i <= total_skills; i++){
+        var curr = i-1;
+        var curr_id_name = "#sub-skills-"+curr;
+        var next_id_name = "#sub-skills-"+i;
+        console.log(curr_id_name);
+        console.log(next_id_name);
+        console.log(total_skills);
+        var next_skill_id = $(next_id_name).children(":first").attr("id");
+        $('#' + next_skill_id).appendTo(curr_id_name);
     }
-    
-    // for appropriately removing skills from the skill, description, skill number array 
-    for(var ch = 0; ch<skill_n_index; ch++){
-        if (skill_num_arr[ch]==num_of_skill){
-            skill_name_arr.splice(ch,1);
-            skill_desc_arr.splice(ch,1);
-            skill_num_arr.splice(ch,1);
-        }
+
+    if($('#sub-skills-'+total_skills).children().length == 0){
+        $('#sub-skills-'+total_skills).next('br').remove();
+        $('#sub-skills-'+total_skills).remove();
+        total_skills--;
+    }
+    if(total_number_of_skills = 0){
+        var total_number_of_skills = 1;
     }
 }
 
