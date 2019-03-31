@@ -239,23 +239,25 @@ var remove_skill = (num_of_skill) => {
     $("#skill-"+num_of_skill).remove();
     var id_last_num = id_last.replace("sub-skills-",'');
     var next_id_num = parseInt(id_last_num)+1;
-    var next_id_name = "#sub-skills-"+next_id_num;
-    var next_skill_id = $(next_id_name).children(":first").attr("id");
-    $('#' + next_skill_id).appendTo('#'+id_last);
-    
-    if($('#sub-skills-'+number_of_sub_skills).children().length == 0){
-        $('#sub-skills-'+number_of_sub_skills).next('br').remove();
-        $('#sub-skills-'+number_of_sub_skills).remove();
-        number_of_sub_skills--;
+    var total_skills = ($("#all-skills").children().length)/2;
+    for(i = next_id_num; i <= total_skills; i++){
+        var curr = i-1;
+        var curr_id_name = "#sub-skills-"+curr;
+        var next_id_name = "#sub-skills-"+i;
+        console.log(curr_id_name);
+        console.log(next_id_name);
+        console.log(total_skills);
+        var next_skill_id = $(next_id_name).children(":first").attr("id");
+        $('#' + next_skill_id).appendTo(curr_id_name);
     }
-    
-    // for appropriately removing skills from the skill, description, skill number array 
-    for(var ch = 0; ch<skill_n_index; ch++){
-        if (skill_num_arr[ch]==num_of_skill){
-            skill_name_arr.splice(ch,1);
-            skill_desc_arr.splice(ch,1);
-            skill_num_arr.splice(ch,1);
-        }
+
+    if($('#sub-skills-'+total_skills).children().length == 0){
+        $('#sub-skills-'+total_skills).next('br').remove();
+        $('#sub-skills-'+total_skills).remove();
+        total_skills--;
+    }
+    if(total_number_of_skills = 0){
+        var total_number_of_skills = 1;
     }
 }
 
@@ -267,7 +269,7 @@ $("#update-headline").click(() => {
         alert("Please fill in the headline box.");
     } else {
         $("#headline").text(headline);
-        //document.getElementById("#headline-input").value = ""; //todo what is this used for and is it needed ??
+        document.getElementById("headline-input").value = ""; 
     }
 });
 
@@ -567,8 +569,9 @@ var img_desc_temp = ()=> {
             "<div class=\"row\">"+
                 "<div class=\"col-lg-6\">"+
                     "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
-                "</div>"+
+                "</div>"+           
                 "<div class=\"col-lg-6\">"+
+                "<div class=\"mobile-margin\">" + "</div>" +      
                     "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\" placeholder=\"Anything special about the Photo?\"></textarea>"+
                 "</div>"+
             "</div>"
@@ -627,7 +630,7 @@ var prev_photo_button = ()=> {
 
 
 /* 
-    Delete photo - under developement by DC
+    Delete photo - DC
 */
 var delete_photo = (element)=> {
     var total_rows = $("#add-photos").children().length;
@@ -636,8 +639,9 @@ var delete_photo = (element)=> {
     var next_rowID_num = parseInt(delete_photo_rowID_num)+1;
     var prev_rowID_num = parseInt(delete_photo_rowID_num)-1;
     
-    //if the last row has only one photo, then make the row before if active before deleting that element
+    //If deleting from the last row
     if(delete_photo_rowID_num == total_rows){
+        //if the last row has only one photo, then make the row before if active before deleting that element
         if(($('#row-'+total_rows).children().length == 1) || (total_rows == 1)){
             $("#container-"+prev_rowID_num).addClass('active');
             $(element).parent().parent().parent().parent().remove();
@@ -651,20 +655,23 @@ var delete_photo = (element)=> {
             $(element).parent().parent().parent().parent().remove();
        }
     }
-    else if(delete_photo_rowID_num == total_rows){
-        $(element).parent().parent().parent().parent().remove();
-    }
     else{
+        // For shifting all elements by 1 to fill the gap
         $(element).parent().parent().parent().parent().remove();
-        var next_rowID = "row-"+next_rowID_num;
-        var NextElement= document.getElementById(next_rowID).getElementsByClassName("col-lg-6")[0]
-        $(NextElement).appendTo('#'+delete_photo_rowID);
-        if(($('#row-'+total_rows).children().length == 0)){
-            $(element).parent().parent().parent().parent().remove();
-            $('#container-'+total_rows).remove();
-            total_rows--;
-        }
+        for(i = next_rowID_num; i<=total_rows; i++){
+            var curr = i-1;
+            var curr_rowID = "row-" + curr;
+            var next_rowID = "row-" + i;
+            var NextElement= document.getElementById(next_rowID).getElementsByClassName("col-lg-6")[0]
+            $(NextElement).appendTo('#' + curr_rowID);
+            if(($('#row-'+total_rows).children().length == 0)){
+                $(element).parent().parent().parent().parent().remove();
+                $('#container-'+total_rows).remove();
+                total_rows--;
+            }
+        } 
     }
+
     total_rows = $("#add-photos").children().length;
     //if the last row has only one child, then is_photo_odd is true
     if($('#row-'+total_rows).children().length == 1){
@@ -679,6 +686,7 @@ var delete_photo = (element)=> {
     
     //temp_image_object_len = 2*(total_rows-1) + ($('#row-'+total_rows).children().length);
 };
+
 
 var remove_photo_button = ()=> {
     $("#modal_body").empty();
@@ -745,16 +753,16 @@ $(document).on("change", "#videos", function(evt) {
         sub_video_string = "#sub-videos-"+number_of_sub_videos;
 
         $(sub_video_string).append(
-            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\">"+
+            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\" style=\"z-index:1;\">"+
                 "<div style=\"width: auto;\">"+
                     "<div class=\"card card-stats mb-4 mb-lg-0\">"+
                         "<div class=\"card-body\">"+
                             "<div class=\"row\">"+
-                                "<div class=\"col-12 text-center\">"+
+                                "<div class=\"col-12 text-center\" >"+
                                     "<button type=\"button\" class=\"close\" onclick = delete_video("+total_number_of_videos+")>"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
-                                    "<video style=\"max-width: 100%; z-index:1000\" controls>"+
+                                    "<video style=\"max-width: 100%; \" controls>"+
                                         "<source id=\"video-preview-"+total_number_of_videos+"\">"+
                                     "</video>"+
                                 "</div>"+
@@ -767,7 +775,7 @@ $(document).on("change", "#videos", function(evt) {
     } else {
 
         $(sub_video_string).append(
-            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\">"+
+            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\" style=\"z-index:1;\">"+
                 "<div style=\"width: auto;\">"+
                     "<div class=\"card card-stats mb-4 mb-lg-0\">"+
                         "<div class=\"card-body\">"+
@@ -776,7 +784,7 @@ $(document).on("change", "#videos", function(evt) {
                                     "<button type=\"button\" class=\"close\" id=\"remove-vid\" onclick = delete_video("+total_number_of_videos+")>"+
                                         "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
                                     "</button><br><br>"+
-                                    "<video style=\"max-width: 100%;  z-index:1000\" controls>"+
+                                    "<video style=\"max-width: 100%; \" controls>"+
                                         "<source id=\"video-preview-"+total_number_of_videos+"\">"+
                                     "</video>"+
                                 "</div>"+
@@ -806,17 +814,18 @@ $(document).on("change", "#videos", function(evt) {
 var delete_video = (video_to_delete) => {
     var delete_video_row_id = $("#video-"+video_to_delete).parent().attr('id');
     $("#video-"+video_to_delete).remove();
- 
-    var delete_video_rowID_num = delete_video_row_id.replace("sub-videos-",'');
-    
-    var next_row_num = parseInt(delete_video_rowID_num)+1;
-    var next_row_name = "#sub-videos-"+next_row_num;
-   
-    var first_video_next_row = $(next_row_name).children(":first").attr("id");
-  
-    $('#' + first_video_next_row).appendTo('#'+delete_video_row_id);
 
-    var total_rows_of_video = $("#video-preview").children().length;
+    var delete_video_rowID_num = delete_video_row_id.replace("sub-videos-",'');
+    var total_rows_of_video = ($("#video_preview").children().length)/2;
+    var next_row_num = parseInt(delete_video_rowID_num)+1;
+    // For shifting all elements by 1 to fill the gap
+    for(i = next_row_num; i <= total_rows_of_video; i++){
+        var curr= i-1;
+        var curr_row_name = "#sub-videos-"+ curr;
+        var next_row_name = "#sub-videos-"+ i;
+        var first_video_next_row = $(next_row_name).children(":first").attr("id");
+         $('#' + first_video_next_row).appendTo(curr_row_name);
+    }
     if($('#sub-videos-'+total_rows_of_video).children().length == 0){
         $('#sub-videos-'+total_rows_of_video).next('br').remove();
         $('#sub-videos-'+total_rows_of_video).remove();
@@ -877,7 +886,7 @@ $("#create-profile").click(function(){
     document.getElementById("createProfileLoader").style.display = "inline-block";
 
     var userDescription = $("#personal-description").val();
-    var headline = $("#headline").html();
+    var headline = headlineCorrector();
     var numberOfEducation = $("#extra-education").children().length + 1;
     var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
     var mainJson = {
@@ -977,6 +986,16 @@ $("#create-profile").click(function(){
     });
 
 });
+
+var headlineCorrector = () => {
+    var headline = $("#headline").html();
+    console.log(headline);
+    if(headline == "This is your Introduction Headline. Change it using below text field."){
+        headline = "";
+    }
+    console.log("This - "+headline+"-yea");
+    return headline;
+}
 
 //This function is responsible to send all the files in file array to firebase storage
 function sendAllFilesToStorage(uid, category){
