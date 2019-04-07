@@ -233,7 +233,6 @@ $("#add-skill").click(()=> {
 });
 
 var remove_skill = (num_of_skill) => {
-
     // for removing skills in order
     var id_last = $("#skill-"+num_of_skill).parent().attr('id');
     $("#skill-"+num_of_skill).remove();
@@ -260,7 +259,6 @@ var remove_skill = (num_of_skill) => {
             skill_name_arr.splice(ch,1);
             skill_desc_arr.splice(ch,1);
             skill_num_arr.splice(ch,1);
-            console.log(skill_name_arr);
         }
     }
 }
@@ -688,7 +686,13 @@ var delete_photo = (element)=> {
         $(".carousel-control-next-icon").hide();
     }
     
-    //temp_image_object_len = 2*(total_rows-1) + ($('#row-'+total_rows).children().length);
+    // for appropriately removing skills from the skill, description, skill number array 
+    for(var i = 0; i<skill_n_index; i++){
+        if (image_object[i]== image_object[delete_photo]){
+            image_object.splice(ch,1);
+            image_desc.splice(ch,1);
+        }
+    }
 };
 
 
@@ -723,6 +727,8 @@ var remove_photo_button = ()=> {
 
 var total_number_of_videos = 1;
 var video_object = [];
+var video_index = [];
+var last_video_index = 0;
 $(document).on("change", "#videos", function(evt) {
 
     var number_of_sub_videos = ($("#video_preview").children().length) /2;
@@ -805,9 +811,9 @@ $(document).on("change", "#videos", function(evt) {
     var source = $(video_preview_string);
     source[0].src = URL.createObjectURL(this.files[0]);
     source.parent()[0].load();
-
     video_object[total_number_of_videos-1] = this.files[0];
-
+    video_index[last_video_index] = total_number_of_videos;
+    last_video_index++;
     total_number_of_videos++;
 });
 
@@ -816,6 +822,7 @@ $(document).on("change", "#videos", function(evt) {
     Delete video - DC
 */
 var delete_video = (video_to_delete) => {
+    console.log(video_to_delete);
     var delete_video_row_id = $("#video-"+video_to_delete).parent().attr('id');
     $("#video-"+video_to_delete).remove();
 
@@ -834,6 +841,14 @@ var delete_video = (video_to_delete) => {
         $('#sub-videos-'+total_rows_of_video).next('br').remove();
         $('#sub-videos-'+total_rows_of_video).remove();
         total_rows_of_video--;
+    }
+    
+    //for loop to delete the video from the video_object array(which goes to the storage in firebase)
+    for(var i = 0; i < last_video_index; i++){
+        if (video_index[i] == video_to_delete){
+            video_object.splice(i,1);
+            video_index.splice(i,1);
+        }
     }
 }
 
