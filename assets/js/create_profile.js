@@ -833,53 +833,6 @@ var delete_video = (video_to_delete) => {
     }
 }
 
-
-
-// Expected json
-
-// {
-//     profileInfo:{
-//         Education:{
-//             edu1:{
-
-//             },
-//             edu2:{
-
-//             },
-//             placeholder: "0"
-//         },
-//         Work:{
-//             work1:{
-
-//             },
-//             work2:{
-
-//             },
-//             placeholder: "0"
-//         }
-//     },
-//     profileMedia:{
-//         media1:{
-//             url: "",
-//             storageName: "",
-//             userSelectedName: "",
-//             mediaFileType: "Image",
-//             placeholder: "0"
-//         },
-//         media2:{
-//             url: "",
-//             storageName: "",
-//             userSelectedName: "",
-//             mediaFileType: "Video",
-//             placeholder: "0"
-//         }
-//     },
-//     placeholder: "0"
-// }
-
-
-
-
 // this function will store values of all fields;
 $("#create-profile").click(function(){
 
