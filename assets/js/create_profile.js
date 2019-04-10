@@ -635,6 +635,7 @@ var prev_photo_button = ()=> {
     Delete photo - DC
 */
 var delete_photo = (element)=> {
+    console.log(element);
     var total_rows = $("#add-photos").children().length;
     var delete_photo_rowID = $(element).parent().parent().parent().parent().parent().attr('id');
     var delete_photo_rowID_num = delete_photo_rowID.replace("row-",'');
@@ -908,9 +909,13 @@ $("#create-profile").click(function(){
     var headline = headlineCorrector();
     var numberOfEducation = $("#extra-education").children().length + 1;
     var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
-    var mainJson = {
-        personalDescription: userDescription,
+    // var profilePic = $("#profile_photo").val();
+    var personalIntro = {
         headline: headline,
+        personalDescription: userDescription,
+    }
+    var mainJson = {
+        personalIntro: personalIntro,
         education:{},
         workExperience:{},
         skills:{},
@@ -1008,11 +1013,9 @@ $("#create-profile").click(function(){
 
 var headlineCorrector = () => {
     var headline = $("#headline").html();
-    console.log(headline);
     if(headline == "This is your Introduction Headline. Change it using below text field."){
         headline = "";
     }
-    console.log("This - "+headline+"-yea");
     return headline;
 }
 
