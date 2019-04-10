@@ -233,7 +233,6 @@ $("#add-skill").click(()=> {
 });
 
 var remove_skill = (num_of_skill) => {
-
     // for removing skills in order
     var id_last = $("#skill-"+num_of_skill).parent().attr('id');
     $("#skill-"+num_of_skill).remove();
@@ -244,9 +243,6 @@ var remove_skill = (num_of_skill) => {
         var curr = i-1;
         var curr_id_name = "#sub-skills-"+curr;
         var next_id_name = "#sub-skills-"+i;
-        console.log(curr_id_name);
-        console.log(next_id_name);
-        console.log(total_skills);
         var next_skill_id = $(next_id_name).children(":first").attr("id");
         $('#' + next_skill_id).appendTo(curr_id_name);
     }
@@ -256,8 +252,14 @@ var remove_skill = (num_of_skill) => {
         $('#sub-skills-'+total_skills).remove();
         total_skills--;
     }
-    if(total_number_of_skills = 0){
-        var total_number_of_skills = 1;
+    
+     // for appropriately removing skills from the skill, description, skill number array 
+     for(var ch = 0; ch<skill_n_index; ch++){
+        if (skill_num_arr[ch]==num_of_skill){
+            skill_name_arr.splice(ch,1);
+            skill_desc_arr.splice(ch,1);
+            skill_num_arr.splice(ch,1);
+        }
     }
 }
 
@@ -633,6 +635,7 @@ var prev_photo_button = ()=> {
     Delete photo - DC
 */
 var delete_photo = (element)=> {
+    console.log(element);
     var total_rows = $("#add-photos").children().length;
     var delete_photo_rowID = $(element).parent().parent().parent().parent().parent().attr('id');
     var delete_photo_rowID_num = delete_photo_rowID.replace("row-",'');
@@ -684,7 +687,13 @@ var delete_photo = (element)=> {
         $(".carousel-control-next-icon").hide();
     }
     
-    //temp_image_object_len = 2*(total_rows-1) + ($('#row-'+total_rows).children().length);
+    // for appropriately removing skills from the skill, description, skill number array 
+    for(var i = 0; i<skill_n_index; i++){
+        if (image_object[i]== image_object[delete_photo]){
+            image_object.splice(ch,1);
+            image_desc.splice(ch,1);
+        }
+    }
 };
 
 
@@ -719,6 +728,8 @@ var remove_photo_button = ()=> {
 
 var total_number_of_videos = 1;
 var video_object = [];
+var video_index = [];
+var last_video_index = 0;
 $(document).on("change", "#videos", function(evt) {
 
     var number_of_sub_videos = ($("#video_preview").children().length) /2;
@@ -801,9 +812,9 @@ $(document).on("change", "#videos", function(evt) {
     var source = $(video_preview_string);
     source[0].src = URL.createObjectURL(this.files[0]);
     source.parent()[0].load();
-
     video_object[total_number_of_videos-1] = this.files[0];
-
+    video_index[last_video_index] = total_number_of_videos;
+    last_video_index++;
     total_number_of_videos++;
 });
 
@@ -812,6 +823,7 @@ $(document).on("change", "#videos", function(evt) {
     Delete video - DC
 */
 var delete_video = (video_to_delete) => {
+    console.log(video_to_delete);
     var delete_video_row_id = $("#video-"+video_to_delete).parent().attr('id');
     $("#video-"+video_to_delete).remove();
 
@@ -831,6 +843,14 @@ var delete_video = (video_to_delete) => {
         $('#sub-videos-'+total_rows_of_video).remove();
         total_rows_of_video--;
     }
+    
+    //for loop to delete the video from the video_object array(which goes to the storage in firebase)
+    for(var i = 0; i < last_video_index; i++){
+        if (video_index[i] == video_to_delete){
+            video_object.splice(i,1);
+            video_index.splice(i,1);
+        }
+    }
 }
 
 // this function will store values of all fields;
@@ -842,9 +862,13 @@ $("#create-profile").click(function(){
     var headline = headlineCorrector();
     var numberOfEducation = $("#extra-education").children().length + 1;
     var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
-    var mainJson = {
-        personalDescription: userDescription,
+    // var profilePic = $("#profile_photo").val();
+    var personalIntro = {
         headline: headline,
+        personalDescription: userDescription,
+    }
+    var mainJson = {
+        personalIntro: personalIntro,
         education:{},
         workExperience:{},
         skills:{},
@@ -942,11 +966,9 @@ $("#create-profile").click(function(){
 
 var headlineCorrector = () => {
     var headline = $("#headline").html();
-    console.log(headline);
     if(headline == "This is your Introduction Headline. Change it using below text field."){
         headline = "";
     }
-    console.log("This - "+headline+"-yea");
     return headline;
 }
 

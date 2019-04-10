@@ -6,6 +6,7 @@
 .card img{
     display: block;
     transition: .5s ease;
+    border-radius: 8%;
 }
 .card img:hover{
     opacity: 0.8;
