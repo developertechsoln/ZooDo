@@ -155,16 +155,21 @@ $("#remove-extra-work-experience").click(function() {
 var skill_name_arr =[];
 var skill_desc_arr = [];
 var skill_num_arr = [];
-var skill_n_index = 0;
-var skill_d_index = 0;
 // For storing the total number of skills
 var total_number_of_skills = 1;
 var number_of_sub_skills;
 var number_of_skills;
 $("#add-skill").click(()=> {
-    number_of_skills = ($("#all-skills").children().length) /2;
+    number_of_skills = ($("#all-skills").children().length) / 2;
     var sub_skill_string = "#sub-skills-"+number_of_skills;
     number_of_sub_skills = $(sub_skill_string).children().length;
+
+    var temp_number_of_skills;
+    if(number_of_skills != 0) {
+        temp_number_of_skills = number_of_skills-1;
+    } else {
+        temp_number_of_skills = number_of_skills;
+    }
 
     var skill_name = $("#skill-name").val();
     var skill_desc = $("#skill-description").val();
@@ -179,22 +184,24 @@ $("#add-skill").click(()=> {
     } 
     else{
         skill_desc = skill_desc.replace(/\n/g, '<br />');
-        skill_name_arr[skill_n_index] = skill_name;
-        skill_desc_arr[skill_d_index] = skill_desc;
-        skill_num_arr[skill_n_index] = total_number_of_skills;
-        skill_n_index++;
-        skill_d_index++;
-        if(number_of_sub_skills < 3){
+        skill_name_arr[skill_name_arr.length] = skill_name;
+        skill_desc_arr[skill_desc_arr.length] = skill_desc;
+        skill_num_arr[skill_num_arr.length] = total_number_of_skills;
+
+        if(((temp_number_of_skills*3)+number_of_sub_skills) % 3 != 0) {
             $(sub_skill_string).append(
                 "<div class=\"col-lg-4\"  id=\"skill-"+total_number_of_skills+"\">"+
                     "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
                         "<div class=\"card-body\">"+
-                            "<div class=\"row align-items-center\">"+
-                                "<div class=\"col ml--2\">"+
-                                    "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                            "<div class=\"row mb-4\">"+
+                                "<div class=\"col-12\">"+
+                                    "<h3 class=\"card-title text-white\" style=\"text-align: center; letter-spacing: 0.2em;\"><b>"+skill_name+"</b></h3>"+
+                                    "<hr style=\"border-top: 1px solid #ffffff; margin: 1em 0;\"></hr>"+
                                     "<small class=\"text-white\">"+skill_desc+"</small>"+
                                 "</div>"+
-                                "<div class=\"col-auto\">"+
+                            "</div>"+
+                            "<div class=\"row\" style=\"text-align: center;\">"+
+                                "<div class=\"col-12\">"+
                                     "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
                                 "</div>"+
                             "</div>"+
@@ -202,20 +209,22 @@ $("#add-skill").click(()=> {
                     "</div>"+
                 "</div>"
             );
-        }
-        else {
+        } else {
             var sub_skill = "sub-skills-"+((number_of_skills)+1);
             $("#all-skills").append(
                 "<div class=\"row\" id=\""+sub_skill +"\">"+
                     "<div class=\"col-lg-4\"  id=\"skill-"+total_number_of_skills+"\">"+
                         "<div class=\"card bg-gradient-default card-stats mb-4 mb-xl-0\">"+
                             "<div class=\"card-body\">"+
-                                "<div class=\"row align-items-center\">"+
-                                    "<div class=\"col ml--2\">"+
-                                        "<h3 class=\"card-title text-white\">"+skill_name+"</h3>"+
+                                "<div class=\"row mb-4\">"+
+                                    "<div class=\"col-12\">"+
+                                        "<h3 class=\"card-title text-white\" style=\"text-align: center; letter-spacing: 0.2em;\"><b>"+skill_name+"</b></h3>"+
+                                        "<hr style=\"border-top: 1px solid #ffffff; margin: 1em 0;\"></hr>"+
                                         "<small class=\"text-white\">"+skill_desc+"</small>"+
                                     "</div>"+
-                                    "<div class=\"col-auto\">"+
+                                "</div>"+
+                                "<div class=\"row\" style=\"text-align: center;\">"+
+                                    "<div class=\"col-12\">"+
                                         "<button type=\"button\" class=\"btn btn-sm btn-danger\" id=\"remove-skill\" onclick = remove_skill("+total_number_of_skills+")>Remove</button>"+
                                     "</div>"+
                                 "</div>"+
@@ -253,13 +262,12 @@ var remove_skill = (num_of_skill) => {
         total_skills--;
     }
     
-     // for appropriately removing skills from the skill, description, skill number array 
-     for(var ch = 0; ch<skill_n_index; ch++){
-        if (skill_num_arr[ch]==num_of_skill){
-            skill_name_arr.splice(ch,1);
-            skill_desc_arr.splice(ch,1);
-            skill_num_arr.splice(ch,1);
-        }
+     // for appropriately removing skills from the skill, description, skill number array
+     var index_to_delete = skill_num_arr.indexOf(num_of_skill)
+    if (index_to_delete != -1){
+        skill_num_arr.splice(index_to_delete,1);
+        skill_name_arr.splice(index_to_delete,1);
+        skill_desc_arr.splice(index_to_delete,1);
     }
 }
 
@@ -688,7 +696,7 @@ var delete_photo = (element)=> {
     }
     
     // for appropriately removing skills from the skill, description, skill number array 
-    for(var i = 0; i<skill_n_index; i++){
+    for(var i = 0; i<skill_n_index; i++){ ////////////////////////// TODO: WHY YOU USED SKILL_N_INDEX HERE
         if (image_object[i]== image_object[delete_photo]){
             image_object.splice(ch,1);
             image_desc.splice(ch,1);
