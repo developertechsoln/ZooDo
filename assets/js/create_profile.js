@@ -870,7 +870,6 @@ $("#create-profile").click(function(){
     var headline = headlineCorrector();
     var numberOfEducation = $("#extra-education").children().length + 1;
     var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
-    // var profilePic = $("#profile_photo").val();
     var personalIntro = {
         headline: headline,
         personalDescription: userDescription,
@@ -1128,26 +1127,49 @@ function removeFileFromStorage(filePath) {
 
 }
 
+var basic;
+// Sent to firebase
+var profilePicture;
 $(document).on("change", "#upload_profile_pic", function() {
-    
+
+    $("#main-cropper-container").empty();
+    $("#main-cropper-container").append("<div id=\"main-cropper\"> </div>");
+
     var input = document.querySelector("#profile_img");
 
     if (input.files && input.files[0]) {
     
-        var profile_img = input.files[0];
+        var profile_img = input.files[0]
+
+        basic = new Croppie(document.getElementById('main-cropper'),{
+            viewport: { width: 250, height: 250 , type:"circle"},
+            boundary: { width: 300, height: 300 },
+            showZoomer: true,
+        });
         
         var reader = new FileReader();
     
         reader.onload = function (e) {
-            $('#image-cropper').attr('src', e.target.result);
-            var resize = new Croppie($('#image-cropper')[0], {
-                // viewport: { width: 100, height: 100 },
-                // boundary: { width: 300, height: 300 },
-                showZoomer: true
+            basic.bind( {
+                url: e.target.result
             });
         }
 
+        
         reader.readAsDataURL(profile_img);
     }
 
 });
+
+$("#save_profile_img").click(function() {
+
+    basic.result("base64").then(function(dataImg) {
+        profilePicture = dataImg;
+        $('#profile-photo').attr('src', dataImg);
+    })
+
+    $("#upload_profile_pic").modal("hide");
+
+});
+
+

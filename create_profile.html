@@ -18,6 +18,8 @@
   <link type="text/css" rel="stylesheet" href="assets/css/create_profile.css">
   <!-- Argon CSS -->
   <link type="text/css" href="assets/css/argon.css?v=1.0.0" rel="stylesheet">
+  <!-- Dependency -->
+  <link type="text/css" href="assets/css/croppie.css" rel="stylesheet">
   <!-- page css -->
   <link type="text/css" href="assets/css/create_profile.css" rel="stylesheet">
 </head>
@@ -108,11 +110,10 @@
                                   <input id="profile_img" style="display: none;" type="file" accept="image/*"/>
                               </div>
                             </div>
+                            <br>
                             <div class="row text-center">
-                              <div class="col">
-                                <div id="main-cropper">
-                                  <img id="image-cropper" src="#" style="height:350px; width:400px; display: none;"/>
-                                </div>
+                              <div class="col" id="main-cropper-container">
+                                <div id="main-cropper"></div>
                               </div>
                             </div>
                           </div>
@@ -120,7 +121,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="save_profile_img">Save changes</button>
                       </div>
                     </div>
                   </div>
