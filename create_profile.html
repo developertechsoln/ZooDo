@@ -80,12 +80,52 @@
                   <div class="col-lg-3 order-lg-2">
                     <div class="mobile-margin visible-xs"></div>
                     <div class="card-profile-image">
-                      <a href="#">
-                        <img src="assets/img/theme/team-4-800x800.jpg" class="rounded-circle" id="profile-photo">
+                      <a data-toggle="modal" data-target="#upload_profile_pic" style="cursor: pointer;">
+                        <img src="assets/img/theme/profile_photo_placeholder.png" class="rounded-circle" id="profile-photo" style="z-index: 1000;">
                       </a>
                     </div>
                   </div>
                 </div>
+
+                <!-- Modal To Upload Profile Picture -->
+                <div class="modal fade" id="upload_profile_pic" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Upload Profile Picture</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="container">
+                          <div class="container-fluid">
+                            <div class="row text-center">
+                              <div class="col">
+                                  <label for="profile_img" class="btn btn-primary">
+                                      <span class="btn-inner--text">Upload</span>
+                                      <span class="btn-inner--icon"><i class="ni ni-cloud-upload-96"></i></span></label>
+                                  <input id="profile_img" style="display: none;" type="file" accept="image/*"/>
+                              </div>
+                            </div>
+                            <div class="row text-center">
+                              <div class="col">
+                                <div id="main-cropper">
+                                  <img id="image-cropper" src="#" style="height:350px; width:400px; display: none;"/>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                   
                 </div>
@@ -93,7 +133,9 @@
                   <div class="row">
                     <div class="col">
                       <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-                        
+                          <a data-toggle="modal" data-target="#upload_profile_pic" style="cursor: pointer;">
+                            <h6 class="heading-small text-muted mb--3">Upload Profile Picture</h6>
+                          </a>
                       </div>
                     </div>
                   </div>
@@ -126,7 +168,6 @@
                             <span class="btn-inner--text">Add Videos</span>
                             <span class="btn-inner--icon"><i class="ni ni-cloud-upload-96"></i></span></label>
                         <input id="videos" style="display: none;" type="file" accept="video/*"/>
-                        <!-- <button class="btn btn-primary" id="videos-upload">Add Videos</button> -->
                     </div>
                     <br>
                     <div id="video_preview">
@@ -375,6 +416,9 @@
   <script src="assets/js/create_profile.js"></script>
   <!-- Argon JS -->
   <script src="assets/js/argon.js?v=1.0.0"></script>
+
+  <!-- Dependency -->
+  <script src="assets/js/croppie.min.js"></script>
 
   <!-- Firebase App is always required and must be first -->
   <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>

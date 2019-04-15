@@ -738,7 +738,7 @@ var total_number_of_videos = 1;
 var video_object = [];
 var video_index = [];
 var last_video_index = 0;
-$(document).on("change", "#videos", function(evt) {
+$(document).on("change", "#videos", function() {
 
     var number_of_sub_videos = ($("#video_preview").children().length) /2;
 
@@ -1127,3 +1127,27 @@ function removeFileFromStorage(filePath) {
     });
 
 }
+
+$(document).on("change", "#upload_profile_pic", function() {
+    
+    var input = document.querySelector("#profile_img");
+
+    if (input.files && input.files[0]) {
+    
+        var profile_img = input.files[0];
+        
+        var reader = new FileReader();
+    
+        reader.onload = function (e) {
+            $('#image-cropper').attr('src', e.target.result);
+            var resize = new Croppie($('#image-cropper')[0], {
+                // viewport: { width: 100, height: 100 },
+                // boundary: { width: 300, height: 300 },
+                showZoomer: true
+            });
+        }
+
+        reader.readAsDataURL(profile_img);
+    }
+
+});
