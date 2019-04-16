@@ -152,6 +152,61 @@ $("#remove-extra-work-experience").click(function() {
     }
 });
 
+/*
+    Profile Picture Crop Feature - Utkarsh and Shrey
+*/  
+// Croppie object which will allow us to crop the image
+var cropImage;
+// Profile Picture data which is sent to firebase
+var profilePicture;
+
+$(document).on("change", "#upload_profile_pic", function() {
+    // Clear the contents of main-cropper-container and add a new container for cropping images every time we upload a new picture
+    $("#main-cropper-container").empty();
+    $("#main-cropper-container").append("<div id=\"main-cropper\"> </div>");
+
+    // Get the ID of input image
+    var input = document.querySelector("#profile_img");
+
+    // If file is selected
+    if (input.files && input.files[0]) {
+        
+        // First image from the file object
+        var profile_img = input.files[0]
+
+        // New croppie object giving the cropping properties 
+        cropImage = new Croppie(document.getElementById('main-cropper'),{
+            viewport: { width: 250, height: 250 , type:"circle"},
+            boundary: { width: 300, height: 300 },
+            showZoomer: true,
+        });
+        
+        var reader = new FileReader();
+        // When the image is loaded, bind it to the crop layout
+        reader.onload = function (e) {
+            cropImage.bind( {
+                url: e.target.result
+            });
+        }
+        // Reading the image contents
+        reader.readAsDataURL(profile_img);
+    }
+
+});
+
+$("#save_profile_img").click(function() {
+    // Displaying the cropped profile photo
+    cropImage.result("base64").then(function(dataImg) {
+        // Save the base64 data of the image in profilePicture variable which is sent to database
+        profilePicture = dataImg;
+        $('#profile-photo').attr('src', dataImg);
+    })
+    // Hide the modal when we upload the profile picture
+    $("#upload_profile_pic").modal("hide");
+
+});
+
+
 var skill_name_arr =[];
 var skill_desc_arr = [];
 var skill_num_arr = [];
@@ -870,6 +925,7 @@ $("#create-profile").click(function(){
     var headline = headlineCorrector();
     var numberOfEducation = $("#extra-education").children().length + 1;
     var numberOfWorkExperience = $("#extra-work-experience").children().length + 1;
+    var profilePicJson = { profileImg: profilePicture };
     var personalIntro = {
         headline: headline,
         personalDescription: userDescription,
@@ -951,15 +1007,22 @@ $("#create-profile").click(function(){
                     mainJson.videos[keyName].name = video_object[i-1].name;
                 }
 
-                var promise3 = sendJsonToFirebase(mainJson);
-                promise3.then(function(){
-                    document.getElementById("createProfileLoader").style.display = "none";
-                    console.log("Congratulations, we created your profile.");
+                var promise3 = sendProfileImgToFirebase(profilePicJson);
+                promise3.then(() => {
+                    var promise4 = sendJsonToFirebase(mainJson);
+                    promise4.then(function(){
+                        document.getElementById("createProfileLoader").style.display = "none";
+                        console.log("Congratulations, we created your profile.");
+                    })
+                    promise4.catch(function(){
+                        document.getElementById("createProfileLoader").style.display = "none";
+                        console.log("Sorry, Not able to create profile. Please try again.")
+                    });
                 });
-                promise3.catch(function(){
-                    document.getElementById("createProfileLoader").style.display = "none";
-                    console.log("Sorry, Not able to create profile. Please try again.")
+                promise3.catch(() => {
+                    // Do nothing
                 });
+
 
             });
             
@@ -1058,8 +1121,16 @@ function sendJsonToFirebase(profileJson) {
                     return resolve(); //if 1st try successful
                 });
                 profileInfoPromise.catch(function(error) {
+                    // delete the profile picture which was sent to firebase before this 
+                    var promiseRemoveProfileImg1 = removeProfileImg(userID);
+                    promiseRemoveProfileImg1.then(()=> {
+                        return reject();
+                    });
+                    promiseRemoveProfileImg1.catch(() => {
+                        return reject();
+                    });
                     //delete all files from stroge and return reject
-                    var promise1 = removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
+                    var promise1 = removeAllFilesFromStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
                     promise1.then(function(){
                         return reject();
                     });
@@ -1068,8 +1139,16 @@ function sendJsonToFirebase(profileJson) {
                     })
                 });
             } else {
+                // delete the profile picture which was sent to firebase before this 
+                var promiseRemoveProfileImg2 = removeProfileImg(userID);
+                promiseRemoveProfileImg2.then(()=> {
+                    return reject();
+                });
+                promiseRemoveProfileImg2.catch(() => {
+                    return reject();
+                });
                 //delete all files from stroge and return reject
-                var promise2 = removeAllFilesFormStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
+                var promise2 = removeAllFilesFromStorage(userId, profileJson); //this is asyncronous call, so we will wait till all files are deleted
                 promise2.then(function(){
                     return reject();
                 });
@@ -1082,8 +1161,54 @@ function sendJsonToFirebase(profileJson) {
 
 }
 
+/*
+    Sending Profile Picture to Database - Utkarsh
+*/
+// Send the profile picture to Firebase Database 
+// If it fails to send the profile picture then 
+function sendProfileImgToFirebase(profileImageData){
+
+    return new Promise((resolve, reject)=> {
+        firebase.auth().onAuthStateChanged((user) =>{
+            // If a user is logged in 
+            if(user) {
+                // Get the uid
+                var userID = user.uid;
+                // send the image data to firebase
+                var profileImagePromise = firebase.database().ref().child("data").child("employee").child("userInfo").child(userID).child("profileImgData").set(profileImageData);
+
+                profileImagePromise.then(() => {
+                    return resolve();
+                })
+                profileImagePromise.catch((error) => {
+                    return reject();                    
+                });
+
+            }
+        });
+    });
+}
+
+/*
+    Removing Profile Picture from Database - Utkarsh
+*/
+function removeProfileImg(userID){
+
+    return new Promise((resolve, reject) => {
+        var filePath = 'data/employee/userInfo/'+userID+'/profileImgData';
+        var databaseRef = firebase.database().ref(filePath);
+        var databaseRefPromise = databaseRef.remove();
+        databaseRefPromise.then(()=> {
+            return resolve();
+        });
+        databaseRef.catch((error)=> {
+            return resolve();
+        });
+    });
+}
+
 // This funciton deletes all profile files of a specified user id
-function removeAllFilesFormStorage(userId, profileJson){
+function removeAllFilesFromStorage(userId, profileJson){
    
     return new Promise(function (resolve, reject) {
 
@@ -1127,49 +1252,5 @@ function removeFileFromStorage(filePath) {
 
 }
 
-var basic;
-// Sent to firebase
-var profilePicture;
-$(document).on("change", "#upload_profile_pic", function() {
-
-    $("#main-cropper-container").empty();
-    $("#main-cropper-container").append("<div id=\"main-cropper\"> </div>");
-
-    var input = document.querySelector("#profile_img");
-
-    if (input.files && input.files[0]) {
-    
-        var profile_img = input.files[0]
-
-        basic = new Croppie(document.getElementById('main-cropper'),{
-            viewport: { width: 250, height: 250 , type:"circle"},
-            boundary: { width: 300, height: 300 },
-            showZoomer: true,
-        });
-        
-        var reader = new FileReader();
-    
-        reader.onload = function (e) {
-            basic.bind( {
-                url: e.target.result
-            });
-        }
-
-        
-        reader.readAsDataURL(profile_img);
-    }
-
-});
-
-$("#save_profile_img").click(function() {
-
-    basic.result("base64").then(function(dataImg) {
-        profilePicture = dataImg;
-        $('#profile-photo').attr('src', dataImg);
-    })
-
-    $("#upload_profile_pic").modal("hide");
-
-});
 
 
