@@ -1,3 +1,24 @@
+$(document).ready(()=> {
+    // stores the first name
+    var firstName = "";
+
+    firebase.auth().onAuthStateChanged((user) => {
+        // if user is logged in
+        if(user){
+            // get user's uid
+            var userID = user.uid;
+
+            var firstNameRef = firebase.database().ref().child("data").child("employee").child("userInfo").child(userID).child("firstName");
+
+            firstNameRef.on('value',(snap)=> {
+                firstName = snap.val();
+                // Add the welcome statement to html 
+                $("#personalIntro").prepend("<h1 class=\"display-2 text-white\">Hello "+firstName+"</h1>");
+            });
+        }
+    })
+});
+    
 //This function is called when "+" button is pressed.
 //This function will add extra education information form for a user
 $("#add-extra-education").click(function() {
@@ -1251,6 +1272,5 @@ function removeFileFromStorage(filePath) {
     });
 
 }
-
 
 
