@@ -1,5 +1,6 @@
-$(document).ready(()=> {
+// $(document).ready(()=> {
     // stores the first name
+$(()=> {
     var firstName = "";
 
     firebase.auth().onAuthStateChanged((user) => {
@@ -18,7 +19,8 @@ $(document).ready(()=> {
         }
     })
 });
-    
+
+
 //This function is called when "+" button is pressed.
 //This function will add extra education information form for a user
 $("#add-extra-education").click(function() {
@@ -202,15 +204,15 @@ $(document).on("change", "#upload_profile_pic", function() {
             showZoomer: true,
         });
         
-        var reader = new FileReader();
+        var readerProfileImg = new FileReader();
         // When the image is loaded, bind it to the crop layout
-        reader.onload = function (e) {
+        readerProfileImg.onload = function (e) {
             cropImage.bind( {
                 url: e.target.result
             });
         }
         // Reading the image contents
-        reader.readAsDataURL(profile_img);
+        readerProfileImg.readAsDataURL(profile_img);
     }
 
 });
@@ -413,9 +415,11 @@ $("#add-photo-btn").click(() => {
     $("#files").change(()=> {
         // Gets an object of images selected
 
-        var numberOfFilesUploaded = document.querySelector('input[type=file]').files.length;
+        var numberOfFilesUploaded = document.querySelector('#files').files.length;
+
         for(var i=0; i<numberOfFilesUploaded; i++){
-            temp_image_object[i] = document.querySelector('input[type=file]').files[i];
+            temp_image_object[i] = document.querySelector('#files').files[i];
+
         }
         if($.isEmptyObject(temp_image_object)){
             alert("Please upload a file!");
@@ -694,11 +698,11 @@ var img_desc_foot = () => {
 };
 
 var preview_image = function(input) {
-    var reader = new FileReader();
-    reader.onload = (e)=> {
+    var readerImg = new FileReader();
+    readerImg.onload = (e)=> {
         $("#new-image").attr('src',e.target.result);
     }
-    reader.readAsDataURL(temp_image_object[current]);
+    readerImg.readAsDataURL(temp_image_object[current]);
     next_click = false;
 };
 
