@@ -11,7 +11,7 @@ $(()=> {
 
             var firstNameRef = firebase.database().ref().child("data").child("employee").child("userInfo").child(userID).child("firstName");
 
-            firstNameRef.on('value',(snap)=> {
+            firstNameRef.once('value',(snap)=> {
                 firstName = snap.val();
                 // Add the welcome statement to html 
                 $("#personalIntro").prepend("<h1 class=\"display-2 text-white\">Hello "+firstName+"</h1>");
@@ -1193,6 +1193,7 @@ function sendJsonToFirebase(profileJson) {
 // If it fails to send the profile picture then 
 function sendProfileImgToFirebase(profileImageData){
 
+    if(!profileImageData.profileImg){ return }
     return new Promise((resolve, reject)=> {
         firebase.auth().onAuthStateChanged((user) =>{
             // If a user is logged in 
@@ -1200,7 +1201,7 @@ function sendProfileImgToFirebase(profileImageData){
                 // Get the uid
                 var userID = user.uid;
                 // send the image data to firebase
-                var profileImagePromise = firebase.database().ref().child("data").child("employee").child("userInfo").child(userID).child("profileImgData").set(profileImageData);
+                var profileImagePromise = firebase.database().ref().child("data").child("employee").child("userInfo").child(userID).child("profileImgData").set(profileImageData.profileImg);
 
                 profileImagePromise.then(() => {
                     return resolve();
