@@ -84,6 +84,7 @@ $(document).ready(function() {
                             viewIntroduction(introductionJson);
                             viewEducation(profileJSON.education);
                             viewWorkExperience(profileJSON.workExperience);
+                            viewProfilePhotos(profileJSON.images);
                         }
                     });
                 }
@@ -114,55 +115,73 @@ $(document).ready(function() {
 }
 
 */
-var loadProfilePhotos = (photoJSON) => {
+var viewProfilePhotos = (photoJSON) => {
     
     //total number of photos
     var numberOfPhotos = Object.keys(photoJSON).length;
-    // number of rows of images (one row contains 3 images)
-    var numberofRows = Math.ceil(numberOfPhotos/3);
 
-    // If there are less than 3 photos, then just add in one row.
-    if (numberofRows == 1) {
-        for(var countPhoto = 1; countPhoto <= numberOfPhotos; countPhoto++){
-            var imageNumberStr = "image"+countPhoto;
-            var urlSrc = photoJSON[imageNumberStr].url;
-            var imgDescription = photoJSON[imageNumberStr].description;
+    var photoHtml = `<div class="row ml-2">`;
 
-            //Add the first row
-            $("#photos-section").append(
-                "<div class=\"row ml-2\" id=\"photos-row-1\">"+
-                "</div>"+
-                "<br>"
-            )
-            
-            // Add the photos in the row
-            $("#photos-row-1").append(
+    $.each(photoJSON, function(keyName, image) {
+        var imgIndex = parseInt(keyName.replace('image',''));
+        var urlSrc = image.url;
+        var imgDescription = image.description;
+        
+        //TODO change image to iframe to improve UX
+        photoHtml = `${photoHtml}<div class="card col-lg-3 border-primary">
+                                    <div class="pic-content">
+                                        <img class="card-img-top mb-3 mt-3" src="${urlSrc}">
+                                        <div class="icons">
+                                            <a onClick="viewImageModal(this)" class="btn-icon btn-secondary" title="View Image" >
+                                                <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
+                                            </a>
+                                            <hr>
+                                            <a onclick="viewImgDescModal(this)" data="${imgDescription}" class="btn-icon btn-secondary" title="View description" >
+                                                <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1"></div>`;
 
-                    "<div class=\"card col-lg-3 border-primary\" id=\"photo"+countPhoto+"\">"+
-                        "<div class=\"pic-content\">"+
-                            "<img class=\"card-img-top mb-3 mt-3\" src=\""+ urlSrc +"\">"+
-                            "<div class=\"icons\">"+
-                                "<a id=\"viewPic"+countPhoto+"\" class=\"btn-icon btn-secondary\" title=\"View Image\" data-toggle=\"modal\" data-target=\"#viewPicModal"+countPhoto+"\">"+
-                                    "<span class=\"btn-inner--icon\"><i class=\"far fa-eye\"></i></span>"+
-                                "</a>"+
-                                "<hr>"+
-                                "<a id\"viewDesc"+countPhoto+"\" class=\"btn-icon btn-secondary\" title=\"View description\" data-toggle=\"modal\" data-target=\"#viewDescModal"+countPhoto+"\">"+
-                                    "<span class=\"btn-inner--icon\"><i class=\"fas fa-align-justify\"></i></span>"+
-                                "</a>"+
-                            "</div>"+
-                        "</div>"+
-                    "</div>"
-            )
+        if(imgIndex % 3 == 0){
+            photoHtml = `${photoHtml}</div>`;
 
-            viewImageAndDesc(countPhoto, urlSrc, imgDescription);
-        }
-    }    
-    // If there are more than 3 photos, then add a new row according to length.
-    // else if(numberofRows > 1) {
-
-    // }
-
+            if(imgIndex < numberOfPhotos){
+                photoHtml = `${photoHtml}<br>
+                                         <div class="row ml-2">`;
+            }                        
+        }                          
+    })
+        
+    $("#photos-section").html(photoHtml);
+       
 }   
+
+var viewImageModal = (elementRef)=> {
+
+    var imgSrc = $($(elementRef).parent().parent().children()[0]).attr('src')
+    $("#ModalDispPic").attr('src',imgSrc);
+
+    $(elementRef).attr('data-toggle','modal');
+    $(elementRef).attr('data-target','#viewPicModal');
+    $($(elementRef).attr('data-target')).modal('show');
+
+    // console.log($("#ModalDispPic").attr('src'))
+}
+
+var viewImgDescModal = (elementRef)=>{
+
+    var imgSrc = $($(elementRef).parent().parent().children()[0]).attr('src')
+    $("#ModalDispDescImg").attr('src',imgSrc);
+
+    $("#descContainer").html($(elementRef).attr('data'));
+    // console.log($(elementRef).attr('data').toString())
+    $(elementRef).attr('data-toggle','modal');
+    $(elementRef).attr('data-target','#viewDescModal');
+    $($(elementRef).attr('data-target')).modal('show');
+
+}
 
 // Function to write Modal code in HTML with JS givrn the URL Source and Description (Creates two modals - View Image and View Description)
 var viewImageAndDesc = (imgIndex, sourceURL, imgDesc) => {
