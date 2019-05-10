@@ -1,8 +1,9 @@
 function viewIntroduction(introductionJSON){
     $('#profile-picture').attr("src", introductionJSON.profileImg)
-    $('#name').text(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
-    $('#personal-headline').text(introductionJSON.headline);
-    $('#personal-description').text(introductionJSON.personalDescription);
+    $('#name').html(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
+    $('#personal-headline').html(`${introductionJSON.headline}`);
+    var personalDescription = introductionJSON.personalDescription.replace(/\n/g, "</br>");
+    $('#personal-description').html(`${personalDescription}`);
 }
 
 function viewEducation(educationJSON){
@@ -33,6 +34,9 @@ function viewWorkExperience(workExperienceJSON){
     var totalNumberOfWorkExperience = Object.keys(workExperienceJSON).length;
     var html = ``;
     $.each(workExperienceJSON, function(i, work){
+
+        var workDescription = work.description.replace(/\n/g, "</br>");
+
         html = `${html}<div class="row">
                             <div class="col-lg-12">
                                 <div class="row">
@@ -46,7 +50,7 @@ function viewWorkExperience(workExperienceJSON){
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <p>${work.description}</p>
+                                        <p>${workDescription}</p>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +60,6 @@ function viewWorkExperience(workExperienceJSON){
         }
     });
     $("#work-fields").html(html);
-    console.log(workExperienceJSON.workExperience1.description)
 }
 
 $(document).ready(function() {
@@ -70,8 +73,6 @@ $(document).ready(function() {
                     var profileJSON = snap.val();
                     var dbRefUserInfo = firebase.database().ref().child("data").child("employee").child("userInfo").child(userId);
                     dbRefUserInfo.once("value", snap => {
-                        //TODO delete the log line
-                        console.log("Retrieved data from firebase!")
                         if(snap.exists()){
                             var userInfoJSOn = snap.val();
                             var introductionJson = {
