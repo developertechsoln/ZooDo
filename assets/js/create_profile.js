@@ -970,7 +970,7 @@ $("#create-profile").click(function(){
         var keyName = "education" + i;
         mainJson.education[keyName] = {};
 
-        mainJson.education[keyName].university = eduObj[0].value;
+        mainJson.education[keyName].school = eduObj[0].value;
         mainJson.education[keyName].degreeType = eduObj[1].value;
         mainJson.education[keyName].courseField = eduObj[2].value;
         mainJson.education[keyName].dateOfGraduation = eduObj[3].value;

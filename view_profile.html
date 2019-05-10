@@ -221,11 +221,11 @@
               }
             </style>
             <div class="col-lg-2 introduction">
-              <img class="rounded-circle shadow" style="width: 120px; height: 120px;" src="assets/img/theme/team-4-800x800.jpg">  
+              <img class="rounded-circle shadow" style="width: 120px; height: 120px;" id="profile-picture">  
             </div>
             <div class="col-lg-4">
-              <h1 style="color:white; font-size:33px">Mark Cox</h1>
-              <h3 class="text-white text-light">Software Engineer @ Google</h3>
+              <h1 style="color:white; font-size:33px" id="name"></h1>
+              <h3 class="text-white text-light" id="personal-headline"></h3>
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-2">
@@ -256,7 +256,7 @@
                             <div class="col">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                      <p class="mt-0"  style="height:140px; overflow-y: scroll;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                      <p class="mt-0" id="personal-description"  style="height:140px; overflow-y: scroll;"></p>
                                     </div>
                                 </div>
                             </div>
@@ -276,76 +276,31 @@
                                 </div>
                             </div>
                         </div>
-                            <div class="card-body" id="education-fields">
-                                <!-- The Education fields will be added below -->
-                                <!-- First Education  -->
-                                <div class="col">
-
-                                  <div class="row">
-                                      <div class="col-lg-7">
-                                          <h3 class="mb-0">M.Sc Computer Science</h3>
-                                          <h5 class="text-muted">University of British Columbia</h5>
-                                      </div>
-                                      <div class="col-lg-5" style="text-align: right;">
-                                          <pre><h4>&nbsp;September 2017 - August 2019</h4></pre>
-                                      </div>
-                                  </div>
-                                  <hr style="margin-top:2%; margin-bottom: 4%;">
-                                  <div class="row">
-                                      <div class="col-lg-7">
-                                          <h3 class="mb-0">B.Sc Computer Science</h3>
-                                          <h5 class="text-muted">University of Victoria</h5>
-                                      </div>
-                                      <div class="col-lg-5" style="text-align: right;">
-                                          <pre><h4>&nbsp;September 2013 - August 2017</h4></pre>
-                                      </div>
-                                  </div>
-                                </div>
-                              </div>
+                        <div class="card-body" id="education-fields">
+                            <!-- Education details will go here -->
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Work Experience Information -->
             <div class="row">
-                    <div class="col-xl-12 mb-5">
-                        <div class="card shadow">
-                            <div class="card-header bg-transparent">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h2 class="text-uppercase mb-0">Work Experience</h2>
-                                    </div>
+                <div class="col-xl-12 mb-5">
+                    <div class="card shadow">
+                        <div class="card-header bg-transparent">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h2 class="text-uppercase mb-0">Work Experience</h2>
                                 </div>
                             </div>
-                                <div class="card-body" id="work-experience-fields">
-                                    <!-- The Work Experience fields will be added below -->
-                                    <!-- First Work Experience  -->
-                                    <div class="col">
-
-                                        <div class="row">
-                                            <div class="col-lg-7">
-                                                <h3 class="mb-0">Software Engineer</h3>
-                                                <h5 class="text-muted">Google Inc.</h5>
-                                            </div>
-                                            <div class="col-lg-5" style="text-align: right;">
-                                                <pre><h4>&nbsp;September 2017 - August 2019</h4></pre>
-                                            </div>
-                                        </div>
-                                        <hr style="margin-top:2%; margin-bottom: 4%;">
-                                        <div class="row">
-                                            <div class="col-lg-7">
-                                                <h3 class="mb-0">Web Developer</h3>
-                                                <h5 class="text-muted">Microsoft Inc.</h5>
-                                            </div>
-                                            <div class="col-lg-5" style="text-align: right;">
-                                                <pre><h4>&nbsp;September 2013 - August 2017</h4></pre>
-                                            </div>
-                                        </div>
-                                      </div>
-                                    </div>
+                        </div>
+                        <div class="card-body" id="work-fields">
+                            <!-- work experience details will go here -->
                         </div>
                     </div>
                 </div>
+            </div>
+
 
             <!-- Skills -->
             <div class="row">
@@ -669,11 +624,27 @@
   <!-- Core -->
   <script src="./assets/vendor/jquery/dist/jquery.min.js"></script>
   <script src="./assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- page js -->
+  <script src="assets/js/view_profile.js"></script>
   <!-- Optional JS -->
   <script src="./assets/vendor/chart.js/dist/Chart.min.js"></script>
   <script src="./assets/vendor/chart.js/dist/Chart.extension.js"></script>
   <!-- Argon JS -->
   <script src="./assets/js/argon.js?v=1.0.0"></script>
+
+  <!-- Firebase App is always required and must be first -->
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
+
+  <!-- Add additional services that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-functions.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-storage.js"></script>
+
+  <!-- firebase initilize -->
+  <script src="assets/js/firebase.js"></script>
 </body>
 
 </html>
