@@ -74,11 +74,11 @@ $(document).ready(function() {
                     var dbRefUserInfo = firebase.database().ref().child("data").child("employee").child("userInfo").child(userId);
                     dbRefUserInfo.once("value", snap => {
                         if(snap.exists()){
-                            var userInfoJSOn = snap.val();
+                            var userInfoJSON = snap.val();
                             var introductionJson = {
-                                firstName: userInfoJSOn.firstName,
-                                lastName: userInfoJSOn.lastName,
-                                profileImg: userInfoJSOn.profileImgData,
+                                firstName: userInfoJSON.firstName,
+                                lastName: userInfoJSON.lastName,
+                                profileImg: userInfoJSON.profileImgData,
                                 headline: profileJSON.personalIntro.headline,
                                 personalDescription: profileJSON.personalIntro.personalDescription
                             }
