@@ -6,7 +6,7 @@ $(document).ready(function() {
             var dbRefProfile = firebase.database().ref().child("data").child("employee").child("profile").child(userId);
             dbRefProfile.once("value", snap => {
                 if(snap.exists()){
-                    var profileJSON = snap.val();
+                    var profileJSOn = snap.val();
                     var dbRefUserInfo = firebase.database().ref().child("data").child("employee").child("userInfo").child(userId);
                     dbRefUserInfo.once("value", snap => {
                         if(snap.exists()){
@@ -15,14 +15,14 @@ $(document).ready(function() {
                                 firstName: userInfoJSOn.firstName,
                                 lastName: userInfoJSOn.lastName,
                                 profileImg: userInfoJSOn.profileImgData,
-                                headline: profileJSON.personalIntro.headline,
-                                personalDescription: profileJSON.personalIntro.personalDescription
+                                headline: profileJSOn.personalIntro.headline,
+                                personalDescription: profileJSOn.personalIntro.personalDescription
                             }
                             viewIntroduction(introductionJson);
-                            viewEducation(profileJSON.education);
-                            viewWorkExperience(profileJSON.workExperience);
-                            viewProfilePhotos(profileJSON.images);
-                            viewVideos(profileJSON.videos);
+                            viewEducation(profileJSOn.education);
+                            viewWorkExperience(profileJSOn.workExperience);
+                            viewProfilePhotos(profileJSOn.images);
+                            viewVideos(profileJSOn.videos);
                         }
                     });
                 }
