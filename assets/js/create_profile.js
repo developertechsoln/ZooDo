@@ -1,6 +1,5 @@
-// $(document).ready(()=> {
+$(document).ready(()=> {
     // stores the first name
-$(()=> {
     var firstName = "";
 
     firebase.auth().onAuthStateChanged((user) => {

@@ -77,41 +77,48 @@ function viewEducation(educationJSON){
 // Function to view the Work Experience section 
 function viewWorkExperience(workExperienceJSON){
 
-    // getting the total number of work experiences
-    var totalNumberOfWorkExperience = Object.keys(workExperienceJSON).length;
-    // Template string which will store the html of all the work experiences
-    var html = ``;
+    // If work experience is not empty
+    if(workExperienceJSON != null && workExperienceJSON != {} && workExperienceJSON != undefined){
+        // getting the total number of work experiences
+        var totalNumberOfWorkExperience = Object.keys(workExperienceJSON).length;
+        // Template string which will store the html of all the work experiences
+        var html = ``;
 
-    // for each work experience, add the it to the string
-    $.each(workExperienceJSON, function(i, work){
+        // for each work experience, add the it to the string
+        $.each(workExperienceJSON, function(i, work){
 
-        var workDescription = work.description.replace(/\n/g, "</br>");
+            var workDescription = work.description.replace(/\n/g, "</br>");
 
-        html = `${html}<div class="row">
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-7">
-                                        <h3 class="mb-0">${work.jobTitle}</h3>
-                                        <h5 class="text-muted">${work.companyName}</h5>
+            html = `${html}<div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <h3 class="mb-0">${work.jobTitle}</h3>
+                                            <h5 class="text-muted">${work.companyName}</h5>
+                                        </div>
+                                        <div class="col-lg-5" style="text-align: right;">
+                                            <pre><h4>${work.years}</h4></pre>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-5" style="text-align: right;">
-                                        <pre><h4>${work.years}</h4></pre>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <p>${workDescription}</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <p>${workDescription}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
-        // there's a line after every work experience to separate two sections, so we add it here
-        if(i != totalNumberOfWorkExperience){
-            html = `${html}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
-        }
-    });
-    // Appending the template literal string to the work experience section (*** .append() also works in the same way)
-    $("#work-fields").html(html);
+                            </div>`;
+            // there's a line after every work experience to separate two sections, so we add it here
+            if(i != totalNumberOfWorkExperience){
+                html = `${html}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
+            }
+        });
+        // Appending the template literal string to the work experience section (*** .append() also works in the same way)
+        $("#work-fields").html(html);
+    }
+    // If no work experience then remove the work experience section 
+    else {
+        $("#work-fields").parent().parent().parent().remove();
+    }
 }
 
 // function to view the profile photos
