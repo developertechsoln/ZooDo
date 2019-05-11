@@ -1,67 +1,3 @@
-function viewIntroduction(introductionJSON){
-    $('#profile-picture').attr("src", introductionJSON.profileImg)
-    $('#name').html(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
-    $('#personal-headline').html(`${introductionJSON.headline}`);
-    var personalDescription = introductionJSON.personalDescription.replace(/\n/g, "</br>");
-    $('#personal-description').html(`${personalDescription}`);
-}
-
-function viewEducation(educationJSON){
-    var totalNumberOfEducation = Object.keys(educationJSON).length;
-    var html = ``;
-    $.each(educationJSON, function(i, education){
-        html = `${html}<div class="row">
-                    <div class="col-lg-12">
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <h3 class="mb-0">${education.degreeType} in ${education.courseField}</h3>
-                                <h5 class="text-muted">${education.school}</h5>
-                            </div>
-                            <div class="col-lg-5" style="text-align: right;">
-                                <pre><h4>&nbsp;${education.dateOfGraduation}</h4></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-        if(i != totalNumberOfEducation){
-            html = `${html}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
-        }
-    });
-    $("#education-fields").html(html);
-}
-
-function viewWorkExperience(workExperienceJSON){
-    var totalNumberOfWorkExperience = Object.keys(workExperienceJSON).length;
-    var html = ``;
-    $.each(workExperienceJSON, function(i, work){
-
-        var workDescription = work.description.replace(/\n/g, "</br>");
-
-        html = `${html}<div class="row">
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-7">
-                                        <h3 class="mb-0">${work.jobTitle}</h3>
-                                        <h5 class="text-muted">${work.companyName}</h5>
-                                    </div>
-                                    <div class="col-lg-5" style="text-align: right;">
-                                        <pre><h4>${work.years}</h4></pre>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <p>${workDescription}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
-        if(i != totalNumberOfWorkExperience){
-            html = `${html}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
-        }
-    });
-    $("#work-fields").html(html);
-}
-
 $(document).ready(function() {
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -86,6 +22,7 @@ $(document).ready(function() {
                             viewEducation(profileJSON.education);
                             viewWorkExperience(profileJSON.workExperience);
                             viewProfilePhotos(profileJSON.images);
+                            viewVideos(profileJSON.videos);
                         }
                     });
                 }
@@ -94,234 +31,225 @@ $(document).ready(function() {
     });
 });
 
+// Function to view the introduction 
+function viewIntroduction(introductionJSON){
+    // Add the profile picture
+    $('#profile-picture').attr("src", introductionJSON.profileImg)
+    // Adding name, headline and personal description 
+    $('#name').html(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
+    $('#personal-headline').html(`${introductionJSON.headline}`);
 
-
-
-
-/* Expected JSON Object for Photos - 
-
-{
-
-      image1: {
-        url: "https://example.com/qwerty/1.png",
-        name: "dsfe.jpg",
-        description: "This is my first work"
-      },
-
-      image2: {
-        url: "https://example.com/qwerty/2.png",
-        name: "difsed.png",
-        description: "This is my second work"
-      }
+    var personalDescription = introductionJSON.personalDescription.replace(/\n/g, "</br>");
+    $('#personal-description').html(`${personalDescription}`);
 }
 
-*/
-var viewProfilePhotos = (photoJSON) => {
-    
-    //total number of photos
-    var numberOfPhotos = Object.keys(photoJSON).length;
+// Function to view the Education section 
+function viewEducation(educationJSON){
+    // getting the total number of education 
+    var totalNumberOfEducation = Object.keys(educationJSON).length;
+    // Template string which will store the html of all the education 
+    var eduHtml = ``;
 
-    var photoHtml = `<div class="row ml-2">`;
+    // for each education, add the education to the string
+    $.each(educationJSON, function(i, education){
+        eduHtml = `${eduHtml}<div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <h3 class="mb-0">${education.degreeType} in ${education.courseField}</h3>
+                                <h5 class="text-muted">${education.school}</h5>
+                            </div>
+                            <div class="col-lg-5" style="text-align: right;">
+                                <pre><h4>&nbsp;${education.dateOfGraduation}</h4></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        // there's a line after every education to separate two sections, so we add it here
+        if(i != totalNumberOfEducation){
+            eduHtml = `${eduHtml}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
+        }
+    });
+    // Appending the template literal string to the education section (*** .append() also works in the same way)
+    $("#education-fields").html(eduHtml);
+}
 
-    $.each(photoJSON, function(keyName, image) {
-        var imgIndex = parseInt(keyName.replace('image',''));
-        var urlSrc = image.url;
-        var imgDescription = image.description;
-        
-        //TODO change image to iframe to improve UX
-        photoHtml = `${photoHtml}<div class="card col-lg-3 border-primary">
-                                    <div class="pic-content">
-                                        <img class="card-img-top mb-3 mt-3" src="${urlSrc}">
-                                        <div class="icons">
-                                            <a onClick="viewImageModal(this)" class="btn-icon btn-secondary" title="View Image" >
-                                                <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
-                                            </a>
-                                            <hr>
-                                            <a onclick="viewImgDescModal(this)" data="${imgDescription}" class="btn-icon btn-secondary" title="View description" >
-                                                <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
-                                            </a>
-                                        </div>
+// Function to view the Work Experience section 
+function viewWorkExperience(workExperienceJSON){
+
+    // getting the total number of work experiences
+    var totalNumberOfWorkExperience = Object.keys(workExperienceJSON).length;
+    // Template string which will store the html of all the work experiences
+    var html = ``;
+
+    // for each work experience, add the it to the string
+    $.each(workExperienceJSON, function(i, work){
+
+        var workDescription = work.description.replace(/\n/g, "</br>");
+
+        html = `${html}<div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <h3 class="mb-0">${work.jobTitle}</h3>
+                                        <h5 class="text-muted">${work.companyName}</h5>
+                                    </div>
+                                    <div class="col-lg-5" style="text-align: right;">
+                                        <pre><h4>${work.years}</h4></pre>
                                     </div>
                                 </div>
-                                <div class="col-lg-1"></div>`;
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p>${workDescription}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+        // there's a line after every work experience to separate two sections, so we add it here
+        if(i != totalNumberOfWorkExperience){
+            html = `${html}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
+        }
+    });
+    // Appending the template literal string to the work experience section (*** .append() also works in the same way)
+    $("#work-fields").html(html);
+}
 
-        if(imgIndex % 3 == 0){
-            photoHtml = `${photoHtml}</div>`;
+// function to view the profile photos
+function viewProfilePhotos(photoJSON) { 
+    // if there is a photoJSON or if its not empty or undefined
+    if(photoJSON != null && photoJSON != {} && photoJSON != undefined){
+        //get the total number of photos
+        var totalNumberOfPhotos = Object.keys(photoJSON).length;
+        console.log(totalNumberOfPhotos)
+        // Template String where the photos are added
+        var photoHtml = ``;
+        // If there are photos uploaded
+        if(totalNumberOfPhotos){
+            // Create the start of first row of the photos
+            photoHtml = `<div class="row ml-2">`;
+            // for each photo, add it to the "photoHtml" string
+            $.each(photoJSON, function(keyName, image) {
+                // the keyName appears as - "image1, image2, image3 etc", so we just grab the integers from there
+                var imgIndex = parseInt(keyName.replace('image',''));
 
-            if(imgIndex < numberOfPhotos){
-                photoHtml = `${photoHtml}<br>
-                                         <div class="row ml-2">`;
-            }                        
-        }                          
-    })
-        
+                // Get the URL and description of the image
+                var urlSrc = image.url;
+                var imgDescription = image.description;
+                
+                //TODO change image to iframe to improve UX
+                photoHtml = `${photoHtml}<div class="card col-lg-3 border-primary">
+                                            <div class="pic-content">
+                                                <img class="card-img-top mb-3 mt-3" src="${urlSrc}">
+                                                <div class="icons">
+                                                    <a onClick="viewImageModal(this)" class="btn-icon btn-secondary" title="View Image" >
+                                                        <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
+                                                    </a>
+                                                    <hr>
+                                                    <a onclick="viewImgDescModal(this)" data="${imgDescription}" class="btn-icon btn-secondary" title="View description" >
+                                                        <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1"></div>`;
+                // If the imgIndex reaches a new row (the current row is filled with 3 photos)
+                if(imgIndex % 3 == 0){
+                    // Close the row since three photos are already added in the row
+                    photoHtml = `${photoHtml}</div>`;
+                    // adding a new row when the current one is filled
+                    if(imgIndex < totalNumberOfPhotos){
+                        photoHtml = `${photoHtml}<br> <div class="row ml-2">`;
+                    }                        
+                }                          
+            })
+        }
+        else { 
+            photoHtml = `<h3>No Photos.</h3>`;
+        }
+    // Appending the template literal string to the photos section 
     $("#photos-section").html(photoHtml);
-       
+    }
+    // If there are no photos 
+    else {
+        $("#photos-section").html(`<h3>No Photos.</h3>`);
+    }
 }   
 
-var viewImageModal = (elementRef)=> {
-
+// Function to view the Image in a modal (it gives the source of image to the modal to view the picture)
+function viewImageModal(elementRef){    
+    // Get the url (image source) of the image
     var imgSrc = $($(elementRef).parent().parent().children()[0]).attr('src')
+    // Change the modal's image source to the above
     $("#ModalDispPic").attr('src',imgSrc);
-
+    // Adding properties to the icons to view the modal
     $(elementRef).attr('data-toggle','modal');
     $(elementRef).attr('data-target','#viewPicModal');
     $($(elementRef).attr('data-target')).modal('show');
-
-    // console.log($("#ModalDispPic").attr('src'))
 }
 
-var viewImgDescModal = (elementRef)=>{
-
+// Function to view the Image and description in a modal (it gives the source of image and description to the modal)
+function viewImgDescModal(elementRef){
+    // Get the url (image source) of the image
     var imgSrc = $($(elementRef).parent().parent().children()[0]).attr('src')
+    // Change the modal's image source to the above
     $("#ModalDispDescImg").attr('src',imgSrc);
+    // Adding the description to html 
+    $("#descContainer").html($(elementRef).attr('data').replace(/\n/g, "</br>"));
 
-    $("#descContainer").html($(elementRef).attr('data'));
-    // console.log($(elementRef).attr('data').toString())
+    // Adding properties to the icons to view the modal
     $(elementRef).attr('data-toggle','modal');
     $(elementRef).attr('data-target','#viewDescModal');
     $($(elementRef).attr('data-target')).modal('show');
 
 }
 
-// Function to write Modal code in HTML with JS givrn the URL Source and Description (Creates two modals - View Image and View Description)
-var viewImageAndDesc = (imgIndex, sourceURL, imgDesc) => {
+// Function to view the videos section 
+function viewVideos(videoJSON){
+    // if there is a videoJSON or if its not empty or undefined
+    if(videoJSON != null && videoJSON != {} && videoJSON != undefined){
+        //total number of videos 
+        var totalNumberOfVideos = Object.keys(videoJSON).length;
+        // template string to add the videos
+        var videoHtml = ``;
+        // If there are videos present in the videoJSON
+        if(totalNumberOfVideos){
+            //html content to be appended in html file
+            videoHtml = `<div class="row ml-2">`; 
 
-    $("#photo-section").append(
-        "<!-- View Picture Modal "+imgIndex+" -->"+
-        "<div class=\"modal fade\" id=\"viewPicModal"+imgIndex+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"viewPicModal"+imgIndex+"\" aria-hidden=\"true\">"+
-            "<div class=\"modal-dialog modal-dialog-centered\" role=\"document\">"+
-                "<div class=\"modal-content\">"+
-                    "<div class=\"modal-header\">"+
-                        "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">"+
-                        "<span aria-hidden=\"true\">&times;</span>"+
-                        "</button>"+
-                    "</div>"+
-                    "<div class=\"modal-body\">"+
-                        "<img class=\"card-img-top mb-3 mt-3\" id=\"Pic1\" src=\""+sourceURL+"\">"+
-                    "</div>"+
-                "</div>"+
-            "</div>"+
-        "</div>"+
+            $.each(videoJSON, function(videoKeyName, video){
+                console.log(video)
+                var videoIndex = parseInt(videoKeyName.replace('video',''));
+                var videoSrc = video.url;
+                console.log("Video : " + videoSrc)
 
-        "<!-- Description Modal "+imgIndex+" -->"+
-        "<div class=\"modal fade\" id=\"viewDescModal"+imgIndex+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"viewDescModal"+imgIndex+"\" aria-hidden=\"true\">"+
-            "<div class=\"modal-dialog modal-dialog-centered\" role=\"document\">"+
-                "<div class=\"modal-content\">"+
-                    "<div class=\"modal-header\">"+
-                        "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">"+
-                        "<span aria-hidden=\"true\">&times;</span>"+
-                        "</button>"+
-                    "</div>"+
-                    "<div class=\"modal-body\">"+
-                        "<div class=\"row\">"+
-                            "<div class=\"col-lg-6\">"+
-                                "<img class=\"card-img-top mb-3 mt-3\" id=\"Pic1\" src=\""+sourceURL+"\">"+
-                            "</div>"+
-                            "<div class=\"col-lg-6\">"+
-                                "<div class=\"container\" id=\"descCont\">"+
-                                    imgDesc+ 
-                                "</div>"+
-                            "</div>"+
-                        "</div>"+
-                    "</div>"+
-                "</div>"+
-            "</div>"+
-        "</div>"
+                videoHtml = `${videoHtml}<div class="card col-lg-3 border-primary" style="padding:10px;">
+                                            <video style="max-width:100%;" controls>
+                                                <source src="${videoSrc}">
+                                            </video>
+                                        </div>
+                                        <div class="col-lg-1"></div>`;
+                // var vidSrc = $("source");
+                // vidSrc[0].src = URL.createObjectURL(videoSrc);
+                // vidSrc.parent().load();
+                // source.parent()[0].load();
+                if(videoIndex % 3 == 0){
+                    videoHtml = `${videoHtml}</div>`;
 
-    )
-}
-
-
-/* Expected json
-
-{
-    profileInfo: 
-    {
-        Introduction: 
-        {
-            firstName: "XYZ",
-            lastName: "ABC",
-            title: "Software Engineer @ Microsoft",
-            profilePictureUrl: "https://example.com/qwerty/1.png"
+                    if(videoIndex < totalNumberOfVideos){
+                        videoHtml = `${videoHtml}<br> <div class="row ml-2">`;
+                    }                        
+                }    
+            })
         }
-
-        Education: 
-        {
-            education1:
-            {
-                schoolName: "UVIC",
-                degreeType: "Bachelor",
-                courseName: "Computer Science",
-                dateOfGraduation: "03-31-2017"
-            }
-            education2:
-            {
-                schoolName: "UBC",
-                degreeType: "Bachelor",
-                courseName: "Economics",
-                dateOfGraduation: "03-31-2027"
-            }
+        // If there are no videos uploaded 
+        else{
+            videoHtml = `<h3>No Videos.</h3>`
         }
-
-        workExperience:
-        {
-            workExperience1:
-            {
-                companyName:"Microsoft",
-                jobTitle: "QA",
-                years: "5",
-                description: "I worked for testing team."
-            }
-            workExperience2:
-            {
-                companyName:"Google",
-                jobTitle: "Software Engineer",
-                years: "2",
-                description: "I worked for google assistance team."
-            }
-        }
-
-        skills:
-        {
-            skill1:
-            {
-                skillName:"Java",
-                skillDescription: "I am working with Java since 10 years."
-            }
-            skill2:
-            {
-                skillName:"Python",
-                skillDescription: "I am working with Java since 1 year."
-            }
-        }
+        // Appending the template literal to the videos section 
+        $("#videos-section").html(videoHtml);
     }
-
-    profileMedia:
-    {
-        photo1: 
-        {
-            pathInFirestore: "photo/uid",
-            photoUrl: "https://example.com/qwerty/1.png",
-            photoDescription: "My first work."
-        }
-        photo2: 
-        {
-            pathInFirestore: "photo/uid",
-            photoUrl: "https://example.com/qwerty/2.png",
-            photoDescription: "My second work."
-        }
-        video1:
-        {
-            pathInFirestore: "photo/uid",
-            video1Url: "https://example.com/qwerty/1.mp4"
-        }
-        video2:
-        {
-            pathInFirestore: "photo/uid"
-            video2Url: "https://example.com/qwerty/2.mp4"
-        }
+    // if there are no videos
+    else { 
+        $("#videos-section").append(`<h3>No Videos.</h3>`);
     }
-    
 }
-*/    

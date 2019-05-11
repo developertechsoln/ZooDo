@@ -1028,7 +1028,7 @@ $("#create-profile").click(function(){
                     var keyName = "video" + i;
                     mainJson.videos[keyName] = {};
             
-                    mainJson.videos[keyName].url = imageURL[i-1];
+                    mainJson.videos[keyName].url = videoURL[i-1];
                     mainJson.videos[keyName].name = video_object[i-1].name;
                 }
 
