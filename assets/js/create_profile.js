@@ -620,12 +620,12 @@ function show_preview() {
 
     $("#add-photos").append(html);
 
-    console.log(rowName);
     if(rowName !=  "#row-1"){
         $(".carousel-control-prev-icon").show();
         $(".carousel-control-next-icon").show(); 
         
     }
+
 
 }
         
@@ -723,13 +723,25 @@ var prev_photo_button = ()=> {
     Delete photo - DC
 */
 var delete_photo = (element)=> {
-    console.log(element);
     var total_rows = $("#add-photos").children().length;
-    var delete_photo_rowID = $(element).parent().parent().parent().parent().parent().attr('id');
+    var delete_photo_row = $(element).parent().parent().parent().parent().parent();
+    var delete_photo_rowID = delete_photo_row.attr('id');
     var delete_photo_rowID_num = delete_photo_rowID.replace("row-",'');
     var next_rowID_num = parseInt(delete_photo_rowID_num)+1;
     var prev_rowID_num = parseInt(delete_photo_rowID_num)-1;
     
+    //deleting the image and desc from the global arrays
+    //if it is the first photo in the row 
+    if (delete_photo_row.children()[0] == $(element).parent().parent().parent().parent()[0]){
+        var imageToBeDeleted = ((delete_photo_rowID_num-1)*2) + 1 ;
+    }
+    else{
+        var imageToBeDeleted = ((delete_photo_rowID_num-1)*2) + 2 ;
+    }
+    image_object.splice(imageToBeDeleted-1, 1);
+    image_desc.splice(imageToBeDeleted-1,1);
+
+
     //If deleting from the last row
     if(delete_photo_rowID_num == total_rows){
         //if the last row has only one photo, then make the row before if active before deleting that element
@@ -774,14 +786,7 @@ var delete_photo = (element)=> {
         $(".carousel-control-prev-icon").hide();
         $(".carousel-control-next-icon").hide();
     }
-    
-    // for appropriately removing skills from the skill, description, skill number array 
-    for(var i = 0; i<skill_n_index; i++){ ////////////////////////// TODO: WHY YOU USED SKILL_N_INDEX HERE
-        if (image_object[i]== image_object[delete_photo]){
-            image_object.splice(ch,1);
-            image_desc.splice(ch,1);
-        }
-    }
+
 };
 
 
@@ -911,7 +916,6 @@ $(document).on("change", "#videos", function() {
     Delete video - DC
 */
 var delete_video = (video_to_delete) => {
-    console.log(video_to_delete);
     var delete_video_row_id = $("#video-"+video_to_delete).parent().attr('id');
     $("#video-"+video_to_delete).remove();
 
