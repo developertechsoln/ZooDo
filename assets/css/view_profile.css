@@ -11,6 +11,16 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+#ModalDispPic, #ModalDispDescImg {
+    transition: 0s;
+}
+
+#ModalDispPic:hover, #ModalDispDescImg:hover{
+    opacity: 1;
+    transform: scale(1);
+    background-color: rgba(0, 0, 0);
+}
+
 #Pic1 {
 	transition: none;
 }
