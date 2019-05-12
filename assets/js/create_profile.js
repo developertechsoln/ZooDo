@@ -1,6 +1,5 @@
-// $(document).ready(()=> {
+$(document).ready(()=> {
     // stores the first name
-$(()=> {
     var firstName = "";
 
     firebase.auth().onAuthStateChanged((user) => {
@@ -974,7 +973,7 @@ $("#create-profile").click(function(){
         var keyName = "education" + i;
         mainJson.education[keyName] = {};
 
-        mainJson.education[keyName].university = eduObj[0].value;
+        mainJson.education[keyName].school = eduObj[0].value;
         mainJson.education[keyName].degreeType = eduObj[1].value;
         mainJson.education[keyName].courseField = eduObj[2].value;
         mainJson.education[keyName].dateOfGraduation = eduObj[3].value;
@@ -1032,7 +1031,7 @@ $("#create-profile").click(function(){
                     var keyName = "video" + i;
                     mainJson.videos[keyName] = {};
             
-                    mainJson.videos[keyName].url = imageURL[i-1];
+                    mainJson.videos[keyName].url = videoURL[i-1];
                     mainJson.videos[keyName].name = video_object[i-1].name;
                 }
 

@@ -221,11 +221,11 @@
               }
             </style>
             <div class="col-lg-2 introduction">
-              <img class="rounded-circle shadow" style="width: 120px; height: 120px;" src="assets/img/theme/team-4-800x800.jpg">  
+              <img class="rounded-circle shadow" style="width: 120px; height: 120px;" id="profile-picture">  
             </div>
             <div class="col-lg-4">
-              <h1 style="color:white; font-size:33px">Mark Cox</h1>
-              <h3 class="text-white text-light">Software Engineer @ Google</h3>
+              <h1 style="color:white; font-size:33px" id="name"></h1>
+              <h3 class="text-white text-light" id="personal-headline"></h3>
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-2">
@@ -256,7 +256,7 @@
                             <div class="col">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                      <p class="mt-0"  style="height:140px; overflow-y: scroll;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                      <p class="mt-0" id="personal-description"  style="height:140px; overflow-y: scroll;"></p>
                                     </div>
                                 </div>
                             </div>
@@ -276,76 +276,31 @@
                                 </div>
                             </div>
                         </div>
-                            <div class="card-body" id="education-fields">
-                                <!-- The Education fields will be added below -->
-                                <!-- First Education  -->
-                                <div class="col">
-
-                                  <div class="row">
-                                      <div class="col-lg-7">
-                                          <h3 class="mb-0">M.Sc Computer Science</h3>
-                                          <h5 class="text-muted">University of British Columbia</h5>
-                                      </div>
-                                      <div class="col-lg-5" style="text-align: right;">
-                                          <pre><h4>&nbsp;September 2017 - August 2019</h4></pre>
-                                      </div>
-                                  </div>
-                                  <hr style="margin-top:2%; margin-bottom: 4%;">
-                                  <div class="row">
-                                      <div class="col-lg-7">
-                                          <h3 class="mb-0">B.Sc Computer Science</h3>
-                                          <h5 class="text-muted">University of Victoria</h5>
-                                      </div>
-                                      <div class="col-lg-5" style="text-align: right;">
-                                          <pre><h4>&nbsp;September 2013 - August 2017</h4></pre>
-                                      </div>
-                                  </div>
-                                </div>
-                              </div>
+                        <div class="card-body" id="education-fields">
+                            <!-- Education details will go here -->
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Work Experience Information -->
             <div class="row">
-                    <div class="col-xl-12 mb-5">
-                        <div class="card shadow">
-                            <div class="card-header bg-transparent">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h2 class="text-uppercase mb-0">Work Experience</h2>
-                                    </div>
+                <div class="col-xl-12 mb-5">
+                    <div class="card shadow">
+                        <div class="card-header bg-transparent">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h2 class="text-uppercase mb-0">Work Experience</h2>
                                 </div>
                             </div>
-                                <div class="card-body" id="work-experience-fields">
-                                    <!-- The Work Experience fields will be added below -->
-                                    <!-- First Work Experience  -->
-                                    <div class="col">
-
-                                        <div class="row">
-                                            <div class="col-lg-7">
-                                                <h3 class="mb-0">Software Engineer</h3>
-                                                <h5 class="text-muted">Google Inc.</h5>
-                                            </div>
-                                            <div class="col-lg-5" style="text-align: right;">
-                                                <pre><h4>&nbsp;September 2017 - August 2019</h4></pre>
-                                            </div>
-                                        </div>
-                                        <hr style="margin-top:2%; margin-bottom: 4%;">
-                                        <div class="row">
-                                            <div class="col-lg-7">
-                                                <h3 class="mb-0">Web Developer</h3>
-                                                <h5 class="text-muted">Microsoft Inc.</h5>
-                                            </div>
-                                            <div class="col-lg-5" style="text-align: right;">
-                                                <pre><h4>&nbsp;September 2013 - August 2017</h4></pre>
-                                            </div>
-                                        </div>
-                                      </div>
-                                    </div>
+                        </div>
+                        <div class="card-body" id="work-fields">
+                            <!-- work experience details will go here -->
                         </div>
                     </div>
                 </div>
+            </div>
+
 
             <!-- Skills -->
             <div class="row">
@@ -441,6 +396,7 @@
             <div class="row">
                 <div class="col-xl-12 mb-5">
                     <div class="card shadow">
+                        <!-- Photos Header -->
                         <div class="card-header bg-transparent">
                             <div class="row align-items-center">
                             <div class="col">
@@ -448,158 +404,68 @@
                             </div>
                             </div>
                         </div>
-                        <div class="card-body" id="photos-section">
-
-                            <div class="row ml-2" id="photos-row-1">
-
-                                    <div class="card col-lg-3 border-primary" id="photo1">
-                                        <div class="pic-content">
-                                            <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-1-800x800.jpg">
-                                            <div class="icons">
-                                                <a href="#" id="viewPic" class="btn-icon btn-secondary" title="View Image" data-toggle="modal" data-target="#viewPicModal">
-                                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
-                                                </a>
-                                                <hr>
-                                                <a href="#" id="viewDesc" class="btn-icon btn-secondary" title="View description" data-toggle="modal" data-target="#viewDescModal">
-                                                    <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1"></div>
-                                    <div class="card col-lg-3 border-primary">
-                                        <div class="pic-content">
-                                            <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-2-800x800.jpg">
-                                            <div class="icons">
-                                                <a href="#" class="btn-icon btn-secondary" title="View Image">
-                                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
-                                                </a>
-                                                <hr>
-                                                <a href="#" class="btn-icon btn-secondary" title="View description">
-                                                    <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1"></div>
-                                    <div class="card col-lg-3 border-primary">
-                                        <div class="pic-content">
-                                            <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-3-800x800.jpg">
-                                            <div class="icons">
-                                                <a href="#" class="btn-icon btn-secondary" title="View Image">
-                                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
-                                                </a>
-                                                <hr>
-                                                <a href="#" class="btn-icon btn-secondary" title="View description">
-                                                    <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                            </div>
-                            <br>
-                            <div class="row ml-2" id="photos-row-2">
-
-                                    <div class="card col-lg-3 border-primary" id="photo4">
-                                        <div class="pic-content">
-                                            <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-1-800x800.jpg">
-                                            <div class="icons">
-                                                <a href="#" class="btn-icon btn-secondary" title="View Image">
-                                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
-                                                </a>
-                                                <hr>
-                                                <a href="#" class="btn-icon btn-secondary" title="View description">
-                                                    <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1"></div>
-                                    <div class="card col-lg-3 border-primary">
-                                        <div class="pic-content">
-                                            <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-2-800x800.jpg">
-                                            <div class="icons">
-                                                <a href="#" class="btn-icon btn-secondary" title="View Image">
-                                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
-                                                </a>
-                                                <hr>
-                                                <a href="#" class="btn-icon btn-secondary" title="View description">
-                                                    <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1"></div>
-                                    <div class="card col-lg-3 border-primary">
-                                        <div class="pic-content">
-                                            <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-3-800x800.jpg">
-                                            <div class="icons">
-                                                <a href="#" class="btn-icon btn-secondary" title="View Image">
-                                                    <span class="btn-inner--icon"><i class="far fa-eye"></i></span>
-                                                </a>
-                                                <hr>
-                                                <a href="#" class="btn-icon btn-secondary" title="View description">
-                                                    <span class="btn-inner--icon"><i class="fas fa-align-justify"></i></span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- View Picture Modal -->
-                                  <div class="modal fade" id="viewPicModal" tabindex="-1" role="dialog" aria-labelledby="viewPicModal" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <!-- <h5 class="modal-title" id="viewPicModal">Modal title</h5> -->
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                          </button>
-                                        </div>
-                                        <div class="modal-body">
-                                          <img class="card-img-top mb-3 mt-3" id="Pic1" src="assets/img/theme/team-1-800x800.jpg">
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                   <!-- Description Modal -->
-                                   <div class="modal fade" id="viewDescModal" tabindex="-1" role="dialog" aria-labelledby="viewDescModal" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <!-- <h5 class="modal-title" id="viewDescModal">Modal title</h5> -->
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                          </button>
-                                        </div>
-                                        <div class="modal-body">
-                                          <div class="row">
-                                            <div class="col-lg-6">
-                                                <img class="card-img-top mb-3 mt-3" id="Pic1" src="assets/img/theme/team-1-800x800.jpg">
-                                            </div>
-                                            <div class="col-lg-6">
-                                              <div class="container" id="descCont">
-                                                Hey yessss.
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                            </div>
-
+                        <!-- Photos body -->
+                        <div class="card-body mx-auto" id="photos-section">
+                          <!-- Photos will be added here  -->
                         </div>
+
+
+                         <!-- View Picture Modal -->
+                         <div class="modal fade" id="viewPicModal" tabindex="-1" role="dialog" aria-labelledby="viewPicModal" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+
+                              <!-- TODO In the modal do we need the "close button" in header or the footer? Which is better? -->
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <!-- The picture is displayed below -->
+                                <div class="modal-body">
+                                  <img class="card-img-top mb-3 mt-3" id="ModalDispPic" src="">
+                                </div>
+
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+
+                        <!-- View Description Modal -->
+                        <div class="modal fade" id="viewDescModal" tabindex="-1" role="dialog" aria-labelledby="viewDescModal" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" style="min-width:700px ;" role="document">
+                            <div class="modal-content">
+                              <!-- TODO In the modal do we need the "close button" in header or the footer? Which is better? -->
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <!-- The picture and description are placed below -->
+                              <div class="modal-body">
+                                <div class="row">
+                                  <div class="col-lg-6">
+                                      <img class="card-img-top mb-3 mt-3" id="ModalDispDescImg" src="">
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <div class="container" id="descContainer">
+                                      <!-- Image description added here -->
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -609,6 +475,7 @@
             <div class="row">
                 <div class="col-xl-12 mb-5">
                     <div class="card shadow">
+                        <!-- Video Header -->
                         <div class="card-header bg-transparent">
                             <div class="row align-items-center">
                             <div class="col">
@@ -616,23 +483,11 @@
                             </div>
                             </div>
                         </div>
-                        <div class="card-body" id="photos-section">
-                            <div class="row ml-2">
-
-                                    <div class="card col-lg-3 border-primary">
-                                        <img class="card-img-top mb-3 mt-3" src="assets/img/theme/team-1-800x800.jpg" alt="Card image cap">
-                                    </div>
-                                    <div class="col-lg-1"></div>
-                                    <div class="card col-lg-3 border-primary">
-                                        <img class="card-img-top  mb-3 mt-3" src="assets/img/theme/team-2-800x800.jpg" alt="Card image cap">
-                                    </div>
-                                    <div class="col-lg-1"></div>
-                                    <div class="card col-lg-3 border-primary">
-                                        <img class="card-img-top  mb-3 mt-3" src="assets/img/theme/team-3-800x800.jpg" alt="Card image cap">
-                                    </div>
-
-                            </div>
+                        <!-- Videos body -->
+                        <div class="card-body mx-auto" id="videos-section">
+                            <!-- Videos will be added here -->
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -669,11 +524,27 @@
   <!-- Core -->
   <script src="./assets/vendor/jquery/dist/jquery.min.js"></script>
   <script src="./assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- page js -->
+  <script src="assets/js/view_profile.js"></script>
   <!-- Optional JS -->
   <script src="./assets/vendor/chart.js/dist/Chart.min.js"></script>
   <script src="./assets/vendor/chart.js/dist/Chart.extension.js"></script>
   <!-- Argon JS -->
   <script src="./assets/js/argon.js?v=1.0.0"></script>
+
+  <!-- Firebase App is always required and must be first -->
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
+
+  <!-- Add additional services that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-functions.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-storage.js"></script>
+
+  <!-- firebase initilize -->
+  <script src="assets/js/firebase.js"></script>
 </body>
 
 </html>
