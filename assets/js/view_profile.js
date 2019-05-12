@@ -18,6 +18,7 @@ $(document).ready(function() {
                                 headline: profileJSOn.personalIntro.headline,
                                 personalDescription: profileJSOn.personalIntro.personalDescription
                             }
+                            viewNavbarDropMenu(introductionJson)
                             viewIntroduction(introductionJson);
                             viewEducation(profileJSOn.education);
                             viewWorkExperience(profileJSOn.workExperience);
@@ -34,13 +35,20 @@ $(document).ready(function() {
 // Function to view the introduction 
 function viewIntroduction(introductionJSON){
     // Add the profile picture
-    $('#profile-picture').attr("src", introductionJSON.profileImg)
+    $('#profile-picture').attr("src", introductionJSON.profileImg);
     // Adding name, headline and personal description 
     $('#name').html(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
     $('#personal-headline').html(`${introductionJSON.headline}`);
 
     var personalDescription = introductionJSON.personalDescription.replace(/\n/g, "</br>");
     $('#personal-description').html(`${personalDescription}`);
+}
+
+// Function to view the name and profile pic in dropdown menu
+function viewNavbarDropMenu(introductionJSON){
+    // Adding the profile picture and name respectively
+    $("#profilePicDropMenu").attr("src", introductionJSON.profileImg);
+    $('#nameDropMenu').html(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
 }
 
 // Function to view the Education section 
