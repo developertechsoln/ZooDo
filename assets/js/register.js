@@ -113,11 +113,11 @@
             document.getElementById("message").setAttribute("style", "display: block;");
         
             if ($('#password').val() == $('#confirmPassword').val()) {
-                $('#message').html('Matching');
+                $('#message').html('Passwords match');
                 document.getElementById("message").removeAttribute("style");
                 document.getElementById("message").setAttribute("style", "color: #2dce89");
             } else {
-                $('#message').html('Password Do not Match');
+                $('#message').html('Passwords do not match!');
                 document.getElementById("message").removeAttribute("style");
                 document.getElementById("message").setAttribute("style", "color: #f5365c");
             }
