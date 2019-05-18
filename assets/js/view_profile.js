@@ -18,12 +18,12 @@ $(document).ready(function() {
                                 headline: profileJSOn.personalIntro.headline,
                                 personalDescription: profileJSOn.personalIntro.personalDescription
                             }
-                            viewNavbarDropMenu(introductionJson)
                             viewIntroduction(introductionJson);
                             viewEducation(profileJSOn.education);
                             viewWorkExperience(profileJSOn.workExperience);
                             viewProfilePhotos(profileJSOn.images);
                             viewVideos(profileJSOn.videos);
+                            viewSkills(profileJSOn.skills);
                         }
                     });
                 }
@@ -35,20 +35,13 @@ $(document).ready(function() {
 // Function to view the introduction 
 function viewIntroduction(introductionJSON){
     // Add the profile picture
-    $('#profile-picture').attr("src", introductionJSON.profileImg);
+    $('#profile-picture').attr("src", introductionJSON.profileImg)
     // Adding name, headline and personal description 
     $('#name').html(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
     $('#personal-headline').html(`${introductionJSON.headline}`);
 
     var personalDescription = introductionJSON.personalDescription.replace(/\n/g, "</br>");
     $('#personal-description').html(`${personalDescription}`);
-}
-
-// Function to view the name and profile pic in dropdown menu
-function viewNavbarDropMenu(introductionJSON){
-    // Adding the profile picture and name respectively
-    $("#profilePicDropMenu").attr("src", introductionJSON.profileImg);
-    $('#nameDropMenu').html(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
 }
 
 // Function to view the Education section 
@@ -266,5 +259,102 @@ function viewVideos(videoJSON){
     // if there are no videos
     else { 
         $("#videos-section").append(`<h3>No Videos.</h3>`);
+    }
+}
+
+// Function to view the Education section 
+function viewEducation(educationJSON){
+    // getting the total number of education 
+    var totalNumberOfEducation = Object.keys(educationJSON).length;
+    // Template string which will store the html of all the education 
+    var eduHtml = ``;
+
+    // for each education, add the education to the string
+    $.each(educationJSON, function(i, education){
+        eduHtml = `${eduHtml}<div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <h3 class="mb-0">${education.degreeType} in ${education.courseField}</h3>
+                                <h5 class="text-muted">${education.school}</h5>
+                            </div>
+                            <div class="col-lg-5" style="text-align: right;">
+                                <pre><h4>&nbsp;${education.dateOfGraduation}</h4></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        // there's a line after every education to separate two sections, so we add it here
+        if(i != totalNumberOfEducation){
+            eduHtml = `${eduHtml}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
+        }
+    });
+    // Appending the template literal string to the education section (*** .append() also works in the same way)
+    $("#education-fields").html(eduHtml);
+}
+
+// Function to view Skill section 
+function viewSkills(skillJSON){
+
+    if(skillJSON != null && skillJSON != {} && skillJSON != undefined){
+        var totalSkills = Object.keys(skillJSON).length;
+        var remainder = totalSkills%2;
+        var eachColumn = totalSkills/2
+        //dividing skills into 2 columns as designed on frontend
+        if(remainder == 0){
+            var column1 = eachColumn;
+            var column2 = eachColumn;
+        }
+        else{
+            var column1 = Math.ceil(eachColumn);
+            var column2 = Math.floor(eachColumn);
+        }
+
+        //adding skills 
+        var skillHtml = ``;
+        var num = 1;
+        skillHtml = `${skillHtml}<div class="accordion row" id="accordionExample">
+                                    <div class ="col-lg-6 container-fluid">`;                              
+        for(i = 0; i < column1; i++){
+            var child = "skill" + num;
+            skillHtml = `${skillHtml}<div class="card row" id="skill-${num}">
+						<div class="card-header" id="heading${num}" data-toggle="collapse" data-target="#collapse${num}" aria-expanded="true" aria-controls="collapse${num}">
+							<h4 class="mb-0">${skillJSON[child].skill}</h4>
+						</div>
+						<div id="collapse${num}" class="collapse" aria-labelledby="heading${num}" data-parent="#accordionExample">
+							<div class="card-body">
+								<p>${skillJSON[child].description}</p>
+							</div>
+						</div>
+                    </div>
+                    <br>`;
+            num++;
+        }
+        skillHtml = `${skillHtml}</div>`;
+
+        skillHtml = `${skillHtml}<div class ="col-lg-6 container-fluid">`;
+        for(i = 0; i < column2; i++){
+            var child = "skill" + num
+            skillHtml = `${skillHtml}<div class="card row" id="skill-${num}">
+						<div class="card-header" id="heading${num}" data-toggle="collapse" data-target="#collapse${num}" aria-expanded="true" aria-controls="collapse${num}">
+							<h4 class="mb-0">${skillJSON[child].skill}</h4>
+						</div>
+						<div id="collapse${num}" class="collapse" aria-labelledby="heading${num}" data-parent="#accordionExample">
+							<div class="card-body">
+								<p>${skillJSON[child].description}</p>
+							</div>
+						</div>
+                    </div>
+                    <br>`;
+            num++;
+        }
+        skillHtml = `${skillHtml}</div></div>`;
+        
+        // Appending 
+        $("#skills-section").html(skillHtml);
+    }
+    // Else remove the skill section
+    else {
+        $("#skills-section").parent().parent().parent().remove();
     }
 }
