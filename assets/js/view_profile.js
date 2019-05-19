@@ -27,6 +27,7 @@ $(document).ready(function() {
                             viewWorkExperience(profileJSOn.workExperience);
                             viewProfilePhotos(profileJSOn.images);
                             viewVideos(profileJSOn.videos);
+                            viewSkills(profileJSOn.skills);
                         }
                     });
                 }
@@ -46,7 +47,6 @@ function viewIntroduction(introductionJSON){
     var personalDescription = introductionJSON.personalDescription.replace(/\n/g, "</br>");
     $('#personal-description').html(`${personalDescription}`);
 }
-
 // Function to view the name and profile pic in dropdown menu
 function viewNavbarDropMenu(introductionJSON){
     // Adding the profile picture and name respectively
@@ -132,13 +132,80 @@ function viewWorkExperience(workExperienceJSON){
     }
 }
 
+
+// Function to view Skill section 
+function viewSkills(skillJSON){
+
+    if(skillJSON != null && skillJSON != {} && skillJSON != undefined){
+        var totalSkills = Object.keys(skillJSON).length;
+        var remainder = totalSkills%2;
+        var eachColumn = totalSkills/2
+        //dividing skills into 2 columns as designed on frontend
+        if(remainder == 0){
+            var column1 = eachColumn;
+            var column2 = eachColumn;
+        }
+        else{
+            var column1 = Math.ceil(eachColumn);
+            var column2 = Math.floor(eachColumn);
+        }
+
+        //adding skills 
+        var skillHtml = ``;
+        var num = 1;
+        skillHtml = `${skillHtml}<div class="accordion row" id="accordionExample">
+                                    <div class ="col-lg-6 container-fluid">`;                              
+        for(i = 0; i < column1; i++){
+            var child = "skill" + num;
+            skillHtml = `${skillHtml}<div class="card row" id="skill-${num}">
+						<div class="card-header" id="heading${num}" data-toggle="collapse" data-target="#collapse${num}" aria-expanded="true" aria-controls="collapse${num}">
+							<h4 class="mb-0">${skillJSON[child].skill}</h4>
+						</div>
+						<div id="collapse${num}" class="collapse" aria-labelledby="heading${num}" data-parent="#accordionExample">
+							<div class="card-body">
+								<p>${skillJSON[child].description}</p>
+							</div>
+						</div>
+                    </div>
+                    <br>`;
+            num++;
+        }
+        skillHtml = `${skillHtml}</div>`;
+
+        skillHtml = `${skillHtml}<div class ="col-lg-6 container-fluid">`;
+        for(i = 0; i < column2; i++){
+            var child = "skill" + num
+            skillHtml = `${skillHtml}<div class="card row" id="skill-${num}">
+						<div class="card-header" id="heading${num}" data-toggle="collapse" data-target="#collapse${num}" aria-expanded="true" aria-controls="collapse${num}">
+							<h4 class="mb-0">${skillJSON[child].skill}</h4>
+						</div>
+						<div id="collapse${num}" class="collapse" aria-labelledby="heading${num}" data-parent="#accordionExample">
+							<div class="card-body">
+								<p>${skillJSON[child].description}</p>
+							</div>
+						</div>
+                    </div>
+                    <br>`;
+            num++;
+        }
+        skillHtml = `${skillHtml}</div></div>`;
+        
+        // Appending 
+        $("#skills-section").html(skillHtml);
+    }
+    // Else remove the skill section
+    else {
+        $("#skills-section").parent().parent().parent().remove();
+    }
+}
+
+
 // function to view the profile photos
 function viewProfilePhotos(photoJSON) { 
     // if there is a photoJSON or if its not empty or undefined
     if(photoJSON != null && photoJSON != {} && photoJSON != undefined){
         //get the total number of photos
         var totalNumberOfPhotos = Object.keys(photoJSON).length;
-        console.log(totalNumberOfPhotos)
         // Template String where the photos are added
         var photoHtml = ``;
         // If there are photos uploaded
@@ -235,10 +302,8 @@ function viewVideos(videoJSON){
             videoHtml = `<div class="row ml-2">`; 
 
             $.each(videoJSON, function(videoKeyName, video){
-                console.log(video)
                 var videoIndex = parseInt(videoKeyName.replace('video',''));
                 var videoSrc = video.url;
-                console.log("Video : " + videoSrc)
 
                 videoHtml = `${videoHtml}<div class="card col-lg-3 border-primary" style="padding:10px;">
                                             <video style="max-width:100%;" controls>
@@ -278,9 +343,7 @@ $("#edit-page-btn").click(()=>{
     //Name and headline 
     nameAndHeadlineHTML = `<input type="text" class="form-control form-control-rounded" style="font-size:33px" id="name" value="${$("#name").html()}">
     <input id="personal-headline" type="text" class="form-control form-control-rounded" style="width:350px;" value="${$("#personal-headline").html()}">`;
-    console.log($("#name").html())
-    console.log($("#personal-headline").html())
-    console.log($("#personal-description").html())
+
     $("#nameAndHeadlineIntro").empty();
     $("#nameAndHeadlineIntro").html(nameAndHeadlineHTML);
 
@@ -386,3 +449,4 @@ function editWorkExperience(workExperienceJSON) {
     }
 
 } 
+
