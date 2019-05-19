@@ -25,7 +25,7 @@ $(document).ready(function() {
                             viewIntroduction(introductionJson);
                             viewEducation(profileJSOn.education);
                             viewWorkExperience(profileJSOn.workExperience);
-                            viewProfilePhotos(profileJSOn.images);
+                            viewPhotos(profileJSOn.images);
                             viewVideos(profileJSOn.videos);
                             viewSkills(profileJSOn.skills);
                         }
@@ -201,7 +201,7 @@ function viewSkills(skillJSON){
 
 
 // function to view the profile photos
-function viewProfilePhotos(photoJSON) { 
+function viewPhotos(photoJSON) { 
     // if there is a photoJSON or if its not empty or undefined
     if(photoJSON != null && photoJSON != {} && photoJSON != undefined){
         //get the total number of photos
