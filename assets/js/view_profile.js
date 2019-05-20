@@ -340,113 +340,24 @@ function viewVideos(videoJSON){
 // When the edit button is clicked 
 $("#edit-page-btn").click(()=>{
 
-    //Name and headline 
-    nameAndHeadlineHTML = `<input type="text" class="form-control form-control-rounded" style="font-size:33px" id="name" value="${$("#name").html()}">
-    <input id="personal-headline" type="text" class="form-control form-control-rounded" style="width:350px;" value="${$("#personal-headline").html()}">`;
+    //TODO add button to send changes
 
-    $("#nameAndHeadlineIntro").empty();
-    $("#nameAndHeadlineIntro").html(nameAndHeadlineHTML);
-
-    //About me 
-    aboutMeHTML = `<textarea rows="4" maxlength="2000" class=" form-control form-control-alternative">${$("#personal-description").html()}</textarea>`;
-    $("#aboutMeDesc").empty();
-    $("#aboutMeDesc").html(aboutMeHTML);
-
-    // education 
-    $("#education-fields").empty();
-    editEducation(profileJSOn.education);
-
-    // work experience
-    $("#work-fields").empty();
-    editWorkExperience(profileJSOn.workExperience);
+    
+    //TODO add more edit functions
+    editAboutMe()
+    editEducation()
+    editWorkExperience()
+    
 
 })
 
-function editEducation(educationJSON) {
-    // getting the total number of education 
-    var totalNumberOfEducation = Object.keys(educationJSON).length;
-    // Template string which will store the html of all the education 
-    var eduHtml = ``;
-
-    // for each education, add the education to the string
-    $.each(educationJSON, function(i, education){
-        eduHtml = `${eduHtml}<div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-9">
-                            <input class="col-8 form-control form-control-rounded" value="${education.degreeType} in ${education.courseField}" type="text">
-                            <input class="col-8 text-muted form-control form-control-rounded" value="${education.school}" type="text">
-                        </div>
-                        <div class="col-lg-3" style="text-align: right;">
-                            &nbsp;
-                            <input type="date" value="${education.dateOfGraduation}" class="form-control form-control-rounded extra-education-1">
-                        </div>
-                    </div>
-                </div>`;
-        // there's a line after every education to separate two sections, so we add it here
-        if(i != totalNumberOfEducation){
-            eduHtml = `${eduHtml}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
-        }
-    });
-    // Appending the template literal string to the education section (*** .append() also works in the same way)
-    $("#education-fields").html(eduHtml);
+function editEducation() {
+   
 } 
 
-function editWorkExperience(workExperienceJSON) {
+function editWorkExperience() {
     
-    // If work experience is not empty
-    if(workExperienceJSON != null && workExperienceJSON != {} && workExperienceJSON != undefined){
-        // getting the total number of work experiences
-        var totalNumberOfWorkExperience = Object.keys(workExperienceJSON).length;
-        // Template string which will store the html of all the work experiences
-        var html = ``;
-
-        // for each work experience, add the it to the string
-        $.each(workExperienceJSON, function(i, work){
-
-            var workDescription = work.description.replace(/\n/g, "</br>");
-
-            html = `${html}<div class="row">
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-7">
-                                        <input class="mb-0 form-control form-control-rounded" value="${work.jobTitle}" type="text">
-                                        <input class="form-control form-control-rounded" value="${work.companyName}" type="text">
-                                    </div>
-                                    <div class="col-lg-2"></div>
-                                    <div class="col-lg-3" style="text-align: right;">
-                                        <!-- <pre><h4>less-then-1-year</h4></pre> -->
-                                        &nbsp;
-                                        <select class="form-control form-control-alternative" selected="${work.years}">
-                                            <option value="Less than 1 year">Less than 1 year</option>
-                                            <option value="1 year">1 year</option>
-                                            <option value="2 years">2 years</option>
-                                            <option value="3 years">3 years</option>
-                                            <option value="4 years">4 years</option>
-                                            <option value="5 years">5 years</option>
-                                            <option value="More than 5 years">More than 5 years</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <textarea rows="6" class=" form-control form-control-alternative">${workDescription}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
-            // there's a line after every work experience to separate two sections, so we add it here
-            if(i != totalNumberOfWorkExperience){
-                html = `${html}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
-            }
-        });
-        // Appending the template literal string to the work experience section (*** .append() also works in the same way)
-        $("#work-fields").html(html);
-    }
-    // If no work experience then remove the work experience section 
-    else {
-        $("#work-fields").parent().parent().parent().remove();
-    }
+    
 
 } 
 
