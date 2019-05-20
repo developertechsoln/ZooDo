@@ -127,13 +127,13 @@ $("#add-extra-work-experience").click(function() {
                         "<div class=\"form-group\">"+
                         "<label class=\"form-control-label\">Years</label>"+
                         "<select class=\"form-control form-control-alternative extra-work-experience-" + workInfoNumber + "\">"+
-                            "<option value=\"less-then-1-year\">< a year</option>"+
-                            "<option value=\"1-year\">1 year</option>"+
-                            "<option value=\"2-years\">2 years</option>"+
-                            "<option value=\"3-years\">3 years</option>"+
-                            "<option value=\"4-years\">4 years</option>"+
-                            "<option value=\"5-years\">5 years</option>"+
-                            "<option value=\"more-than-5-years\">> 5 years</option>"+
+                            "<option value=\"Less than 1 year\">< a year</option>"+
+                            "<option value=\"1 year\">1 year</option>"+
+                            "<option value=\"2 years\">2 years</option>"+
+                            "<option value=\"3 years\">3 years</option>"+
+                            "<option value=\"4 years\">4 years</option>"+
+                            "<option value=\"5 years\">5 years</option>"+
+                            "<option value=\"More than 5 years\">> 5 years</option>"+
                         "</select>"+
                         "</div>"+
                     "</div>"+

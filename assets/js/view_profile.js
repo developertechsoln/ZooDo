@@ -338,10 +338,11 @@ function viewVideos(videoJSON){
 }
 
 // When the edit button is clicked 
-$("#edit-page-btn").click(()=>{
+function editPage(){
 
     //TODO add button to send changes
 
+    //TODO replace the edit button with cancel button
     
     //TODO add more edit functions
     editAboutMe()
@@ -349,7 +350,7 @@ $("#edit-page-btn").click(()=>{
     editWorkExperience()
     
 
-})
+}
 
 function editAboutMe() {
 
@@ -361,7 +362,173 @@ function editEducation() {
 
 function editWorkExperience() {
     
-    
+    //Make a DOM ready to take new template
+    $("#work-fields").empty();
 
+    var years = {
+        "Less than 1 year": 0,
+        "1 year": 1,
+        "2 years": 2,
+        "3 years": 3,
+        "4 years": 4,
+        "5 years": 5,
+        "More than 5 years": 6
+
+    }
+
+    //get workExp json
+    var workExperienceJSON = profileJSOn.workExperience;
+    // getting the total number of work experiences
+    var totalNumberOfWorkExperience = Object.keys(workExperienceJSON).length;
+    // Template string which will store the html of all the work experiences
+    var html = ``;
+
+    html = `${html} <div id="work-experience-container">`;
+
+    $.each(workExperienceJSON, function(i, work){
+
+        var workDescription = work.description.replace("</br>", /\n/g);
+        var workExperienceNumber = i.replace("workExperience", "");
+        var selectedYear = years[work.years];
+
+        html = `${html} <div id="extra-work-experience-${workExperienceNumber}">
+                            <br>
+                            <div id="work-experience-${workExperienceNumber}">
+                                <h6 class="heading mb-4 text-center text-primary">Work Experience ${workExperienceNumber}</h6>
+                                <div class="pl-lg-4">
+                                    <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                        <label class="form-control-label">Company Name</label>
+                                        <input type="text" id="" class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}" placeholder="Company Name" value="${work.companyName}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                        <label class="form-control-label">Job Title</label>
+                                        <input type="text" id="" class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}" placeholder=\"Job Title\" value="${work.jobTitle}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                        <label class="form-control-label">Years</label>
+                                        <select class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}">`;
+                                            html = (selectedYear == 0) ? `${html}<option value="Less than 1 year" selected>< a year</option>`:`${html}<option value="Less than 1 year">< a year</option>`;
+                                            html = (selectedYear == 1) ? `${html}<option value="1 year" selected>1 year</option>`:`${html}<option value="1 year">1 year</option>`;
+                                            html = (selectedYear == 2) ? `${html}<option value="2 year" selected>2 year</option>`:`${html}<option value="2 year">2 year</option>`;
+                                            html = (selectedYear == 3) ? `${html}<option value="3 year" selected>3 year</option>`:`${html}<option value="3 year">3 year</option>`;
+                                            html = (selectedYear == 4) ? `${html}<option value="4 year" selected>4 year</option>`:`${html}<option value="4 year">4 year</option>`;
+                                            html = (selectedYear == 5) ? `${html}<option value="5 year" selected>5 year</option>`:`${html}<option value="5 year">5 year</option>`;
+                                            html = (selectedYear == 6) ? `${html}<option value="More than 5 years" selected>> 5 years</option>`:`${html}<option value="More than 5 years">> 5 years</option>`;
+                        html = `${html} </select>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                        <label class="form-control-label\">Job Discription</label>
+                                        <textarea rows="8" class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}" placeholder="Discribe your work in few words ...">${workDescription}</textarea>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+    });
+
+    html = `${html}</div>`
+
+    html = `${html}<div id="add-extra-work-experience-buttons">
+                        <button class="btn btn-icon btn-2 btn-primary" type="button" onclick="addExtraWorkExperience()" >
+                            <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
+                        </button>
+                        <button class="btn btn-icon btn-2 btn-danger" type="button" id="remove-extra-work-experience" onclick="removeExtraWorkExperience()">
+                            <span class="btn-inner--icon"><i class="ni ni-fat-delete"></i></span>
+                        </button>
+                    </div>`;
+
+    // Appending the template literal string to the work experience section (*** .append() also works in the same way)
+    $("#work-fields").html(html);
 } 
 
+
+//This function is called when "+" button is pressed.
+//This function will add extra work information form for a user
+function addExtraWorkExperience() {
+    //this line will check in div block of html, and add 1 for next children
+    var workExperienceNumber = $("#work-experience-container").children().length + 1;
+
+    var html = ``;
+
+    //this is dynamic addition of content to html from js
+    html = `${html}<div id="extra-work-experience-${workExperienceNumber}">
+                            <br>
+                            <div id="work-experience-${workExperienceNumber}">
+                                <h6 class="heading mb-4 text-center text-primary">Work Experience ${workExperienceNumber}</h6>
+                                <div class="pl-lg-4">
+                                    <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                        <label class="form-control-label">Company Name</label>
+                                        <input type="text" id="" class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}" placeholder="Company Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                        <label class="form-control-label">Job Title</label>
+                                        <input type="text" id="" class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}" placeholder=\"Job Title\">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                        <label class="form-control-label">Years</label>
+                                        <select class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}">
+                                            <option value="Less than 1 year">< a year</option>
+                                            <option value="1 year">1 year</option>
+                                            <option value="2 years">2 years</option>
+                                            <option value="3 years">3 years</option>
+                                            <option value="4 years">4 years</option>
+                                            <option value="5 years">5 years</option>
+                                            <option value="More than 5 years">> 5 years</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                        <label class="form-control-label\">Job Discription</label>
+                                        <textarea rows="8" class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}" placeholder="Discribe your work in few words ..."></textarea>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+    // Appending the template literal string to the work experience section (*** .append() also works in the same way)
+    $("#work-experience-container").append(html);
+
+    //check if their is any extra education form if no then remove button which was added to hide extra education form
+    if($("#work-experience-container").children().length > 0) {
+        document.getElementById("remove-extra-work-experience").removeAttribute("style");
+        document.getElementById("remove-extra-work-experience").setAttribute("style", "display: inline-block;");
+    }
+}
+
+//this function is called when remove extra work info button is pressed 
+function removeExtraWorkExperience() {
+    //check total number of extra education info forms and making id name to remove last form
+    var totalNumberOfWorkExperienceRecord = $("#work-experience-container").children().length;
+    var idName = "#extra-work-experience-" + totalNumberOfWorkExperienceRecord;
+
+    //remove last extra education form
+    $(idName).remove();
+
+    //check if their is any extra education form if no then remove button which was added to hide extra education form
+    if($("#work-experience-container").children().length == 0) {
+        document.getElementById("remove-extra-work-experience").removeAttribute("style");
+        document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
+    }
+}
