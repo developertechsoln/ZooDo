@@ -351,6 +351,10 @@ $("#edit-page-btn").click(()=>{
 
 })
 
+function editAboutMe() {
+
+}
+
 function editEducation() {
    
 } 
