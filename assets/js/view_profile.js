@@ -532,3 +532,9 @@ function removeExtraWorkExperience() {
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
 }
+
+//function to convert all br tags with new line
+function BrToNl(str){
+    return str.replace((/<br[^>]*>/gi),"\n");
+}
+
