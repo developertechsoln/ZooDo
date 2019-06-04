@@ -340,15 +340,16 @@ function viewVideos(videoJSON){
 // When the edit button is clicked 
 function editPage(){
 
+    //TODO add more edit functions
+    editAboutMe();
+    editEducation();
+    editWorkExperience();
+    editSkill();
+    
+
     //TODO add button to send changes
 
-    //TODO replace the edit button with cancel button
-    
-    //TODO add more edit functions
-    editAboutMe()
-    editEducation()
-    editWorkExperience()
-    
+    //TODO replace the edit button with cancel button    
 
 }
 
@@ -450,8 +451,60 @@ function editWorkExperience() {
 
     // Appending the template literal string to the work experience section (*** .append() also works in the same way)
     $("#work-fields").html(html);
-} 
+}
 
+function editSkill() {
+
+    //Make a DOM ready to take new template
+    $("#skills-section").empty();
+    
+    var html = ``;
+
+    html = `${html} <div class="row text-center">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                <label class="form-control-label">Skill</label>
+                                <input type="text" id="skill-name" class="form-control form-control-alternative" placeholder="Skill">
+                                </div>
+                            </div>
+                            <div class="col-lg-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-10">
+                                <div class="form-group">
+                                <label class="form-control-label">Description</label>
+                                <textarea rows="4" id="skill-description" class="form-control form-control-alternative" placeholder="Describe your skill in few words ..."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            </div>
+                        <div class="row">
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-4">
+                                <button class="btn btn-primary btn-block" type="button" onClick="addSkill();">
+                                    Add
+                                </button>
+                            </div>
+                            <div class="col-lg-4"></div>
+                        </div>
+                        </div>
+                        <div class="col-lg-3"></div>
+                    </div>
+                    <br>
+                    <!-- All the skills will be dynamically placed under here. -->
+                    <div class="pl-lg-4" id="all-skills">
+                        
+                    </div>`;
+
+    $("#skills-section").html(html);
+
+    populateSkillSection();
+}
 
 //This function is called when "+" button is pressed.
 //This function will add extra work information form for a user
@@ -530,6 +583,142 @@ function removeExtraWorkExperience() {
     if($("#work-experience-container").children().length == 0) {
         document.getElementById("remove-extra-work-experience").removeAttribute("style");
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
+    }
+}
+
+//This function will populate the skill section with exsisting skills when user clicks edit
+function populateSkillSection() {
+
+    //get skill json
+    var skillsJSON = profileJSOn.skills;
+    
+    $.each(skillsJSON, function(i, skillJSON){
+        
+        addSkill(skillJSON.skill, skillJSON.description);
+
+    });
+
+}
+
+
+// These variables are used to store skill details
+var skill_name_arr = [];
+var skill_desc_arr = [];
+var skill_num_arr = [];
+// For storing the total number of skills
+var total_number_of_skills = 1;
+var number_of_sub_skills;
+var number_of_skills;
+
+//This function will add skills as a card to DOM
+function addSkill(skillName = null, skillDesc = null) {
+    number_of_skills = ($("#all-skills").children().length) / 2;
+    var sub_skill_string = "#sub-skills-"+number_of_skills;
+    number_of_sub_skills = $(sub_skill_string).children().length;
+
+    var temp_number_of_skills;
+    if(number_of_skills != 0) {
+        temp_number_of_skills = number_of_skills-1;
+    } else {
+        temp_number_of_skills = number_of_skills;
+    }
+
+    var skill_name = (!skillName) ? $("#skill-name").val() : skillName;
+    var skill_desc = (!skillDesc) ? $("#skill-description").val() : skillDesc;
+
+
+    if(skill_name == "" && skill_desc == ""){
+        alert("Please fill in the required field to add a skill!");
+    }
+    else if(skill_name == "" || (!skill_name.replace(/\s/g, '').length)){
+        alert("Please fill in the Skill Name to add a skill!");
+        document.getElementById("skill-description").value = "";
+    } 
+    else{
+        skill_desc = skill_desc.replace(/\n/g, '<br />');
+        skill_name_arr[skill_name_arr.length] = skill_name;
+        skill_desc_arr[skill_desc_arr.length] = skill_desc;
+        skill_num_arr[skill_num_arr.length] = total_number_of_skills;
+
+        if(((temp_number_of_skills*3)+number_of_sub_skills) % 3 != 0) {
+            var html =  `<div class="col-lg-4"  id="skill-${total_number_of_skills}">
+                            <div class="card bg-gradient-default card-stats mb-4 mb-xl-0">
+                                <div class="card-body">
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h3 class="card-title text-white" style="text-align: center; letter-spacing: 0.2em;"><b>${skill_name}</b></h3>
+                                            <hr style="border-top: 1px solid #ffffff; margin: 1em 0;"></hr>
+                                            <small class="text-white">${skill_desc}</small>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-sm btn-danger" id="remove-skill" onclick="remove_skill(${total_number_of_skills})">Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+            $(sub_skill_string).append(html);
+        } else {
+            var sub_skill = "sub-skills-"+((number_of_skills)+1);
+            
+            var html = `<div class="row" id="${sub_skill}">
+                            <div class="col-lg-4"  id="skill-${total_number_of_skills}">
+                                <div class="card bg-gradient-default card-stats mb-4 mb-xl-0">
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col-12">
+                                                <h3 class="card-title text-white" style="text-align: center; letter-spacing: 0.2em;"><b>${skill_name}</b></h3>
+                                                <hr style="border-top: 1px solid #ffffff; margin: 1em 0;"></hr>
+                                                <small class="text-white">${skill_desc}</small>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="text-align: center;">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-sm btn-danger" id="remove-skill" onclick="remove_skill(${total_number_of_skills})">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>`;
+            $("#all-skills").append(html);
+        }
+        document.getElementById("skill-name").value = "";
+        document.getElementById("skill-description").value = "";
+        total_number_of_skills++;
+    }
+}
+
+var remove_skill = (num_of_skill) => {
+    // for removing skills in order
+    var id_last = $("#skill-"+num_of_skill).parent().attr('id');
+    $("#skill-"+num_of_skill).remove();
+    var id_last_num = id_last.replace("sub-skills-",'');
+    var next_id_num = parseInt(id_last_num)+1;
+    var total_skills = ($("#all-skills").children().length)/2;
+    for(i = next_id_num; i <= total_skills; i++){
+        var curr = i-1;
+        var curr_id_name = "#sub-skills-"+curr;
+        var next_id_name = "#sub-skills-"+i;
+        var next_skill_id = $(next_id_name).children(":first").attr("id");
+        $('#' + next_skill_id).appendTo(curr_id_name);
+    }
+
+    if($('#sub-skills-'+total_skills).children().length == 0){
+        $('#sub-skills-'+total_skills).next('br').remove();
+        $('#sub-skills-'+total_skills).remove();
+        total_skills--;
+    }
+    
+     // for appropriately removing skills from the skill, description, skill number array
+     var index_to_delete = skill_num_arr.indexOf(num_of_skill)
+    if (index_to_delete != -1){
+        skill_num_arr.splice(index_to_delete,1);
+        skill_name_arr.splice(index_to_delete,1);
+        skill_desc_arr.splice(index_to_delete,1);
     }
 }
 
