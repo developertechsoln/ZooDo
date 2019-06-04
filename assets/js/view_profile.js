@@ -692,7 +692,7 @@ function addSkill(skillName = null, skillDesc = null) {
     }
 }
 
-var remove_skill = (num_of_skill) => {
+function remove_skill (num_of_skill){
     // for removing skills in order
     var id_last = $("#skill-"+num_of_skill).parent().attr('id');
     $("#skill-"+num_of_skill).remove();
