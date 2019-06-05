@@ -349,7 +349,10 @@ function editPage(){
 
     //TODO add button to send changes
 
-    //TODO replace the edit button with cancel button    
+    //TODO replace the edit button with cancel button
+    $("#edit-btn").hide();
+    $("#cancel-edit-btn").show();
+    $("#post-edit-opt-btn").show();
 
 }
 
@@ -725,5 +728,10 @@ function remove_skill (num_of_skill){
 //function to convert all br tags with new line
 function BrToNl(str){
     return str.replace((/<br[^>]*>/gi),"\n");
+}
+
+
+function SaveProfileChanges() {
+    console.log("Save function is not yet implemented");
 }
 
