@@ -352,10 +352,6 @@ function editPage(){
     editEducation();
     editWorkExperience();
     editSkill();
-    
-<<<<<<< HEAD
-})
-=======
 
     //TODO add button to send changes
 
@@ -365,7 +361,6 @@ function editPage(){
     $("#post-edit-opt-btn").show();
 
 }
->>>>>>> 8040deb0056f9597e7e94817e6b063cb9fe61418
 
 function editAboutMe() {
     aboutMeHTML = `<textarea rows="4" maxlength="2000" class=" form-control form-control-alternative">${$("#personal-description").html()}</textarea>`;
