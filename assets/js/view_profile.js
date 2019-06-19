@@ -404,11 +404,6 @@ function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,s
     selectedDegree = DegreeEnum[degreeType];
     }
 
-    
-
-    
-
-
     var addEdu =
      `<div id = "extra-education-${educationNumber}">
       <br>
