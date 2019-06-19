@@ -36,11 +36,11 @@ $(document).ready(function() {
     });
 });
 
-// Function to view the introduction 
+// Function to view the introduction
 function viewIntroduction(introductionJSON){
     // Add the profile picture
     $('#profile-picture').attr("src", introductionJSON.profileImg);
-    // Adding name, headline and personal description 
+    // Adding name, headline and personal description
     $('#name').html(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
     $('#personal-headline').html(`${introductionJSON.headline}`);
 
@@ -54,11 +54,11 @@ function viewNavbarDropMenu(introductionJSON){
     $('#nameDropMenu').html(`${introductionJSON.firstName} ${introductionJSON.lastName}`);
 }
 
-// Function to view the Education section 
+// Function to view the Education section
 function viewEducation(educationJSON){
-    // getting the total number of education 
+    // getting the total number of education
     var totalNumberOfEducation = Object.keys(educationJSON).length;
-    // Template string which will store the html of all the education 
+    // Template string which will store the html of all the education
     var eduHtml = ``;
 
     // for each education, add the education to the string
@@ -77,7 +77,7 @@ function viewEducation(educationJSON){
                     </div>
                 </div>`;
         // there's a line after every education to separate two sections, so we add it here
-        if(i != totalNumberOfEducation){
+        if(i != totalNumberOfEducation-1){
             eduHtml = `${eduHtml}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
         }
     });
@@ -85,7 +85,7 @@ function viewEducation(educationJSON){
     $("#education-fields").html(eduHtml);
 }
 
-// Function to view the Work Experience section 
+// Function to view the Work Experience section
 function viewWorkExperience(workExperienceJSON){
 
     // If work experience is not empty
@@ -119,21 +119,21 @@ function viewWorkExperience(workExperienceJSON){
                                 </div>
                             </div>`;
             // there's a line after every work experience to separate two sections, so we add it here
-            if(i != totalNumberOfWorkExperience){
+            if(i != totalNumberOfWorkExperience-1){
                 html = `${html}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
             }
         });
         // Appending the template literal string to the work experience section (*** .append() also works in the same way)
         $("#work-fields").html(html);
     }
-    // If no work experience then remove the work experience section 
+    // If no work experience then remove the work experience section
     else {
         $("#work-fields").parent().parent().parent().remove();
     }
 }
 
 
-// Function to view Skill section 
+// Function to view Skill section
 function viewSkills(skillJSON){
 
     if(skillJSON != null && skillJSON != {} && skillJSON != undefined){
@@ -150,11 +150,11 @@ function viewSkills(skillJSON){
             var column2 = Math.floor(eachColumn);
         }
 
-        //adding skills 
+        //adding skills
         var skillHtml = ``;
         var num = 1;
         skillHtml = `${skillHtml}<div class="accordion row" id="accordionExample">
-                                    <div class ="col-lg-6 container-fluid">`;                              
+                                    <div class ="col-lg-6 container-fluid">`;
         for(i = 0; i < column1; i++){
             var child = "skill" + num;
             skillHtml = `${skillHtml}<div class="card row" id="skill-${num}">
@@ -189,8 +189,8 @@ function viewSkills(skillJSON){
             num++;
         }
         skillHtml = `${skillHtml}</div></div>`;
-        
-        // Appending 
+
+        // Appending
         $("#skills-section").html(skillHtml);
     }
     // Else remove the skill section
@@ -201,7 +201,7 @@ function viewSkills(skillJSON){
 
 
 // function to view the profile photos
-function viewPhotos(photoJSON) { 
+function viewPhotos(photoJSON) {
     // if there is a photoJSON or if its not empty or undefined
     if(photoJSON != null && photoJSON != {} && photoJSON != undefined){
         //get the total number of photos
@@ -220,7 +220,7 @@ function viewPhotos(photoJSON) {
                 // Get the URL and description of the image
                 var urlSrc = image.url;
                 var imgDescription = image.description;
-                
+
                 //TODO change image to iframe to improve UX
                 photoHtml = `${photoHtml}<div class="card col-lg-3 border-primary">
                                             <div class="pic-content">
@@ -244,24 +244,24 @@ function viewPhotos(photoJSON) {
                     // adding a new row when the current one is filled
                     if(imgIndex < totalNumberOfPhotos){
                         photoHtml = `${photoHtml}<br> <div class="row ml-2">`;
-                    }                        
-                }                          
+                    }
+                }
             })
         }
-        else { 
+        else {
             photoHtml = `<h3>No Photos.</h3>`;
         }
-    // Appending the template literal string to the photos section 
+    // Appending the template literal string to the photos section
     $("#photos-section").html(photoHtml);
     }
-    // If there are no photos 
+    // If there are no photos
     else {
         $("#photos-section").html(`<h3>No Photos.</h3>`);
     }
-}   
+}
 
 // Function to view the Image in a modal (it gives the source of image to the modal to view the picture)
-function viewImageModal(elementRef){    
+function viewImageModal(elementRef){
     // Get the url (image source) of the image
     var imgSrc = $($(elementRef).parent().parent().children()[0]).attr('src')
     // Change the modal's image source to the above
@@ -278,7 +278,7 @@ function viewImgDescModal(elementRef){
     var imgSrc = $($(elementRef).parent().parent().children()[0]).attr('src')
     // Change the modal's image source to the above
     $("#ModalDispDescImg").attr('src',imgSrc);
-    // Adding the description to html 
+    // Adding the description to html
     $("#descContainer").html($(elementRef).attr('data').replace(/\n/g, "</br>"));
 
     // Adding properties to the icons to view the modal
@@ -288,18 +288,18 @@ function viewImgDescModal(elementRef){
 
 }
 
-// Function to view the videos section 
+// Function to view the videos section
 function viewVideos(videoJSON){
     // if there is a videoJSON or if its not empty or undefined
     if(videoJSON != null && videoJSON != {} && videoJSON != undefined){
-        //total number of videos 
+        //total number of videos
         var totalNumberOfVideos = Object.keys(videoJSON).length;
         // template string to add the videos
         var videoHtml = ``;
         // If there are videos present in the videoJSON
         if(totalNumberOfVideos){
             //html content to be appended in html file
-            videoHtml = `<div class="row ml-2">`; 
+            videoHtml = `<div class="row ml-2">`;
 
             $.each(videoJSON, function(videoKeyName, video){
                 var videoIndex = parseInt(videoKeyName.replace('video',''));
@@ -320,24 +320,24 @@ function viewVideos(videoJSON){
 
                     if(videoIndex < totalNumberOfVideos){
                         videoHtml = `${videoHtml}<br> <div class="row ml-2">`;
-                    }                        
-                }    
+                    }
+                }
             })
         }
-        // If there are no videos uploaded 
+        // If there are no videos uploaded
         else{
             videoHtml = `<h3>No Videos.</h3>`
         }
-        // Appending the template literal to the videos section 
+        // Appending the template literal to the videos section
         $("#videos-section").html(videoHtml);
     }
     // if there are no videos
-    else { 
+    else {
         $("#videos-section").append(`<h3>No Videos.</h3>`);
     }
 }
 
-// When the edit button is clicked 
+// When the edit button is clicked
 function editPage(){
 
     //TODO add more edit functions
@@ -345,7 +345,7 @@ function editPage(){
     editEducation();
     editWorkExperience();
     editSkill();
-    
+
 
     //TODO add button to send changes
 
@@ -360,12 +360,181 @@ function editAboutMe() {
 
 }
 
+function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,school)
+{
+    var selectedDegree  ;
+    var selectedCourse  ;
+
+    var DegreeEnum = {
+        "Diploma": 0,
+        "Bachelors": 1,
+        "Masters": 2,
+        "Etc": 3
+    }
+
+    var CourseFieldEnum = {
+        "Software Engineering": 0,
+        "Computer Science": 1,
+        "Business": 2,
+        "Etc": 3
+    }
+
+    if( (courseField=="") && (degreeType=="")) {        // if a new form is added, then default values are the first values in the forms.
+        selectedDegree = 0 ;
+        selectedCourse = 0 ;
+    }
+   else{
+    selectedCourse = CourseFieldEnum[courseField];
+    selectedDegree = DegreeEnum[degreeType];
+    }
+
+    console.log(selectedCourse);
+
+    (selectedCourse == 0 ) ? console.log("This should be correct") : console.log("This is wrong");
+
+
+    var addEdu =
+     `<div id = "extra-education-${educationNumber}">
+      <br>
+      <div id = "education-${educationNumber}">
+        <h6 class="heading mb-4 text-center text-primary">Education ${educationNumber}</h6>
+          <div class="pl-lg-4">
+            <div class="row">`
+
+            addEdu = `${addEdu}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="form-control-label">Specialization Field</label>
+                    <select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">`
+
+                    addEdu= (selectedCourse == 0) ? `${addEdu}<option value="Software Engineering" selected>Software Engineering</option>`:`${addEdu}<option value="Software Engineering">Software Engineering</option>`;
+                    addEdu= (selectedCourse == 1) ? `${addEdu}<option value="Computer Science" selected>Computer Science</option>`:`${addEdu}<option value="Computer Science">Computer Science</option>`;
+                    addEdu = (selectedCourse == 2) ? `${addEdu}<option value="Business" selected>Business</option>`:`${addEdu}<option value="Business">Business</option>`;
+                    addEdu = (selectedCourse == 3) ? `${addEdu}<option value="Etc" selected>Etc</option>`:`${addEdu}<option value="Etc">Etc</option>`;
+
+            addEdu = `${addEdu} </select>
+                        </div>
+                    </div>`
+
+            addEdu =   `${addEdu} <div class="col-lg-6" >
+                    <div class = "form-group">
+                      <label class = "form-control-label">School/University</label>
+                        <br>
+                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="School or University" value = "${school}" >
+                    </div>
+                </div>`
+
+
+            addEdu = `${addEdu}
+                <div class="col-lg-6">
+                        <div class="form-group">
+                        <label class="form-control-label">Degree</label>
+                        <select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">`
+                        addEdu= (selectedDegree == 0) ? `${addEdu}<option value="Diploma" selected>Diploma</option>`:`${addEdu}<option value="Diploma">Diploma</option>`;
+                        addEdu= (selectedDegree == 1) ? `${addEdu}<option value="Bachelors" selected>Bachelors</option>`:`${addEdu}<option value="Bachelors">Bachelors</option>`;
+                        addEdu = (selectedDegree == 2) ? `${addEdu}<option value="Masters" selected>Masters</option>`:`${addEdu}<option value="Masters">Masters</option>`;
+                        addEdu = (selectedDegree == 3) ? `${addEdu}<option value="Etc" selected>Etc</option>`:`${addEdu}<option value="Etc">Etc</option>`;
+
+                addEdu = `${addEdu} </select>
+                        </div>
+                    </div>`
+
+                addEdu = `${addEdu}
+                        <div class="col-lg-6">
+                            <div class = "form-group">
+                              <label class = "form-control-label">Date of Graduation</label>
+                                <br>
+                              <input type = "date" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="Graduation Date" value = "${dateOfGraduation}" >
+                            </div>
+                        </div>
+
+                      </div>
+                    </div>
+                </div>
+              </div>`;
+
+
+        return addEdu;
+
+}
+
+
 function editEducation() {
-   
-} 
+
+
+    educationJSON =  profileJSOn.education;
+  // getting the total number of education qualifications
+  var totalNumberOfEducation = Object.keys(educationJSON).length;
+  // Template string which will store the html of all the education forms
+  var eduHtml =  ``;
+
+
+  eduHtml = `${eduHtml} <div id = "education-container">`;
+  // for each education qualification, add the education to the string
+  $.each(educationJSON, function(i, education){
+
+    var courseField = education.courseField;
+    var dateOfGraduation = education.dateOfGraduation;
+    var degreeType = education.degreeType;
+    var school = education.school;
+
+    $("#education-fields").empty()
+
+    var educationNumber = i.replace("education", ""); //gets the education number from the database using the educationJSON.
+
+      eduHtml =   `${eduHtml}` + addEducation(educationNumber, courseField,dateOfGraduation,degreeType,school);
+      // there's a line after every education to separate two sections, so we add it here
+
+  });
+
+ eduHtml =   `${eduHtml}</div>`
+
+
+  eduHtml = `${eduHtml} <div id="add-extra-work-experience-buttons">
+
+                          <button class="btn btn-icon btn-2 btn-primary" type="button" onclick="addExtraEducation()" >
+                            <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
+                          </button>
+
+                          <button class="btn btn-icon btn-2 btn-danger" type="button" id="remove-extra-education" onclick="removeExtraEducation()">
+                            <span class="btn-inner--icon"><i class="ni ni-fat-delete"></i></span>
+                          </button>
+                        </div>`;
+
+//  if(i != totalNumberOfEducation){
+//      eduHtml = `${eduHtml}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
+//  }
+
+  // Appending the template literal string to the education section (*** .append() also works in the same way)
+  $("#education-fields").html(eduHtml);
+}
+
+function addExtraEducation() {
+  var totalNumberOfEducation = $("#education-container").children().length +1//+ 1;
+  if(totalNumberOfEducation>0){
+      document.getElementById("remove-extra-education").removeAttribute("style");
+      document.getElementById("remove-extra-education").setAttribute("style", "display: inline-block;");
+  }
+  var addEduHtml = ``;
+  addEduHtml  = `${addEduHtml}`+ addEducation(totalNumberOfEducation,"","","","");
+  $("#education-container").append(addEduHtml);
+}
+
+function removeExtraEducation() {
+  var totalNumberOfEducation = $("#education-container").children().length    // get the last education children and remove.
+  var removeid = "#extra-education-" + totalNumberOfEducation;
+
+  $(removeid).remove();
+
+    if($("#education-container").children().length==0){
+        document.getElementById("remove-extra-education").removeAttribute("style");
+        document.getElementById("remove-extra-education").setAttribute("style", "display: none;");
+    }
+
+}
 
 function editWorkExperience() {
-    
+
     //Make a DOM ready to take new template
     $("#work-fields").empty();
 
@@ -460,7 +629,7 @@ function editSkill() {
 
     //Make a DOM ready to take new template
     $("#skills-section").empty();
-    
+
     var html = ``;
 
     html = `${html} <div class="row text-center">
@@ -501,7 +670,7 @@ function editSkill() {
                     <br>
                     <!-- All the skills will be dynamically placed under here. -->
                     <div class="pl-lg-4" id="all-skills">
-                        
+
                     </div>`;
 
     $("#skills-section").html(html);
@@ -573,7 +742,7 @@ function addExtraWorkExperience() {
     }
 }
 
-//this function is called when remove extra work info button is pressed 
+//this function is called when remove extra work info button is pressed
 function removeExtraWorkExperience() {
     //check total number of extra education info forms and making id name to remove last form
     var totalNumberOfWorkExperienceRecord = $("#work-experience-container").children().length;
@@ -594,9 +763,9 @@ function populateSkillSection() {
 
     //get skill json
     var skillsJSON = profileJSOn.skills;
-    
+
     $.each(skillsJSON, function(i, skillJSON){
-        
+
         addSkill(skillJSON.skill, skillJSON.description);
 
     });
@@ -636,7 +805,7 @@ function addSkill(skillName = null, skillDesc = null) {
     else if(skill_name == "" || (!skill_name.replace(/\s/g, '').length)){
         alert("Please fill in the Skill Name to add a skill!");
         document.getElementById("skill-description").value = "";
-    } 
+    }
     else{
         skill_desc = skill_desc.replace(/\n/g, '<br />');
         skill_name_arr[skill_name_arr.length] = skill_name;
@@ -665,7 +834,7 @@ function addSkill(skillName = null, skillDesc = null) {
             $(sub_skill_string).append(html);
         } else {
             var sub_skill = "sub-skills-"+((number_of_skills)+1);
-            
+
             var html = `<div class="row" id="${sub_skill}">
                             <div class="col-lg-4"  id="skill-${total_number_of_skills}">
                                 <div class="card bg-gradient-default card-stats mb-4 mb-xl-0">
@@ -715,7 +884,7 @@ function remove_skill (num_of_skill){
         $('#sub-skills-'+total_skills).remove();
         total_skills--;
     }
-    
+
      // for appropriately removing skills from the skill, description, skill number array
      var index_to_delete = skill_num_arr.indexOf(num_of_skill)
     if (index_to_delete != -1){
@@ -734,4 +903,3 @@ function BrToNl(str){
 function SaveProfileChanges() {
     console.log("Save function is not yet implemented");
 }
-
