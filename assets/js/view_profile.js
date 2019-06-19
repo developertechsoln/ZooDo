@@ -222,7 +222,7 @@ function viewPhotos(photoJSON) {
                 var imgDescription = image.description;
                 
                 //TODO change image to iframe to improve UX
-                photoHtml = `${photoHtml}<div class="card col-lg-3 border-primary">
+                photoHtml = `${photoHtml}<div class="card col-lg-3 border-primary" id="photo-${imgIndex}">
                                             <div class="pic-content">
                                                 <img class="card-img-top mb-3 mt-3" src="${urlSrc}">
                                                 <div class="icons">
@@ -311,10 +311,7 @@ function viewVideos(videoJSON){
                                             </video>
                                         </div>
                                         <div class="col-lg-1"></div>`;
-                // var vidSrc = $("source");
-                // vidSrc[0].src = URL.createObjectURL(videoSrc);
-                // vidSrc.parent().load();
-                // source.parent()[0].load();
+
                 if(videoIndex % 3 == 0){
                     videoHtml = `${videoHtml}</div>`;
 
@@ -337,6 +334,16 @@ function viewVideos(videoJSON){
     }
 }
 
+// When the edit button is clicked, the function runs only once
+$("#edit-page-btn").one('click', function(){
+    // photos
+    $("#photo-header").append(`<div class="col-2 pl-0">
+                                <button class="btn btn-icon btn-2 btn-primary" type="button" id="add-photos" onclick=addPhoto() data-toggle="modal" data-target="#modal-photo">
+                                    <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
+                                </button>
+                            </div>`);
+})
+
 // When the edit button is clicked 
 $("#edit-page-btn").click(()=>{
 
@@ -348,11 +355,12 @@ $("#edit-page-btn").click(()=>{
     editEducation()
     editWorkExperience()
     
-
 })
 
 function editAboutMe() {
-
+    aboutMeHTML = `<textarea rows="4" maxlength="2000" class=" form-control form-control-alternative">${$("#personal-description").html()}</textarea>`;
+    $("#aboutMeDesc").empty();
+    $("#aboutMeDesc").html(aboutMeHTML);
 }
 
 function editEducation() {
@@ -365,3 +373,223 @@ function editWorkExperience() {
 
 } 
 
+// BELOW PHOTOS SECTION IS NOT COMPLETED ---
+// A global object for storing the pictures
+var temp_image_object = [];
+var image_object = [];
+var temp_image_desc = [];
+var image_desc = [];
+var is_photo_odd = false;
+
+// $("#add-photos").click(() => {
+function addPhoto(){
+    $("#add-photo-modal-content").empty();
+    $("#add-photo-modal-content").append(
+        "<div class=\"modal fade\" id=\"modal-photo\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-photo\" data-backdrop=\"static\" data-keyboard=\"false\" aria-hidden=\"true\">"+
+        "<div class=\"modal-dialog modal- modal-dialog-centered modal-\" role=\"document\">"+
+          "<div class=\"modal-content\">"+
+            "<div class=\"modal-header\">"+
+                "<h6 class=\"modal-title\" id=\"modal-title-default\">Upload Photos</h6>"+
+                "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">"+
+                    "<span aria-hidden=\"true\">×</span>"+
+                "</button>"+
+            "</div>"+
+        
+            "<div class=\"modal-body\" id=\"modal_body\">"+
+              "<div class=\"row\">"+
+                "<div class=\"col-sm-4\"></div>"+
+                "<div class=\"col-sm-4\">"+
+                  "<label for=\"files\" class=\"btn btn-outline-primary\">"+
+                      "<span class=\"btn-inner--text\">Browse</span>"+
+                      " <span class=\"btn-inner--icon\"><i class=\"ni ni-cloud-upload-96\"></i></span>"+
+                  "</label>"+
+                  "<input id=\"files\" style=\"display: none\" type=\"file\" accept=\"image/\*\" multiple/>"+
+                "</div>"+
+                "<div class=\"col-sm-4\"></div>"+
+              "</div>"+
+            "</div>"+
+                
+            "<div class=\"modal-footer\" id=\"modal_footer\">"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button\" onClick=\"next_button()\">Next</button>"+
+            "</div>"+
+                
+          "</div>"+
+          "</div>"+
+        "</div>"
+    )
+
+    $("#files").change(()=> {
+        // Gets an object of images selected
+
+        var numberOfFilesUploaded = document.querySelector('#files').files.length;
+
+        for(var i=0; i<numberOfFilesUploaded; i++){
+            temp_image_object[i] = document.querySelector('#files').files[i];
+
+        }
+        if($.isEmptyObject(temp_image_object)){
+            alert("Please upload a file!");
+        }else{
+            upload_successful();
+            setTimeout(()=> { 
+                $("#modal_footer").empty();
+                img_desc_temp(); 
+                preview_image(); 
+                if(temp_image_object.length == 1){
+                    img_footer();
+                }else{
+                    img_desc_foot(); 
+                }
+            },2000);
+        }
+    });
+// });
+}
+
+var next_click = new Boolean(false);
+var current = 0;
+var next_button = () => {
+    next_click = true;
+    var image_description = $("#image-description").val();
+    // Do we need to make it in an important field?
+    if(image_description == ""){
+        alert("Please fill out the description!");
+    } else{
+        image_description = image_description.replace(/\n/g, '<br />');
+        temp_image_desc[current] = image_description;
+        if(current < temp_image_object.length-1){
+            current++;
+            $("#modal_footer").empty();
+            img_desc_temp();    
+            preview_image(); 
+            if(current == temp_image_object.length-1){
+                img_footer();
+            } else {
+                img_desc_foot(); 
+            }
+        } else{
+            $("#modal_body").empty();
+            $("#modal_footer").empty();
+            $("#modal_body").append(
+                "<h2>Photos Added Successfully!!</h2>"
+            );
+            setTimeout(() => {
+                $("#modal-default").modal('hide');
+                current = 0;
+                next_click = false;
+                image_desc = image_desc.concat(temp_image_desc);
+                image_object = image_object.concat(temp_image_object);
+                // Displaying the picture
+                showPhotoPreview();
+                temp_image_object = [];
+                temp_image_desc = [];
+            },2000);
+        }
+    }
+}
+
+        
+var img_footer = () => {
+    if(temp_image_object.length == 1){
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
+        );
+    } else {
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"prev_photo_button\" onClick=\"prev_photo_button()\">Previous</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
+        );
+    }
+}
+
+var upload_successful = ()=> {
+    $("#modal_body").empty();
+    $("#modal_footer").empty();
+    $("#modal_body").append(
+        "<h2>Media Uploaded Successfully!!</h2>"
+    );
+};
+
+var img_desc_temp = ()=> {
+    $("#modal_body").empty();
+    if(temp_image_desc[current] == null){
+        $("#modal_body").append(
+            "<div class=\"row\">"+
+                "<div class=\"col-lg-6\">"+
+                    "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
+                "</div>"+           
+                "<div class=\"col-lg-6\">"+
+                "<div class=\"mobile-margin\">" + "</div>" +      
+                    "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\" placeholder=\"Anything special about the Photo?\"></textarea>"+
+                "</div>"+
+            "</div>"
+        );
+    } else {
+        $("#modal_body").append(
+            "<div class=\"row\">"+
+                "<div class=\"col-lg-6\">"+
+                    "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
+                "</div>"+
+                "<div class=\"col-lg-6\">"+
+                    "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\">"+ temp_image_desc[current] +"</textarea>"+
+                "</div>"+
+            "</div>"
+        );
+    }
+   
+};
+
+var img_desc_foot = () => {
+    if(current == 0){
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
+        );
+    } else {
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"prev_photo_button\" onClick=\"prev_photo_button()\">Previous</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
+            // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
+        );
+    }
+};
+
+var preview_image = function(input) {
+    var readerImg = new FileReader();
+    readerImg.onload = (e)=> {
+        $("#new-image").attr('src',e.target.result);
+    }
+    readerImg.readAsDataURL(temp_image_object[current]);
+    next_click = false;
+};
+
+var prev_photo_button = ()=> {
+    var image_description = $("#image-description").val();
+    temp_image_desc[current] = image_description;
+    current--;
+    if(current < temp_image_object.length-1){
+        $("#modal_footer").empty();
+        img_desc_temp();    
+        preview_image(); 
+        img_desc_foot(); 
+    }
+};
+
+var showPhotoPreview = ()=> {
+
+    // number of rows of current photos
+    var numOfCurrRowsOfPhotos = $("#photos-section").children().length - $("#photos-section").find("br").length;
+    // number of current photos
+    var numOfCurrPhotos = $("#photos-section").children().children().length/2;
+
+    var photoHtml = ``;
+
+    for(var i=0; i<temp_image_object.length; i++){
+        photoHtml = `${photoHtml} `;
+    }
+}
+// NOT COMPLETED TILL HERE 
