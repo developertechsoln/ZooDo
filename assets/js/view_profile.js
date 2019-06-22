@@ -1030,7 +1030,7 @@ var next_button = () => {
 }
 
         
-var img_footer = () => {
+function img_footer ()  {
     if(temp_image_object.length == 1){
         $("#modal_footer").append(
             "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
@@ -1107,7 +1107,7 @@ var preview_image = function(input) {
     next_click = false;
 };
 
-var prev_photo_button = ()=> {
+function prev_photo_button () {
     var image_description = $("#image-description").val();
     temp_image_desc[current] = image_description;
     current--;
@@ -1119,7 +1119,7 @@ var prev_photo_button = ()=> {
     }
 };
 
-var showPhotoPreview = ()=> {
+function showPhotoPreview (){
 
     // number of rows of current photos
     var numOfCurrRowsOfPhotos = $("#photos-section").children().length - $("#photos-section").find("br").length;
