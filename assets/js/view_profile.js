@@ -359,7 +359,7 @@ function editPage(){
     editEducation();
     editWorkExperience();
     editSkill();
-
+    editVideos();
 
     //TODO add button to send changes
 
@@ -1133,3 +1133,116 @@ function showPhotoPreview (){
     }
 }
 // NOT COMPLETED TILL HERE 
+
+
+
+
+function editVideos() {
+    
+    var videoJSON = profileJSOn.videos;
+    var totalNumberOfVideos = Object.keys(videoJSON).length;
+    $("#videos-section").empty();
+
+    $.each(videoJSON, function(videoKeyName, video){
+        var videoSrc = video.url;
+        HTML_addNewVideo(videoSrc);
+    });
+
+    $('#addVideoButton').show();
+    
+}
+
+function HTML_addNewVideo(VideoURL){
+
+    const numberOfVideosInRow = 3;
+    var rowsInVideoSection = $('#videos-section').children().length/2;
+    var VideosInLastRow = $($('#videos-section').children()[$('#videos-section').children().length-2]).children().length;
+    var totalNumberOfVideos = (rowsInVideoSection == 0) ? VideosInLastRow : ((rowsInVideoSection -1)* numberOfVideosInRow) + VideosInLastRow;
+    
+    var html = ``;
+    var subHtml = ``;
+
+    var row_video = "#rows-videoSection-"+rowsInVideoSection;
+    
+    subHtml = `${subHtml}   <div class="col-lg-4" id="video-${totalNumberOfVideos}" >
+                                <div style="width: auto;">
+                                    <div class="card card-stats mb-4 mb-lg-0">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col text-center">
+                                                    <button type="button" class="close" onclick="deleteVideo(${totalNumberOfVideos})">
+                                                        <span aria-hidden="true" style="font-size: 125%; color: #f5365c;">×</span>
+                                                    </button> <br>
+                                                </div>
+                                            </div>
+                                            <div class ="row">
+                                                <div class="col text-center">
+                                                    <video style="max-width: 100%;" src="${VideoURL}" controls></video>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+
+    if(rowsInVideoSection == 0 || VideosInLastRow == numberOfVideosInRow){     
+        rowsInVideoSection++;
+        row_video = "rows-videoSection-"+rowsInVideoSection;
+
+        html = `${html} <div class="row" id="${row_video}">
+                            ${subHtml}
+                        </div>
+                        <br>`;
+                        
+        $("#videos-section").append(html);
+        return;
+    }
+
+    $(row_video).append(subHtml);
+}
+
+
+/* 
+    Delete video - DC
+*/
+function deleteVideo(video_to_delete) {
+    var deleteVideoRowID = $("#video-"+video_to_delete).parent().attr("id");
+    var delete_video_rowID_num = deleteVideoRowID.replace("rows-videoSection-",'');
+
+    $("#video-"+video_to_delete).remove();
+
+    var total_rows_of_video = ($("#videos-section").children().length)/2;
+    var next_row_num = parseInt(delete_video_rowID_num)+1;
+    // For shifting all elements by 1 to fill the gap
+    for(i = next_row_num; i <= total_rows_of_video; i++){
+        var curr= i-1;
+        var curr_row_name = "#rows-videoSection-"+ curr;
+        var next_row_name = "#rows-videoSection-"+ i;
+        var first_video_next_row = $(next_row_name).children(":first").attr("id");
+         $('#' + first_video_next_row).appendTo(curr_row_name);
+    }
+    if($('#rows-videoSection-'+total_rows_of_video).children().length == 0){
+        $('#rows-videoSection-'+total_rows_of_video).next('br').remove();
+        $('#rows-videoSection-'+total_rows_of_video).remove();
+        total_rows_of_video--;
+    }
+    
+    //TODO activate this for block after the video object array is maintained
+
+    //for loop to delete the video from the video_object array(which goes to the storage in firebase)
+    // for(var i = 0; i < videoObject.length; i++){
+    //     if (video_index[i] == video_to_delete){
+    //         video_object.splice(i,1);
+    //         video_index.splice(i,1);
+    //     }
+    // }
+}
+
+$(document).on("change", "#videos", function() {
+
+    HTML_addNewVideo(URL.createObjectURL(this.files[0]));
+
+    //TODO keep track of index of the video and also the video file object
+    //it will help us to delete the video
+
+});
